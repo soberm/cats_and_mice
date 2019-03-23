@@ -4,6 +4,7 @@ import at.ac.tuwien.catsandmice.client.board.Board;
 import at.ac.tuwien.catsandmice.client.util.Constants;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Application extends JFrame {
 
@@ -16,7 +17,7 @@ public class Application extends JFrame {
 
         setResizable(false);
         pack();
-        setSize(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        setSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
 
         setTitle("Cats and Mice");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

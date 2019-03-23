@@ -2,6 +2,9 @@ package at.ac.tuwien.catsandmice.client.board;
 
 import at.ac.tuwien.catsandmice.client.characters.Cat;
 import at.ac.tuwien.catsandmice.client.characters.Mouse;
+import at.ac.tuwien.catsandmice.client.util.Constants;
+import at.ac.tuwien.catsandmice.client.world.Boundaries;
+import at.ac.tuwien.catsandmice.client.world.Subway;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,17 +12,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 
-public class Board extends JPanel implements ActionListener {
+public class Board extends JPanel implements ActionListener, Boundaries {
     private Cat cat;
     private Mouse mouse;
+    private Subway subway;
 
-    private final int DELAY = 10;
+    private final int DELAY = 20;
     private Timer timer;
-    private AffineTransform transform = new AffineTransform();
-    private AffineTransform mouseTransform = new AffineTransform();
 
     public Board() {
         initBoard();
@@ -30,8 +30,9 @@ public class Board extends JPanel implements ActionListener {
         setBackground(Color.gray);
         setFocusable(true);
 
-        this.cat = new Cat();
-        this.mouse = new Mouse();
+        this.cat = new Cat(this);
+        this.mouse = new Mouse(this);
+        this.subway = new Subway(300, 300, 300, 800, this);
 
 
         timer = new Timer(DELAY, this);
@@ -53,23 +54,15 @@ public class Board extends JPanel implements ActionListener {
 
     private void drawBoard(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        subway.draw(g2d, this);
         if(mouse.isAlive()) {
-            AffineTransform rotationMouse = new AffineTransform();
-            rotationMouse.rotate(Math.toRadians(mouse.getRotation()), mouse.getX() + mouse.getWidth() / 2, mouse.getY() + mouse.getHeight() / 2);
-            rotationMouse.translate(mouse.getX(), mouse.getY());
-            g2d.drawImage(mouse.getImage(), rotationMouse, this);
+            if(mouse.isTryToEnter()) {
+                System.out.println("enterOrExit: " + subway.enterOrExit(mouse));
+                mouse.setTryToEnter(false);
+            }
+            mouse.draw(g2d, this);
         }
-
-
-        AffineTransform rotation = new AffineTransform();
-        rotation.setTransform(transform);
-        rotation.rotate(Math.toRadians(cat.getRotation()), cat.getX() + cat.getWidth()/2, cat.getY() + cat.getHeight()/2);
-        rotation.translate(cat.getX(), cat.getY());
-
-        //rotation.translate(cat.getX()-(cat.getWidth()/2), cat.getY()-(cat.getHeight()/2));
-        g2d.drawImage(cat.getImage(), rotation, this);
-
-
+        cat.draw(g2d, this);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -89,6 +82,22 @@ public class Board extends JPanel implements ActionListener {
 
     }
 
+    public int getMaxWidth() {
+        return Constants.SCREEN_WIDTH;
+    }
+
+    public int getMaxHeight() {
+        return Constants.SCREEN_HEIGHT;
+    }
+
+    public int getMinHeight() {
+        return 0;
+    }
+
+    public int getMinWidth() {
+        return 0;
+    }
+
     private class TAdapter extends KeyAdapter {
 
         @Override
@@ -103,4 +112,6 @@ public class Board extends JPanel implements ActionListener {
             mouse.keyPressed(e);
         }
     }
+
+
 }

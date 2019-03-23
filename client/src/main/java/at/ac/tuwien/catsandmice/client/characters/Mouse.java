@@ -2,167 +2,64 @@ package at.ac.tuwien.catsandmice.client.characters;
 
 import at.ac.tuwien.catsandmice.client.board.Board;
 import at.ac.tuwien.catsandmice.client.util.Constants;
+import at.ac.tuwien.catsandmice.client.world.Boundaries;
+import at.ac.tuwien.catsandmice.client.world.Subway;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Mouse {
-    private Image cat;
-    private int height;
-    private int width;
+public class Mouse extends Character {
 
-    private int x = Constants.SCREEN_WIDTH-200;
-    private int y = Constants.SCREEN_HEIGHT-200;
+    private boolean tryToEnter = false;
 
-    private int speed = 1;
+    public Mouse(Boundaries boundaries) {
+        setBoundaries(boundaries);
+        UP = KeyEvent.VK_UP;
+        DOWN = KeyEvent.VK_DOWN;
+        LEFT = KeyEvent.VK_LEFT;
+        RIGHT = KeyEvent.VK_RIGHT;
 
-    private int rotation = 0;
+        setSpeed(3);
 
-    private int dx;
-    private int dy;
-    private boolean alive = true;
-
-    public Mouse() {
         loadImage();
     }
 
+    private void enter(Subway subway) {
+    }
+
     private void loadImage() {
+
         ImageIcon ii = new ImageIcon(Board.class.getResource("/sprites/mouse.png"));
         Image original = ii.getImage();
         int height=original.getHeight(null);
-        this.height = height/5;
+        setHeight(height/5);
         int width = original.getWidth(null);
-        this.width = width/5;
-        this.cat = original.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH);
+        setWidth(width/5);
+
+        setX(Constants.SCREEN_WIDTH - 200);
+        setY(Constants.SCREEN_HEIGHT - 200);
+        setImage(original.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH));
     }
 
-    public void move() {
-        if(dx > 0 && (x+dx < getWidthBoundary()) || (dx < 0 && x+dx > 0)) {
-            x += dx;
-        }
-        if(dy > 0 && (y+dy < getHeightBoundary()) || (dy < 0 && y+dy > 0)) {
-            y += dy;
-        }
+    public boolean isTryToEnter() {
+        return tryToEnter;
     }
 
-    private int getWidthBoundary() {
-        int width;
-        if(rotation % 180 == 0) {
-            width = this.width;
-        } else {
-            width = this.height;
-        }
-        return Constants.SCREEN_WIDTH-width;
+    public void setTryToEnter(boolean tryToEnter) {
+        this.tryToEnter = tryToEnter;
     }
 
-    private int getHeightBoundary() {
-        int height ;
-        if(rotation % 180 == 0) {
-            height = this.height;
-        } else {
-            height = this.width;
-        }
-        return Constants.SCREEN_HEIGHT-height;
-    }
-
-    public boolean isAlive() {
-        return alive;
-    }
-
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
-    public Image getImage() {
-        return this.cat;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public int getHeight() {
-        return this.height;
-    }
-
-    public int getWidth() {
-        return this.width;
-    }
-
-    public int getRotation() {
-        return rotation;
-    }
-
+    @Override
     public void keyPressed(KeyEvent e) {
-
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_LEFT) {
-            rotation = 0;
-            dx = -speed;
-        }
-
-        if (key == KeyEvent.VK_RIGHT) {
-            rotation = 180;
-            dx = speed;
-        }
-
-        if (key == KeyEvent.VK_UP) {
-            rotation = 90;
-            dy = -speed;
-        }
-
-        if (key == KeyEvent.VK_DOWN) {
-            rotation = 270;
-            dy = speed;
-
+        super.keyPressed(e);
+        if(e.getKeyCode() == KeyEvent.VK_E) {
+            setTryToEnter(true);
         }
     }
 
-    private synchronized void releaseRotation() {
-        if(dy > 0) {
-            rotation = 270;
-        } else if(dy < 0) {
-            rotation = 90;
-        }
-        if(dx > 0) {
-            rotation = 180;
-        } else if (dx < 0) {
-            rotation = 0;
-        }
-    }
-
-    public void keyReleased(KeyEvent e) {
-
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_LEFT && dx == -speed) {
-            dx = 0;
-            releaseRotation();
-        }
-
-        if (key == KeyEvent.VK_RIGHT && dx == speed) {
-            dx = 0;
-            releaseRotation();
-        }
-
-        if (key == KeyEvent.VK_UP && dy == -speed) {
-            dy = 0;
-            releaseRotation();
-        }
-
-        if (key == KeyEvent.VK_DOWN && dy == speed) {
-            dy = 0;
-            releaseRotation();
-        }
-    }
-
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, width, height);
+    public void moveTo(int x, int y) {
+        setX(x-getWidth()/2);
+        setY(y-getHeight()/2);
     }
 }

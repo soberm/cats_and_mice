@@ -36,33 +36,65 @@ public abstract class Character {
 
 
     public void move() {
-        if(dx > 0 && (x+dx < getWidthBoundary()) || (dx < 0 && x+dx > boundaries.getMinWidth())) {
-            x += dx;
+        if(dx > 0 ) {
+            if (x+dx <= getWidthBoundary()) {
+                x += dx;
+            }
+        } else if(dx < 0) {
+            if(x+dx >= boundaries.getMinWidth()) {
+                x += dx;
+            }
         }
-        if(dy > 0 && (y+dy < getHeightBoundary()) || (dy < 0 && y+dy > boundaries.getMinHeight())) {
-            y += dy;
+        if(dy > 0) {
+            if(y+dy <= getHeightBoundary()) {
+                y += dy;
+            }
+        } else if(dy < 0) {
+            if(y+dy >= getCorrectMinHeightBoundary()){
+                y+=dy;
+            }
+
         }
     }
 
     private int getWidthBoundary() {
-        int width;
-        if(rotation % 180 == 0) {
-            width = this.width;
-        } else {
-            width = this.height;
-        }
-        return boundaries.getMaxWidth()-width;
+        return boundaries.getMaxWidth()-getWidthOfCurrentRotatedSprite();
     }
 
     private int getHeightBoundary() {
+        return boundaries.getMaxHeight()-getHeightOfCurrentRotatedSprite();
+    }
+
+    private int getCorrectMinHeightBoundary() {
+        int height;
+        if(rotation % 180 == 0) {
+            height = boundaries.getMinHeight();
+        } else {
+            height = boundaries.getMinHeight() + (this.width-this.height)/2;
+        }
+        return height;
+    }
+
+    private int getHeightOfCurrentRotatedSprite() {
         int height ;
         if(rotation % 180 == 0) {
             height = this.height;
         } else {
-            height = this.width;
+            height = this.height + (this.width-this.height)/2;
         }
-        return boundaries.getMaxHeight()-height;
+        return height;
     }
+
+    private int getWidthOfCurrentRotatedSprite() {
+        int width;
+        if(rotation % 180 == 0) {
+            width = this.width;
+        } else {
+            width = this.width + (this.width-this.height)/2;
+        }
+        return  width;
+    }
+
 
 
 

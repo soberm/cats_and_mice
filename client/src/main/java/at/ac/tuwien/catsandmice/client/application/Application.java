@@ -8,16 +8,21 @@ import java.awt.*;
 
 public class Application extends JFrame {
 
+    private Board board;
+
     public Application() {
         initUI();
     }
 
     private void initUI() {
-        add(new Board());
+        board = new Board();
+        board.setSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
+        add(board);
 
+        setBackground(Color.black);
         setResizable(false);
         pack();
-        setSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
+        //setSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
 
         setTitle("Cats and Mice");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

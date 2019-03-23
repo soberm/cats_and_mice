@@ -56,8 +56,8 @@ public class Subway implements Boundaries {
             );
         } else {
             subway = new Rectangle(
-                    this.x1+Constants.SUBWAY_ENTRY_WIDTH/2,
-                    this.y1+Constants.SUBWAY_ENTRY_WIDTH/2,
+                    this.x1,
+                    this.y1-Constants.SUBWAY_ENTRY_WIDTH/2,
                     x2-x1,
                     Constants.SUBWAY_ENTRY_WIDTH
             );
@@ -66,7 +66,7 @@ public class Subway implements Boundaries {
 
     public void draw(Graphics2D g2d, ImageObserver observer){
         Paint old = g2d.getPaint();
-        g2d.setPaint(new Color(Color.blue.getRed(), Color.blue.getGreen(), Color.blue.getBlue(), 30));
+        g2d.setPaint(new Color(Color.blue.getRed(), Color.blue.getGreen(), Color.blue.getBlue(), (containedMice.isEmpty() ? 30 : 100)));
         g2d.fill(subway);
         g2d.setPaint(Color.black);
         g2d.fill(entry1);
@@ -148,18 +148,18 @@ public class Subway implements Boundaries {
     }
 
     public int getMaxWidth() {
-        return subway.x+subway.width;
+        return subway.x+subway.width + (x1 == x2 ? 0 : Constants.SUBWAY_ENTRY_WIDTH/2);
     }
 
     public int getMaxHeight() {
-        return subway.y+subway.height;
+        return subway.y+subway.height + (y1 == y2 ? 0 : Constants.SUBWAY_ENTRY_WIDTH/2);
     }
 
     public int getMinHeight() {
-        return subway.y;
+        return subway.y  - (y1 == y2 ? 0 : Constants.SUBWAY_ENTRY_WIDTH/2);
     }
 
     public int getMinWidth() {
-        return subway.x;
+        return subway.x - (x1 == x2 ? 0 : Constants.SUBWAY_ENTRY_WIDTH/2);
     }
 }

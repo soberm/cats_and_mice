@@ -12,11 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board extends JPanel implements ActionListener, Boundaries {
     private Cat cat;
     private Mouse mouse;
-    private Subway subway;
+    private List<Subway> subways = new ArrayList<Subway>();
 
     private final int DELAY = 20;
     private Timer timer;
@@ -28,15 +30,25 @@ public class Board extends JPanel implements ActionListener, Boundaries {
     private void initBoard() {
         addKeyListener(new TAdapter());
         setBackground(Color.gray);
+        System.out.println(getMaximumSize());
+        setPreferredSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
         setFocusable(true);
 
         this.cat = new Cat(this);
         this.mouse = new Mouse(this);
-        this.subway = new Subway(300, 300, 300, 800, this);
+        Subway subway = new Subway(300, 300, 300, 800, this);
+        subways.add(subway);
+
+        subway = new Subway(500, 900, 900, 900, this);
+        subways.add(subway);
+
+        subway = new Subway(700, 450, 1000, 450, this);
+        subways.add(subway);
 
 
         timer = new Timer(DELAY, this);
         timer.start();
+
     }
 
 
@@ -54,15 +66,23 @@ public class Board extends JPanel implements ActionListener, Boundaries {
 
     private void drawBoard(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        subway.draw(g2d, this);
-        if(mouse.isAlive()) {
-            if(mouse.isTryToEnter()) {
-                System.out.println("enterOrExit: " + subway.enterOrExit(mouse));
-                mouse.setTryToEnter(false);
+        for(Subway subway : subways) {
+            subway.draw(g2d, this);
+            if (mouse.isAlive()) {
+                if (mouse.isTryToEnter()) {
+                    if(subway.enterOrExit(mouse)) {
+                        mouse.setTryToEnter(false);
+                    }
+                }
             }
+        }
+        if(mouse.isAlive()) {
             mouse.draw(g2d, this);
         }
+        mouse.setTryToEnter(false);
         cat.draw(g2d, this);
+
+        //System.out.println("cat: "+ cat.getX() + " , " + cat.getY());
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -76,18 +96,18 @@ public class Board extends JPanel implements ActionListener, Boundaries {
         }
 
         repaint();
-        if(cat.getBounds().intersects(mouse.getBounds())) {
+        if(cat.getBoundaries() == mouse.getBoundaries() && cat.getBounds().intersects(mouse.getBounds())) {
             mouse.setAlive(false);
         }
 
     }
 
     public int getMaxWidth() {
-        return Constants.SCREEN_WIDTH;
+        return getSize().width;
     }
 
     public int getMaxHeight() {
-        return Constants.SCREEN_HEIGHT;
+        return getSize().height;
     }
 
     public int getMinHeight() {

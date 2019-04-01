@@ -1,6 +1,6 @@
-package at.ac.tuwien.catsandmice.client.world;
+package at.ac.tuwien.catsandmice.dto.world;
 
-public interface Boundaries {
+public interface IBoundaries {
     int getMaxWidth();
     int getMaxHeight();
     int getMinHeight();

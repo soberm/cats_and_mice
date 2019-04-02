@@ -11,9 +11,9 @@ import java.awt.image.ImageObserver;
 
 public class CatRepresentation extends Cat implements Representation {
 
-    private int height;
-    private int width;
-    private Image image;
+    private static int height;
+    private static int width;
+    private static Image image;
 
     public CatRepresentation() {
         loadImage();
@@ -26,13 +26,15 @@ public class CatRepresentation extends Cat implements Representation {
 
     @Override
     public void loadImage() {
-        ImageIcon ii = new ImageIcon(Board.class.getResource("/sprites/cat.png"));
-        Image original = ii.getImage();
-        int height=original.getHeight(null);
-        setHeight(height/5);
-        int width = original.getWidth(null);
-        setWidth(width/5);
-        setImage(original.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH));
+        if(image == null) {
+            ImageIcon ii = new ImageIcon(Board.class.getResource("/sprites/cat.png"));
+            Image original = ii.getImage();
+            int height = original.getHeight(null);
+            setHeight(height / 5);
+            int width = original.getWidth(null);
+            setWidth(width / 5);
+            setImage(original.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH));
+        }
     }
 
     @Override
@@ -73,8 +75,8 @@ public class CatRepresentation extends Cat implements Representation {
         return height;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setHeight(int h) {
+        height = h;
     }
 
     public int getWidth() {
@@ -85,11 +87,11 @@ public class CatRepresentation extends Cat implements Representation {
         return image;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setImage(Image i) {
+        image = i;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setWidth(int w) {
+        width = w;
     }
 }

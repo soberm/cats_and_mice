@@ -120,7 +120,7 @@ public class Server implements Runnable {
                     serverCharacter.notifyClient(world);
                 }
                 try {
-                    sleep(100);
+                    sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

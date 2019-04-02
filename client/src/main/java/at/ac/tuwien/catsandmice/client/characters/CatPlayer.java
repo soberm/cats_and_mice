@@ -11,10 +11,10 @@ public class CatPlayer extends Player {
         this.cat = cat;
         setCharacter(this.cat);
 
-        UP = KeyEvent.VK_W;
-        DOWN = KeyEvent.VK_S;
-        LEFT = KeyEvent.VK_A;
-        RIGHT = KeyEvent.VK_D;
+        UP = KeyEvent.VK_UP;
+        DOWN = KeyEvent.VK_DOWN;
+        LEFT = KeyEvent.VK_LEFT;
+        RIGHT = KeyEvent.VK_RIGHT;
 
         setSpeed(4);
     }

@@ -27,6 +27,7 @@ public class Application extends JFrame {
     private void initUI(String ch) {
 
         board = new Board();
+        board.setDoubleBuffered(true);
         Player player = null;
         try {
             Socket socket = new Socket(ClientConstants.url, ClientConstants.port);

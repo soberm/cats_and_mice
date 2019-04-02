@@ -35,6 +35,7 @@ public class Board extends JPanel implements ActionListener {
     private Timer timer;
 
     public Board() {
+        super();
     }
 
     public void initWorld(Socket socket) {
@@ -56,8 +57,6 @@ public class Board extends JPanel implements ActionListener {
         new Thread(stateUpdateReader).start();
 
     }
-
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -96,30 +95,13 @@ public class Board extends JPanel implements ActionListener {
         if(player.isAlive()) {
             player.move();
         }
-        for(CatRepresentation cat : world.getCats()) {
-            for(MouseRepresentation mouse : world.getMice()) {
-                cat.kill(mouse);
-            }
-        }
-        //repaint();
+//        for(CatRepresentation cat : world.getCats()) {
+//            for(MouseRepresentation mouse : world.getMice()) {
+//                cat.kill(mouse);
+//            }
+//        }
+//        repaint();
     }
-
-    public int getMaxWidth() {
-        return getSize().width;
-    }
-
-    public int getMaxHeight() {
-        return getSize().height;
-    }
-
-    public int getMinHeight() {
-        return 0;
-    }
-
-    public int getMinWidth() {
-        return 0;
-    }
-
 
     public void addMouse(MouseRepresentation mouse) {
         world.addMouse(mouse);
@@ -176,6 +158,7 @@ public class Board extends JPanel implements ActionListener {
             String worldJson = null;
             try {
                 worldJson = bufferedReader.readLine();
+
                 world = ClientConstants.getGson().fromJson(worldJson, WorldRepresentation.class);
                 repaint();
             } catch (IOException e) {

@@ -65,6 +65,7 @@ public abstract class Player {
     private void updateOnServer() {
         String json = ClientConstants.getGson().toJson(character);
         writer.println(json);
+        writer.flush();
     }
 
     private int getWidthBoundary() {

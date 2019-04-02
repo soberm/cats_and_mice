@@ -1,10 +1,13 @@
 package at.ac.tuwien.catsandmice.client.board;
 
-import at.ac.tuwien.catsandmice.client.characters.Cat;
-import at.ac.tuwien.catsandmice.client.characters.Mouse;
-import at.ac.tuwien.catsandmice.client.util.Constants;
-import at.ac.tuwien.catsandmice.client.world.Boundaries;
-import at.ac.tuwien.catsandmice.client.world.Subway;
+import at.ac.tuwien.catsandmice.client.characters.*;
+import at.ac.tuwien.catsandmice.client.util.ClientConstants;
+import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
+import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
+import at.ac.tuwien.catsandmice.dto.util.Constants;
+import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
+import at.ac.tuwien.catsandmice.dto.world.World;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,46 +15,48 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 
-public class Board extends JPanel implements ActionListener, Boundaries {
-    private Cat cat;
-    private Mouse mouse;
-    private List<Subway> subways = new ArrayList<Subway>();
+public class Board extends JPanel implements ActionListener {
+
+    private Player player;
+
+    private WorldRepresentation world;
+
+    private StateUpdateReader stateUpdateReader;
+
+    private Socket socket;
+
 
     private final int DELAY = 20;
     private Timer timer;
 
     public Board() {
-        initBoard();
+        super();
     }
 
-    private void initBoard() {
+    public void initWorld(Socket socket) {
+        this.socket = socket;
+        stateUpdateReader = new StateUpdateReader();
+        stateUpdateReader.readLine();
+
+    }
+
+    public void initBoard() {
         addKeyListener(new TAdapter());
         setBackground(Color.gray);
-        System.out.println(getMaximumSize());
+
         setPreferredSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
         setFocusable(true);
 
-        this.cat = new Cat(this);
-        this.mouse = new Mouse(this);
-        Subway subway = new Subway(300, 300, 300, 800, this);
-        subways.add(subway);
-
-        subway = new Subway(500, 900, 900, 900, this);
-        subways.add(subway);
-
-        subway = new Subway(700, 450, 1000, 450, this);
-        subways.add(subway);
-
-
         timer = new Timer(DELAY, this);
         timer.start();
+        new Thread(stateUpdateReader).start();
 
     }
-
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -66,72 +71,102 @@ public class Board extends JPanel implements ActionListener, Boundaries {
 
     private void drawBoard(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        for(Subway subway : subways) {
+        for(SubwayRepresantation subway : world.getSubwayRepresantations()) {
             subway.draw(g2d, this);
-            if (mouse.isAlive()) {
-                if (mouse.isTryToEnter()) {
-                    if(subway.enterOrExit(mouse)) {
-                        mouse.setTryToEnter(false);
-                    }
-                }
+            if (player.isAlive()) {
+                player.enterSubway(subway);
             }
         }
-        if(mouse.isAlive()) {
-            mouse.draw(g2d, this);
+        for(MouseRepresentation mouse : world.getMice()) {
+            if(mouse.isAlive()) {
+                mouse.draw(g2d, this);
+            }
         }
-        mouse.setTryToEnter(false);
-        cat.draw(g2d, this);
+        for(CatRepresentation cat : world.getCats()) {
+            cat.draw(g2d, this);
+        }
 
-        //System.out.println("cat: "+ cat.getX() + " , " + cat.getY());
     }
 
     public void actionPerformed(ActionEvent e) {
         step();
     }
     private void step() {
-
-        cat.move();
-        if(mouse.isAlive()) {
-            mouse.move();
+        if(player.isAlive()) {
+            player.move();
         }
-
-        repaint();
-        if(cat.getBoundaries() == mouse.getBoundaries() && cat.getBounds().intersects(mouse.getBounds())) {
-            mouse.setAlive(false);
-        }
-
+//        for(CatRepresentation cat : world.getCats()) {
+//            for(MouseRepresentation mouse : world.getMice()) {
+//                cat.kill(mouse);
+//            }
+//        }
+//        repaint();
     }
 
-    public int getMaxWidth() {
-        return getSize().width;
+    public void addMouse(MouseRepresentation mouse) {
+        world.addMouse(mouse);
     }
 
-    public int getMaxHeight() {
-        return getSize().height;
-    }
-
-    public int getMinHeight() {
-        return 0;
-    }
-
-    public int getMinWidth() {
-        return 0;
+    public IBoundaries getWorld() {
+        return world;
     }
 
     private class TAdapter extends KeyAdapter {
 
         @Override
         public void keyReleased(KeyEvent e) {
-            cat.keyReleased(e);
-            mouse.keyReleased(e);
+            if(player.isAlive()) {
+                player.keyReleased(e);
+            }
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
-            cat.keyPressed(e);
-            mouse.keyPressed(e);
+            if(player.isAlive()) {
+                player.keyPressed(e);
+            }
         }
     }
 
+    public Player getPlayer() {
+        return player;
+    }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    private class StateUpdateReader implements Runnable {
+
+        private BufferedReader bufferedReader;
+
+        public StateUpdateReader() {
+            try {
+                bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        @Override
+        public void run() {
+            while (true) {
+                readLine();
+            }
+        }
+
+        public void readLine() {
+            String worldJson = null;
+            try {
+                worldJson = bufferedReader.readLine();
+
+                world = ClientConstants.getGson().fromJson(worldJson, WorldRepresentation.class);
+                repaint();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+        }
+    }
 }

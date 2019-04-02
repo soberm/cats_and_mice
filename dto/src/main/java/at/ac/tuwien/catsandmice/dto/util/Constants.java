@@ -1,4 +1,4 @@
-package at.ac.tuwien.catsandmice.client.util;
+package at.ac.tuwien.catsandmice.dto.util;
 
 public class Constants {
     public static final int SCREEN_HEIGHT = 1080;

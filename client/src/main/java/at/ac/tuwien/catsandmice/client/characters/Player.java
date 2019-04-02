@@ -1,83 +1,94 @@
 package at.ac.tuwien.catsandmice.client.characters;
 
-import at.ac.tuwien.catsandmice.client.world.Boundaries;
+import at.ac.tuwien.catsandmice.client.util.ClientConstants;
+import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
+import at.ac.tuwien.catsandmice.dto.characters.Character;
+import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.image.ImageObserver;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 
-public abstract class Character {
+public abstract class Player {
 
     private boolean alive = true;
+    private Character character;
 
     private Image image;
     private int height;
     private int width;
 
-    private int x = 0;
-    private int y = 0;
-
     private int speed = 2;
-
-    private int rotation = 0;
 
     private int dx;
     private int dy;
 
-    private Boundaries boundaries;
 
     protected int UP = KeyEvent.VK_W;
     protected int DOWN = KeyEvent.VK_S;
     protected int LEFT = KeyEvent.VK_A;
     protected int RIGHT = KeyEvent.VK_D;
 
+    private Socket socket;
 
+    private PrintWriter writer;
+
+    public Player() {
+
+    }
 
 
     public void move() {
         if(dx > 0 ) {
-            if (x+dx <= getWidthBoundary()) {
-                x += dx;
+            if (character.getX()+dx <= getWidthBoundary()) {
+                character.setX(character.getX() + dx);
             }
         } else if(dx < 0) {
-            if(x+dx >= boundaries.getMinWidth()) {
-                x += dx;
+            if(character.getX()+dx >= character.getBoundaries().getMinWidth()) {
+                character.setX(character.getX() + dx);
             }
         }
         if(dy > 0) {
-            if(y+dy <= getHeightBoundary()) {
-                y += dy;
+            if(character.getY()+dy <= getHeightBoundary()) {
+                character.setY(character.getY() + dy);
             }
         } else if(dy < 0) {
-            if(y+dy >= getCorrectMinHeightBoundary()){
-                y+=dy;
+            if(character.getY()+dy >= getCorrectMinHeightBoundary()){
+                character.setY( character.getY() + dy);
             }
-
         }
+        updateOnServer();
+    }
+
+    private void updateOnServer() {
+        String json = ClientConstants.getGson().toJson(character);
+        writer.println(json);
+        writer.flush();
     }
 
     private int getWidthBoundary() {
-        return boundaries.getMaxWidth()-getWidthOfCurrentRotatedSprite();
+        return character.getBoundaries().getMaxWidth()-getWidthOfCurrentRotatedSprite();
     }
 
     private int getHeightBoundary() {
-        return boundaries.getMaxHeight()-getHeightOfCurrentRotatedSprite();
+        return character.getBoundaries().getMaxHeight()-getHeightOfCurrentRotatedSprite();
     }
 
     private int getCorrectMinHeightBoundary() {
         int height;
-        if(rotation % 180 == 0) {
-            height = boundaries.getMinHeight();
+        if(character.getRotation() % 180 == 0) {
+            height = character.getBoundaries().getMinHeight();
         } else {
-            height = boundaries.getMinHeight() + (this.width-this.height)/2;
+            height = character.getBoundaries().getMinHeight() + (this.width-this.height)/2;
         }
         return height;
     }
 
     private int getHeightOfCurrentRotatedSprite() {
         int height ;
-        if(rotation % 180 == 0) {
+        if(character.getRotation() % 180 == 0) {
             height = this.height;
         } else {
             height = this.height + (this.width-this.height)/2;
@@ -87,7 +98,7 @@ public abstract class Character {
 
     private int getWidthOfCurrentRotatedSprite() {
         int width;
-        if(rotation % 180 == 0) {
+        if(character.getRotation() % 180 == 0) {
             width = this.width;
         } else {
             width = this.width + (this.width-this.height)/2;
@@ -96,6 +107,9 @@ public abstract class Character {
     }
 
 
+    public void enterSubway(SubwayRepresantation subway) {
+        return;
+    }
 
 
     public void keyPressed(KeyEvent e) {
@@ -103,22 +117,22 @@ public abstract class Character {
         int key = e.getKeyCode();
 
         if (key == LEFT) {
-            rotation = 0;
+            character.setRotation(0);
             dx = -speed;
         }
 
         if (key == RIGHT) {
-            rotation = 180;
+            character.setRotation(180);
             dx = speed;
         }
 
         if (key == UP) {
-            rotation = 90;
+            character.setRotation(90);
             dy = -speed;
         }
 
         if (key == DOWN) {
-            rotation = 270;
+            character.setRotation(270);
             dy = speed;
 
         }
@@ -126,14 +140,14 @@ public abstract class Character {
 
     private synchronized void releaseRotation() {
         if(dy > 0) {
-            rotation = 270;
+            character.setRotation(270);
         } else if(dy < 0) {
-            rotation = 90;
+            character.setRotation(90);
         }
         if(dx > 0) {
-            rotation = 180;
+            character.setRotation(180);
         } else if (dx < 0) {
-            rotation = 0;
+            character.setRotation(0);
         }
     }
 
@@ -162,28 +176,7 @@ public abstract class Character {
         }
     }
 
-    public void draw(Graphics2D g2d, ImageObserver observer){
-        AffineTransform transformation = getTransformation();
-        g2d.drawImage(getImage(), transformation, observer);
-    }
 
-    private AffineTransform getTransformation() {
-        AffineTransform transformation = getRotate();
-        transformation.translate(getX(), getY());
-        return transformation;
-    }
-
-    private AffineTransform getRotate() {
-        AffineTransform transform = AffineTransform.getRotateInstance(Math.toRadians(getRotation()), getX() + getWidth() / 2, getY() + getHeight() / 2);
-        return transform;
-    }
-
-    public Rectangle getBounds() {
-        Rectangle rectangle = new Rectangle(getX(), getY(), getWidth(), getHeight());
-        AffineTransform transform = getRotate();
-        Shape shape = transform.createTransformedShape(rectangle);
-        return shape.getBounds();
-    }
 
 
     public Image getImage() {
@@ -210,36 +203,12 @@ public abstract class Character {
         this.width = width;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    protected void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    protected void setY(int y) {
-        this.y = y;
-    }
-
     public int getSpeed() {
         return speed;
     }
 
     protected void setSpeed(int speed) {
         this.speed = speed;
-    }
-
-    public int getRotation() {
-        return rotation;
-    }
-
-    protected void setRotation(int rotation) {
-        this.rotation = rotation;
     }
 
     public int getDx() {
@@ -266,11 +235,24 @@ public abstract class Character {
         this.alive = alive;
     }
 
-    public Boundaries getBoundaries() {
-        return boundaries;
+    public Character getCharacter() {
+        return character;
     }
 
-    public void setBoundaries(Boundaries boundaries) {
-        this.boundaries = boundaries;
+    public void setCharacter(Character character) {
+        this.character = character;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+        try {
+            this.writer = new PrintWriter(socket.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

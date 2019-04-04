@@ -122,6 +122,12 @@ public class Server implements Runnable {
         @Override
         public void run() {
             while(true) {
+                for(Cat cat : world.getCats()) {
+                    ServerCat serverCat = new ServerCat(cat);
+                    for(Mouse mouse : world.getMice()) {
+                        serverCat.kill(mouse);
+                    }
+                }
                 for(ServerCharacter serverCharacter : allCharacters) {
                     serverCharacter.notifyClient(world);
                 }

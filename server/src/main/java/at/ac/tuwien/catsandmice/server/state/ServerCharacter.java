@@ -49,6 +49,8 @@ public abstract class ServerCharacter extends Model implements Runnable{
         setRotation(character.getRotation());
         setX(character.getX());
         setY(character.getY());
+        this.character.setWidth(character.getWidth());
+        this.character.setHeight(character.getHeight());
     }
 
     public Socket getClient() {

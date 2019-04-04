@@ -49,6 +49,8 @@ public class MouseRepresentation extends Mouse implements Representation {
 
             setImage(original.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH));
         }
+        super.setHeight(height);
+        super.setWidth(width);
     }
 
     @Override

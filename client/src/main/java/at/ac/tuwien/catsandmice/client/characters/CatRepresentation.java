@@ -36,6 +36,8 @@ public class CatRepresentation extends Cat implements Representation {
             setWidth(width / 5);
             setImage(original.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH));
         }
+        super.setHeight(height);
+        super.setWidth(width);
     }
 
     @Override

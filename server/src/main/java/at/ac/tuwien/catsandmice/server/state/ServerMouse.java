@@ -1,5 +1,6 @@
 package at.ac.tuwien.catsandmice.server.state;
 
+import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.MouseUpdateMessage;
 import at.ac.tuwien.catsandmice.dto.world.Subway;
@@ -7,6 +8,8 @@ import at.ac.tuwien.catsandmice.dto.world.World;
 import at.ac.tuwien.catsandmice.server.util.Constants;
 import com.google.gson.annotations.Expose;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Predicate;
@@ -72,6 +75,18 @@ public class ServerMouse extends ServerCharacter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private AffineTransform getRotate() {
+        return AffineTransform.getRotateInstance(Math.toRadians(getRotation()), getX() + mouse.getWidth() / 2, getY() + mouse.getHeight() / 2);
+    }
+
+    public Rectangle getBounds() {
+        Rectangle rectangle = new Rectangle(getX(), getY(), mouse.getWidth(), mouse.getHeight());
+        AffineTransform transform = getRotate();
+        Shape shape = transform.createTransformedShape(rectangle);
+        return shape.getBounds();
     }
 
     @Override

@@ -28,20 +28,25 @@ public class Server implements Runnable {
 
     private void initWorld() {
         this.world = new World();
+        world.initUuid();
         Subway sub = new Subway(300, 300, 300, 800, world);
+        sub.initUuid();
         world.addSubway(sub);
 
         sub = new Subway(500, 900, 900, 900, world);
+        sub.initUuid();
 
         world.addSubway(sub);
 
         sub = new Subway(700, 450, 1000, 450, world);
+        sub.initUuid();
 
         world.addSubway(sub);
     }
 
     public void login(Cat cat, Socket socket) {
         if(cat != null) {
+            cat.setBoundaries(world);
             ServerCat serverCat = new ServerCat(cat);
             world.addCat(cat);
             allCharacters.add(serverCat);
@@ -57,6 +62,7 @@ public class Server implements Runnable {
             } else {
                 mouse.setContained(getSubwayByUUID(mouse.getContained()));
             }*/
+            mouse.setBoundaries(world);
             ServerMouse serverMouse = new ServerMouse(mouse);
             world.addMouse(mouse);
             allCharacters.add(serverMouse);
@@ -120,7 +126,7 @@ public class Server implements Runnable {
                     serverCharacter.notifyClient(world);
                 }
                 try {
-                    sleep(10);
+                    sleep(20);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

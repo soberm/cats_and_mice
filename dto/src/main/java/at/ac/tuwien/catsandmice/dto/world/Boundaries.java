@@ -1,16 +1,23 @@
 package at.ac.tuwien.catsandmice.dto.world;
 
+import at.ac.tuwien.catsandmice.dto.util.Constants;
 import com.google.gson.annotations.Expose;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class Boundaries implements IBoundaries{
+public class Boundaries implements IBoundaries{
     @Expose
     private String uuid;
 
     public Boundaries() {
-        this.uuid = UUID.randomUUID().toString();
+
+    }
+
+    public void initUuid() {
+        if(this.uuid == null) {
+            this.uuid = UUID.randomUUID().toString();
+        }
     }
 
     public String getUuid() {
@@ -33,5 +40,25 @@ public abstract class Boundaries implements IBoundaries{
     public int hashCode() {
 
         return Objects.hash(uuid);
+    }
+
+    @Override
+    public int getMaxWidth() {
+        return Constants.SCREEN_WIDTH;
+    }
+
+    @Override
+    public int getMaxHeight() {
+        return Constants.SCREEN_HEIGHT;
+    }
+
+    @Override
+    public int getMinHeight() {
+        return 0;
+    }
+
+    @Override
+    public int getMinWidth() {
+        return 0;
     }
 }

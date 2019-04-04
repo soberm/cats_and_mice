@@ -41,7 +41,6 @@ public class World extends Boundaries {
         mice.remove(mouse);
     }
 
-
     public void addSubway(Subway sub) {
         subways.add(sub);
     }
@@ -50,14 +49,36 @@ public class World extends Boundaries {
         subways.remove(subway);
     }
 
-
-
     public int getMaxWidth() {
         return Constants.SCREEN_WIDTH;
     }
 
     public int getMaxHeight() {
         return Constants.SCREEN_HEIGHT;
+    }
+
+    public List<Cat> getCats() {
+        return cats;
+    }
+
+    public void setCats(List<Cat> cats) {
+        this.cats = cats;
+    }
+
+    public List<Mouse> getMice() {
+        return mice;
+    }
+
+    public void setMice(List<Mouse> mice) {
+        this.mice = mice;
+    }
+
+    public List<Subway> getSubways() {
+        return subways;
+    }
+
+    public void setSubways(List<Subway> subways) {
+        this.subways = subways;
     }
 
     public int getMinHeight() {

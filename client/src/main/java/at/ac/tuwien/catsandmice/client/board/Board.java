@@ -4,9 +4,9 @@ import at.ac.tuwien.catsandmice.client.characters.*;
 import at.ac.tuwien.catsandmice.client.util.ClientConstants;
 import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
 import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
+import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.Constants;
-import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
-import at.ac.tuwien.catsandmice.dto.world.World;
+import at.ac.tuwien.catsandmice.dto.world.Boundaries;
 
 
 import javax.swing.*;
@@ -73,16 +73,20 @@ public class Board extends JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
         for(SubwayRepresantation subway : world.getSubwayRepresantations()) {
             subway.draw(g2d, this);
+            for(MouseRepresentation mouse : subway.getMiceRepresentations()) {
+                mouse.draw(g2d, this);
+            }
             if (player.isAlive()) {
                 player.enterSubway(subway);
             }
         }
-        for(MouseRepresentation mouse : world.getMice()) {
+        player.resetClicks();
+        for(MouseRepresentation mouse : world.getMouseRepresentations()) {
             if(mouse.isAlive()) {
                 mouse.draw(g2d, this);
             }
         }
-        for(CatRepresentation cat : world.getCats()) {
+        for(CatRepresentation cat : world.getCatRepresentations()) {
             cat.draw(g2d, this);
         }
 
@@ -95,8 +99,8 @@ public class Board extends JPanel implements ActionListener {
         if(player.isAlive()) {
             player.move();
         }
-//        for(CatRepresentation cat : world.getCats()) {
-//            for(MouseRepresentation mouse : world.getMice()) {
+//        for(CatRepresentation cat : world.getCatRepresentations()) {
+//            for(MouseRepresentation mouse : world.getMouseRepresentations()) {
 //                cat.kill(mouse);
 //            }
 //        }
@@ -107,7 +111,7 @@ public class Board extends JPanel implements ActionListener {
         world.addMouse(mouse);
     }
 
-    public IBoundaries getWorld() {
+    public Boundaries getWorld() {
         return world;
     }
 
@@ -160,6 +164,7 @@ public class Board extends JPanel implements ActionListener {
                 worldJson = bufferedReader.readLine();
 
                 world = ClientConstants.getGson().fromJson(worldJson, WorldRepresentation.class);
+                System.out.println(world);
                 repaint();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -38,19 +38,19 @@ public class WorldRepresentation extends World {
         this.mice.remove(mouse);
     }
 
-    public List<CatRepresentation> getCats() {
+    public List<CatRepresentation> getCatRepresentations() {
         return cats;
     }
 
-    public void setCats(List<CatRepresentation> cats) {
+    public void setCatRepresentations(List<CatRepresentation> cats) {
         this.cats = cats;
     }
 
-    public List<MouseRepresentation> getMice() {
+    public List<MouseRepresentation> getMouseRepresentations() {
         return mice;
     }
 
-    public void setMice(List<MouseRepresentation> mice) {
+    public void setMouseRepresentations(List<MouseRepresentation> mice) {
         this.mice = mice;
         for(Mouse mouse : mice) {
             mouse.setBoundaries(this);
@@ -63,6 +63,9 @@ public class WorldRepresentation extends World {
 
     public void setSubwayRepresantations(List<SubwayRepresantation> subwayRepresantations) {
         this.subwayRepresantations = subwayRepresantations;
+        for(Subway subway : subwayRepresantations) {
+            subway.setContainedIn(this);
+        }
     }
 
     @Override

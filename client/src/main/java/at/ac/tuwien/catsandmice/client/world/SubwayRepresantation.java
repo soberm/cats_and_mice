@@ -1,13 +1,18 @@
 package at.ac.tuwien.catsandmice.client.world;
 
 import at.ac.tuwien.catsandmice.client.characters.MousePlayer;
+import at.ac.tuwien.catsandmice.client.characters.MouseRepresentation;
+import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.Constants;
+import at.ac.tuwien.catsandmice.dto.world.Boundaries;
 import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 import at.ac.tuwien.catsandmice.dto.world.Subway;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.ImageObserver;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubwayRepresantation extends Subway {
 
@@ -16,17 +21,25 @@ public class SubwayRepresantation extends Subway {
 
     private Rectangle subwayTube;
 
+    private List<MouseRepresentation> miceRepresentations;
+
     public SubwayRepresantation() {
         super();
+        this.miceRepresentations = new ArrayList<>();
     }
 
     public SubwayRepresantation(Subway subway) {
         this(subway.getX1(), subway.getY1(), subway.getX2(), subway.getY2(), subway.getContainedIn());
+        this.miceRepresentations = new ArrayList<>();
+        this.setUuid(subway.getUuid());
         this.setKnownCatLocations(subway.getKnownCatLocations());
         this.setContainedMice(subway.getContainedMice());
+        for(Mouse mouse : getContainedMice()) {
+            miceRepresentations.add(new MouseRepresentation(mouse));
+        }
     }
 
-    public SubwayRepresantation(int x1, int y1, int x2, int y2, IBoundaries containedIn) {
+    public SubwayRepresantation(int x1, int y1, int x2, int y2, Boundaries containedIn) {
         super(x1, y1, x2, y2, containedIn);
 
         entry1 = new Ellipse2D.Double(
@@ -115,6 +128,14 @@ public class SubwayRepresantation extends Subway {
 
     public int getMinWidth() {
         return subwayTube.x - (getX1() == getX2() ? 0 : Constants.SUBWAY_ENTRY_WIDTH/2);
+    }
+
+    public List<MouseRepresentation> getMiceRepresentations() {
+        return miceRepresentations;
+    }
+
+    public void setMiceRepresentations(List<MouseRepresentation> miceRepresentations) {
+        this.miceRepresentations = miceRepresentations;
     }
 
     @Override

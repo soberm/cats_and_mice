@@ -3,6 +3,7 @@ package at.ac.tuwien.catsandmice.client.characters;
 import at.ac.tuwien.catsandmice.client.board.Board;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.Constants;
+import at.ac.tuwien.catsandmice.dto.world.Boundaries;
 import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 
 import javax.swing.*;
@@ -20,11 +21,20 @@ public class MouseRepresentation extends Mouse implements Representation {
         loadImage();
     }
 
-    public MouseRepresentation(IBoundaries boundaries) {
+    public MouseRepresentation(Boundaries boundaries) {
         super(boundaries);
 
-            loadImage();
+        loadImage();
 
+    }
+
+    public MouseRepresentation(Mouse mouse) {
+        super();
+        this.setBoundaries(mouse.getBoundaries());
+        this.setX(mouse.getX());
+        this.setY(mouse.getY());
+        this.setUuid(mouse.getUuid());
+        this.setRotation(mouse.getRotation());
     }
 
     @Override

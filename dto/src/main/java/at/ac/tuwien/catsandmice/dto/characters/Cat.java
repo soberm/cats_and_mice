@@ -1,5 +1,6 @@
 package at.ac.tuwien.catsandmice.dto.characters;
 
+import at.ac.tuwien.catsandmice.dto.world.Boundaries;
 import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 
 public class Cat extends Character {
@@ -8,7 +9,7 @@ public class Cat extends Character {
         super();
     }
 
-    public Cat(IBoundaries boundaries) {
+    public Cat(Boundaries boundaries) {
         super();
         setBoundaries(boundaries);
     }

@@ -1,7 +1,9 @@
 package at.ac.tuwien.catsandmice.client.characters;
 
 
+import at.ac.tuwien.catsandmice.client.util.ClientConstants;
 import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
+import at.ac.tuwien.catsandmice.dto.util.MouseUpdateMessage;
 
 import java.awt.event.KeyEvent;
 
@@ -30,11 +32,27 @@ public class MousePlayer extends Player {
         this.tryToEnter = tryToEnter;
     }
 
+    protected void updateOnServer() {
+        MouseUpdateMessage mouseUpdateMessage = new MouseUpdateMessage();
+        mouseUpdateMessage.setMouse(mouse);
+        mouseUpdateMessage.setContainedInUUID(mouse.getBoundaries().getUuid());
+
+        String json = ClientConstants.getGson().toJson(mouseUpdateMessage);
+        writer.println(json);
+        writer.flush();
+    }
+
     @Override
     public void enterSubway(SubwayRepresantation subway) {
         if(isTryToEnter()) {
             tryToEnter = !subway.enterOrExit(this);
         }
+    }
+
+    @Override
+    public void resetClicks() {
+        super.resetClicks();
+        this.tryToEnter = false;
     }
 
     @Override

@@ -26,9 +26,9 @@ public class Subway extends Boundaries {
     @Expose
     private List<Cat> knownCatLocations;
 
-    private IBoundaries containedIn;
+    private Boundaries containedIn;
 
-    public Subway(int x1, int y1, int x2, int y2, IBoundaries containedIn) {
+    public Subway(int x1, int y1, int x2, int y2, Boundaries containedIn) {
         super();
         containedMice = new ArrayList<Mouse>();
         knownCatLocations = new ArrayList<Cat>();
@@ -102,11 +102,11 @@ public class Subway extends Boundaries {
         return x1 - (x1 == x2 ? 0 : Constants.SUBWAY_ENTRY_WIDTH/2);
     }
 
-    public IBoundaries getContainedIn() {
+    public Boundaries getContainedIn() {
         return containedIn;
     }
 
-    public void setContainedIn(IBoundaries containedIn) {
+    public void setContainedIn(Boundaries containedIn) {
         this.containedIn = containedIn;
     }
 
@@ -120,6 +120,7 @@ public class Subway extends Boundaries {
 
     public void addMouse(Mouse mouse) {
         this.containedMice.add(mouse);
+
     }
 
     public void removeMouse(Mouse mouse) {
@@ -133,6 +134,7 @@ public class Subway extends Boundaries {
                 ", y1=" + y1 +
                 ", x2=" + x2 +
                 ", y2=" + y2 +
+                ", uuid=" + getUuid() +
                 '}';
     }
 }

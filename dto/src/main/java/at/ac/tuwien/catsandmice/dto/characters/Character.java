@@ -1,5 +1,6 @@
 package at.ac.tuwien.catsandmice.dto.characters;
 
+import at.ac.tuwien.catsandmice.dto.world.Boundaries;
 import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 import com.google.gson.annotations.Expose;
 
@@ -21,7 +22,7 @@ public abstract class Character {
     @Expose
     private int rotation = 0;
 
-    private IBoundaries boundaries;
+    private Boundaries boundaries;
 
     public Character() {
         this.uuid = UUID.randomUUID().toString();
@@ -59,11 +60,11 @@ public abstract class Character {
         this.rotation = rotation;
     }
 
-    public IBoundaries getBoundaries() {
+    public Boundaries getBoundaries() {
         return boundaries;
     }
 
-    public void setBoundaries(IBoundaries boundaries) {
+    public void setBoundaries(Boundaries boundaries) {
         this.boundaries = boundaries;
     }
 
@@ -78,10 +79,12 @@ public abstract class Character {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Character)) return false;
         Character character = (Character) o;
         return Objects.equals(uuid, character.uuid);
     }
+
+
 
     @Override
     public int hashCode() {

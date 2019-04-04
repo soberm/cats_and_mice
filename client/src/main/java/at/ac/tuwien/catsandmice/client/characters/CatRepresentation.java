@@ -2,6 +2,7 @@ package at.ac.tuwien.catsandmice.client.characters;
 
 import at.ac.tuwien.catsandmice.client.board.Board;
 import at.ac.tuwien.catsandmice.dto.characters.Cat;
+import at.ac.tuwien.catsandmice.dto.world.Boundaries;
 import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class CatRepresentation extends Cat implements Representation {
         loadImage();
     }
 
-    public CatRepresentation(IBoundaries boundaries) {
+    public CatRepresentation(Boundaries boundaries) {
         super(boundaries);
         loadImage();
     }

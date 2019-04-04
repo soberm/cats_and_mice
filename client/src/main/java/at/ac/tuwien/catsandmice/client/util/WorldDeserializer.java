@@ -4,7 +4,7 @@ import at.ac.tuwien.catsandmice.client.characters.CatRepresentation;
 import at.ac.tuwien.catsandmice.client.characters.MouseRepresentation;
 import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
 import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
-import at.ac.tuwien.catsandmice.dto.world.Subway;
+import at.ac.tuwien.catsandmice.dto.world.World;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
@@ -18,15 +18,17 @@ public class WorldDeserializer implements JsonDeserializer<WorldRepresentation> 
         JsonObject jsonObject = jsonElement.getAsJsonObject();
 
         WorldRepresentation worldRepresentation = new WorldRepresentation();
+        World world = ClientConstants.getGson().fromJson(jsonElement, World.class);
+        worldRepresentation.setUuid(world.getUuid());
 
         JsonArray jsonArray = jsonObject.getAsJsonArray("subways");
         worldRepresentation.setSubwayRepresantations(getSubwayRepresentations(jsonArray));
 
         jsonArray = jsonObject.getAsJsonArray("cats");
-        worldRepresentation.setCats(getCatRepresentations(jsonArray));
+        worldRepresentation.setCatRepresentations(getCatRepresentations(jsonArray));
 
         jsonArray = jsonObject.getAsJsonArray("mice");
-        worldRepresentation.setMice(getMouseRepresentations(jsonArray));
+        worldRepresentation.setMouseRepresentations(getMouseRepresentations(jsonArray));
 
         return worldRepresentation;
     }

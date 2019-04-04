@@ -1,11 +1,16 @@
 package at.ac.tuwien.catsandmice.server.state;
 
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
+import at.ac.tuwien.catsandmice.dto.util.MouseUpdateMessage;
+import at.ac.tuwien.catsandmice.dto.world.Subway;
 import at.ac.tuwien.catsandmice.dto.world.World;
 import at.ac.tuwien.catsandmice.server.util.Constants;
 import com.google.gson.annotations.Expose;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ServerMouse extends ServerCharacter {
 
@@ -43,30 +48,26 @@ public class ServerMouse extends ServerCharacter {
         String line = null;
         try {
             while (null != (line = inputStream.readLine())) {
-                System.out.println("mouse: " + line);
-                Mouse mouse = Constants.getGson().fromJson(line, Mouse.class);
+                MouseUpdateMessage mouseUpdateMessage =  Constants.getGson().fromJson(line, MouseUpdateMessage.class);
+                Mouse mouse = mouseUpdateMessage.getMouse();
                 super.update(mouse);
-                /*alive = mouse.alive;
-                if(!mouse.getContained().getUuid().equals(contained.getUuid())) {
-                    if(contained instanceof ServerSubway) {
-                        ServerSubway subway = (ServerSubway) contained;
-                        subway.removeMouse(this);
-                        Server world = subway.getContained();
-                        if(world.getUuid().equals(mouse.getUuid())) {
-                            setContained(world);
-                        } else {
-                            subway = world.getSubwayByUUID(mouse.getContained());
-                            subway.addMouse(this);
-                            setContained(subway);
+                if(!mouseUpdateMessage.getContainedInUUID().equals(this.mouse.getBoundaries().getUuid())) {
+                    if(this.mouse.getBoundaries() instanceof World) {
+                        World world = (World) this.mouse.getBoundaries();
+                        List<Subway> subwayList = world.getSubways().stream().filter(subway -> subway.getUuid().equals(mouseUpdateMessage.getContainedInUUID())).collect(Collectors.toList());
+                        if(!subwayList.isEmpty()) {
+                            world.removeMouse(this.mouse);
+                            this.mouse.setBoundaries(subwayList.get(0));
+                            subwayList.get(0).addMouse(this.mouse);
                         }
-                    } else if(contained instanceof Server) {
-                        Server world = (Server) contained;
-                        ServerSubway subway = world.getSubwayByUUID(mouse.getContained());
-                        subway.addMouse(this);
-                        setContained(subway);
+                    } else {
+                        Subway subway = (Subway) this.mouse.getBoundaries();
+                        subway.removeMouse(this.mouse);
+                        World world = (World) subway.getContainedIn();
+                        this.mouse.setBoundaries(world);
+                        world.addMouse(this.mouse);
                     }
-                }*/
-                System.out.println(toString());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

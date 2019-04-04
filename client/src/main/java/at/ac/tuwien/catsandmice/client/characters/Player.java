@@ -33,9 +33,13 @@ public abstract class Player {
 
     private Socket socket;
 
-    private PrintWriter writer;
+    protected PrintWriter writer;
 
     public Player() {
+
+    }
+
+    public void resetClicks() {
 
     }
 
@@ -62,7 +66,7 @@ public abstract class Player {
         updateOnServer();
     }
 
-    private void updateOnServer() {
+    protected void updateOnServer() {
         String json = ClientConstants.getGson().toJson(character);
         writer.println(json);
         writer.flush();

@@ -49,7 +49,7 @@ public class ServerCat extends ServerCharacter {
 
     public void kill(Mouse mouse) {
         if (mouse.getBoundaries().equals(cat.getBoundaries()) ) {
-            if(getBounds(cat).intersects(getBounds(mouse))) {
+            if(mouse.isAlive() && getBounds(cat).intersects(getBounds(mouse))) {
                 mouse.setAlive(false);
             }
         }

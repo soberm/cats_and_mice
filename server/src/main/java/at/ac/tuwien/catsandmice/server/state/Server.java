@@ -4,6 +4,9 @@ import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.world.Subway;
 import at.ac.tuwien.catsandmice.dto.world.World;
+import at.ac.tuwien.catsandmice.server.computer.ComputerCat;
+import at.ac.tuwien.catsandmice.server.computer.ComputerMouse;
+import at.ac.tuwien.catsandmice.server.computer.IComputerPlayer;
 import at.ac.tuwien.catsandmice.server.util.Constants;
 
 import java.io.*;
@@ -18,11 +21,16 @@ public class Server implements Runnable {
 
     private World world;
     private List<ServerCharacter> allCharacters = new ArrayList<>();
+    private List<IComputerPlayer> computerPlayers = new ArrayList<>();
 
     private ServerSocket socket;
 
-    public Server() {
+    private int mousebots, catbots;
+
+    public Server(int catbots, int mousebots) {
         super();
+        this.catbots = catbots;
+        this.mousebots = mousebots;
         initWorld();
     }
 
@@ -42,6 +50,38 @@ public class Server implements Runnable {
         sub.initUuid();
 
         world.addSubway(sub);
+
+    }
+
+    private void initComputerPlayers() {
+        for (int i=0; i<catbots; ++i) {
+            Cat cat = new Cat();
+            //TODO set width & height according to sprites
+            cat.setWidth(100);
+            cat.setHeight(50);
+            cat.setX((int) (Math.random() * world.getMaxWidth()));
+            cat.setY((int) (Math.random() * world.getMaxHeight()));
+            cat.setBoundaries(world);
+            ComputerCat cc = new ComputerCat(cat);
+
+            world.addCat(cat);
+            computerPlayers.add(cc);
+        }
+
+        for (int i=0; i<mousebots; ++i) {
+            Mouse mouse = new Mouse();
+            //TODO set width & height according to sprites
+            mouse.setWidth(50);
+            mouse.setHeight(25);
+            Subway currentSub = world.getSubways().get(i%3);
+            mouse.setBoundaries(currentSub);
+            currentSub.addMouse(mouse);
+            mouse.setX((currentSub.getX1() + currentSub.getX2()) / 2);
+            mouse.setY((currentSub.getY1() + currentSub.getY2()) / 2);
+            ComputerMouse cm = new ComputerMouse(mouse, currentSub, world.getSubways().get(2));
+
+            computerPlayers.add(cm);
+        }
     }
 
     public void login(Cat cat, Socket socket) {
@@ -51,7 +91,6 @@ public class Server implements Runnable {
             world.addCat(cat);
             allCharacters.add(serverCat);
             startReading(serverCat, socket);
-
         }
     }
 
@@ -105,6 +144,7 @@ public class Server implements Runnable {
                             Message message = Constants.getGson().fromJson(loginMessage, Message.class);
                             login(message.getCat(), socket);
                             login(message.getMouse(), socket);
+                            initComputerPlayers();
                         }
 
                     } catch (IOException e) {
@@ -122,6 +162,10 @@ public class Server implements Runnable {
         @Override
         public void run() {
             while(true) {
+                for (IComputerPlayer pc : computerPlayers) {
+                    pc.move(world);
+                }
+
                 for(Cat cat : world.getCats()) {
                     ServerCat serverCat = new ServerCat(cat);
                     for(Mouse mouse : world.getMice()) {

@@ -2,6 +2,7 @@ package at.ac.tuwien.catsandmice.server;
 
 import at.ac.tuwien.catsandmice.server.state.*;
 import at.ac.tuwien.catsandmice.server.util.Constants;
+import org.apache.commons.cli.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +14,35 @@ public class Main {
     private static ServerSubway subway;
 
     public static void main(String[] args) {
-        server = new Server();
-        new Thread(server).start();
+        Options options = new Options();
+
+        Option catOption = new Option("cc", "computer-cat", true, "choose number of cat bots");
+        catOption.setRequired(true);
+        Option mouseOption = new Option("cm", "computer-mouse", true, "choose number of mouse bots");
+        mouseOption.setRequired(true);
+
+        options.addOption(catOption);
+        options.addOption(mouseOption);
+
+        CommandLineParser parser = new DefaultParser();
+        HelpFormatter formatter = new HelpFormatter();
+        CommandLine cmd;
+
+        try {
+            cmd = parser.parse(options, args);
+        } catch (ParseException e) {
+            formatter.printHelp("utility-name", options);
+            return;
+        }
+
+        try {
+            int catbots = Integer.parseInt(cmd.getOptionValue("cc"));
+            int mousebots = Integer.parseInt(cmd.getOptionValue("cm"));
+
+            server = new Server(catbots, mousebots);
+            new Thread(server).start();
+        } catch (NumberFormatException ne) {
+            formatter.printHelp("utility-name", options);
+        }
     }
 }

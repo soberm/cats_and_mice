@@ -72,25 +72,26 @@ public class Board extends JPanel implements ActionListener {
 
     private void drawBoard(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        for(SubwayRepresantation subway : world.getSubwayRepresantations()) {
-            subway.draw(g2d, this);
-            for(MouseRepresentation mouse : subway.getMiceRepresentations()) {
-                mouse.draw(g2d, this);
+        if(player.isAlive()) {
+            player.draw(g2d, this, world);
+        } else {
+            for(SubwayRepresantation subway : world.getSubwayRepresantations()) {
+                subway.draw(g2d, this, subway.getKnownCatRepresentationLocations().isEmpty());
+                for(MouseRepresentation mouse : subway.getMiceRepresentations()) {
+                    if(mouse.isAlive()) {
+                        mouse.draw(g2d, this);
+                    }
+                }
             }
-            if (player.isAlive()) {
-                player.enterSubway(subway);
+            for(MouseRepresentation mouse : world.getMouseRepresentations()) {
+                if(mouse.isAlive()) {
+                    mouse.draw(g2d, this);
+                }
+            }
+            for(CatRepresentation cat : world.getCatRepresentations()) {
+                cat.draw(g2d, this);
             }
         }
-        player.resetClicks();
-        for(MouseRepresentation mouse : world.getMouseRepresentations()) {
-            if(mouse.isAlive()) {
-                mouse.draw(g2d, this);
-            }
-        }
-        for(CatRepresentation cat : world.getCatRepresentations()) {
-            cat.draw(g2d, this);
-        }
-
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -165,7 +166,7 @@ public class Board extends JPanel implements ActionListener {
                 worldJson = bufferedReader.readLine();
 
                 world = ClientConstants.getGson().fromJson(worldJson, WorldRepresentation.class);
-                if(player != null && !player.isInitialised()) {
+                if(player != null) {
                     for(CatRepresentation cat : world.getCatRepresentations()) {
                         if(cat.getUuid().equals(player.getCharacter().getUuid())) {
                             player.updateCharacter(cat);

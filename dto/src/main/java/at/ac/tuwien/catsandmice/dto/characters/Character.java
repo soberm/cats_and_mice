@@ -25,7 +25,7 @@ public abstract class Character {
     private int height = 0;
 
     @Expose
-    private int rotation = 0;
+    private Integer rotation = 0;
 
     private Boundaries boundaries;
 
@@ -57,11 +57,11 @@ public abstract class Character {
         this.y = y;
     }
 
-    public int getRotation() {
+    public Integer getRotation() {
         return rotation;
     }
 
-    public void setRotation(int rotation) {
+    public void setRotation(Integer rotation) {
         this.rotation = rotation;
     }
 

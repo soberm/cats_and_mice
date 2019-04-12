@@ -217,6 +217,7 @@ public class Server implements Runnable {
         public void run() {
             try {
                 ServerSocket serverSocket = new ServerSocket(2222);
+                initComputerPlayers();
                 while(true) {
                     try {
                         Socket socket = serverSocket.accept();
@@ -232,7 +233,6 @@ public class Server implements Runnable {
                             Message message = ServerConstants.getGson().fromJson(loginMessage, Message.class);
                             login(message.getCat(), socket);
                             login(message.getMouse(), socket);
-                            initComputerPlayers();
                         }
 
                     } catch (IOException e) {

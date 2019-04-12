@@ -1,7 +1,9 @@
 package at.ac.tuwien.catsandmice.client.world;
 
+import at.ac.tuwien.catsandmice.client.characters.CatRepresentation;
 import at.ac.tuwien.catsandmice.client.characters.MousePlayer;
 import at.ac.tuwien.catsandmice.client.characters.MouseRepresentation;
+import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.Constants;
 import at.ac.tuwien.catsandmice.dto.world.Boundaries;
@@ -22,6 +24,7 @@ public class SubwayRepresantation extends Subway {
     private Rectangle subwayTube;
 
     private List<MouseRepresentation> miceRepresentations;
+    private List<CatRepresentation> knownCatRepresentationLocations;
 
     public SubwayRepresantation() {
         super();
@@ -31,12 +34,16 @@ public class SubwayRepresantation extends Subway {
     public SubwayRepresantation(Subway subway) {
         this(subway.getX1(), subway.getY1(), subway.getX2(), subway.getY2(), subway.getContainedIn());
         this.miceRepresentations = new ArrayList<>();
+        this.knownCatRepresentationLocations = new ArrayList<>();
         this.setEnd(subway.isEnd());
         this.setUuid(subway.getUuid());
         this.setKnownCatLocations(subway.getKnownCatLocations());
         this.setContainedMice(subway.getContainedMice());
         for(Mouse mouse : getContainedMice()) {
             miceRepresentations.add(new MouseRepresentation(mouse));
+        }
+        for(Cat cat : subway.getKnownCatLocations()) {
+            knownCatRepresentationLocations.add(new CatRepresentation(cat));
         }
     }
 
@@ -72,10 +79,10 @@ public class SubwayRepresantation extends Subway {
         }
     }
 
-    public void draw(Graphics2D g2d, ImageObserver observer){
+    public void draw(Graphics2D g2d, ImageObserver observer, boolean opaque){
         Paint old = g2d.getPaint();
         Color baseColor = isEnd() ? Color.green : Color.blue;
-        g2d.setPaint(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), (getContainedMice().isEmpty() ? 30 : 100)));
+        g2d.setPaint(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), (opaque ? 30 : 100)));
         g2d.fill(subwayTube);
         g2d.setPaint(Color.black);
         g2d.fill(entry1);
@@ -138,6 +145,14 @@ public class SubwayRepresantation extends Subway {
 
     public void setMiceRepresentations(List<MouseRepresentation> miceRepresentations) {
         this.miceRepresentations = miceRepresentations;
+    }
+
+    public List<CatRepresentation> getKnownCatRepresentationLocations() {
+        return knownCatRepresentationLocations;
+    }
+
+    public void setKnownCatRepresentationLocations(List<CatRepresentation> knownCatRepresentationLocations) {
+        this.knownCatRepresentationLocations = knownCatRepresentationLocations;
     }
 
     @Override

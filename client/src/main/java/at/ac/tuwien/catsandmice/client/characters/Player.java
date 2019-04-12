@@ -2,11 +2,13 @@ package at.ac.tuwien.catsandmice.client.characters;
 
 import at.ac.tuwien.catsandmice.client.util.ClientConstants;
 import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
+import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
 import at.ac.tuwien.catsandmice.dto.characters.Character;
 import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -127,13 +129,35 @@ public abstract class Player {
 
         this.character.setHeight(character.getHeight());
         this.character.setWidth(character.getWidth());
-        this.character.setX(character.getX());
-        this.character.setY(character.getY());
-        this.character.setRotation(character.getRotation());
+        if(this.character.getX() == null) {
+            this.character.setX(character.getX());
+        }
+        if(this.character.getY() == null) {
+            this.character.setY(character.getY());
+        }
+        if(this.character.getRotation() == null) {
+            this.character.setRotation(character.getRotation());
+        }
         this.character.setBoundaries(character.getBoundaries());
+
+            this.character.setAlive(character.isAlive());
+
         setInitialised(true);
     }
 
+    public void draw(Graphics2D g2d, ImageObserver observer, WorldRepresentation worldRepresentation) {
+        for(SubwayRepresantation subway : worldRepresentation.getSubwayRepresantations()) {
+            subway.draw(g2d, observer, true);
+        }
+        for(MouseRepresentation mouse : worldRepresentation.getMouseRepresentations()) {
+            if(mouse.isAlive()) {
+                mouse.draw(g2d, observer);
+            }
+        }
+        for(CatRepresentation cat : worldRepresentation.getCatRepresentations()) {
+            cat.draw(g2d, observer);
+        }
+    }
 
     public boolean isInitialised() {
         return initialised;
@@ -249,7 +273,7 @@ public abstract class Player {
     }
 
     public boolean isAlive() {
-        return alive;
+        return character.isAlive();
     }
 
     public void setAlive(boolean alive) {

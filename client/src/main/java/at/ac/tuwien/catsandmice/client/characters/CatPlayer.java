@@ -1,7 +1,12 @@
 package at.ac.tuwien.catsandmice.client.characters;
 
 
+import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
+import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
+
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.ImageObserver;
 
 public class CatPlayer extends Player {
 
@@ -18,8 +23,6 @@ public class CatPlayer extends Player {
 
         setSpeed(4);
     }
-
-
 
 
 }

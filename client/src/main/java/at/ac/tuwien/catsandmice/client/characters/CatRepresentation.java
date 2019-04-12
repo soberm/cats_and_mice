@@ -20,6 +20,15 @@ public class CatRepresentation extends Cat implements Representation {
         loadImage();
     }
 
+    public CatRepresentation(Cat cat) {
+        this.setBoundaries(cat.getBoundaries());
+        this.setX(cat.getX());
+        this.setY(cat.getY());
+        this.setUuid(cat.getUuid());
+        this.setRotation(cat.getRotation());
+        loadImage();
+    }
+
     public CatRepresentation(Boundaries boundaries) {
         super(boundaries);
         loadImage();

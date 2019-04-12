@@ -35,6 +35,7 @@ public class MouseRepresentation extends Mouse implements Representation {
         this.setY(mouse.getY());
         this.setUuid(mouse.getUuid());
         this.setRotation(mouse.getRotation());
+        this.setAlive(mouse.isAlive());
     }
 
     @Override

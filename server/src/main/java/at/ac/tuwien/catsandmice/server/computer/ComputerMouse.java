@@ -22,7 +22,7 @@ public class ComputerMouse implements IComputerPlayer{
         this.nextSub = currentSub;
         this.destSub = destSub;
         steps = new LinkedList<>();
-        this.speed = 2;
+        this.speed = 3;
     }
 
     @Override

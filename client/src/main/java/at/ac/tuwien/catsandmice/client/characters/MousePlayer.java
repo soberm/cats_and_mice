@@ -3,6 +3,8 @@ package at.ac.tuwien.catsandmice.client.characters;
 
 import at.ac.tuwien.catsandmice.client.util.ClientConstants;
 import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
+import at.ac.tuwien.catsandmice.dto.characters.Character;
+import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.MouseUpdateMessage;
 
 import java.awt.event.KeyEvent;

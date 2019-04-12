@@ -16,6 +16,8 @@ public abstract class Player {
     private boolean alive = true;
     private Character character;
 
+    private boolean initialised = false;
+
     private Image image;
     private int height;
     private int width;
@@ -45,25 +47,28 @@ public abstract class Player {
 
 
     public void move() {
-        if(dx > 0 ) {
-            if (character.getX()+dx <= getWidthBoundary()) {
-                character.setX(character.getX() + dx);
+        if(isInitialised()) {
+            if (dx > 0) {
+                if (character.getX() + dx <= getWidthBoundary()) {
+                    character.setX(character.getX() + dx);
+                }
+            } else if (dx < 0) {
+                if (character.getX() + dx >= character.getBoundaries().getMinWidth()) {
+                    character.setX(character.getX() + dx);
+                }
             }
-        } else if(dx < 0) {
-            if(character.getX()+dx >= character.getBoundaries().getMinWidth()) {
-                character.setX(character.getX() + dx);
+            if (dy > 0) {
+                if (character.getY() + dy <= getHeightBoundary()) {
+                    character.setY(character.getY() + dy);
+                }
+            } else if (dy < 0) {
+                if (character.getY() + dy >= getCorrectMinHeightBoundary()) {
+                    character.setY(character.getY() + dy);
+                }
             }
+
+            updateOnServer();
         }
-        if(dy > 0) {
-            if(character.getY()+dy <= getHeightBoundary()) {
-                character.setY(character.getY() + dy);
-            }
-        } else if(dy < 0) {
-            if(character.getY()+dy >= getCorrectMinHeightBoundary()){
-                character.setY( character.getY() + dy);
-            }
-        }
-        updateOnServer();
     }
 
     protected void updateOnServer() {
@@ -110,6 +115,25 @@ public abstract class Player {
         return  width;
     }
 
+    public synchronized void updateCharacter(Character character) {
+
+        this.character.setHeight(character.getHeight());
+        this.character.setWidth(character.getWidth());
+        this.character.setX(character.getX());
+        this.character.setY(character.getY());
+        this.character.setRotation(character.getRotation());
+        this.character.setBoundaries(character.getBoundaries());
+        setInitialised(true);
+    }
+
+
+    public boolean isInitialised() {
+        return initialised;
+    }
+
+    public void setInitialised(boolean initialised) {
+        this.initialised = initialised;
+    }
 
     public void enterSubway(SubwayRepresantation subway) {
         return;

@@ -43,6 +43,7 @@ public class World extends Boundaries {
 
     public void addSubway(Subway sub) {
         subways.add(sub);
+        sub.setContainedIn(this);
     }
 
     public void removeSubway(Subway subway) {
@@ -63,6 +64,9 @@ public class World extends Boundaries {
 
     public void setCats(List<Cat> cats) {
         this.cats = cats;
+        for(Cat cat : cats) {
+            cat.setBoundaries(this);
+        }
     }
 
     public List<Mouse> getMice() {

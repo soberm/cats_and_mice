@@ -1,12 +1,7 @@
 package at.ac.tuwien.catsandmice.server;
 
 import at.ac.tuwien.catsandmice.server.state.*;
-import at.ac.tuwien.catsandmice.server.util.Constants;
 import org.apache.commons.cli.*;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
 
 public class Main {
 

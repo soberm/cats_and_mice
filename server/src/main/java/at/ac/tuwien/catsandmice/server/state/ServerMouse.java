@@ -1,18 +1,16 @@
 package at.ac.tuwien.catsandmice.server.state;
 
-import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.MouseUpdateMessage;
 import at.ac.tuwien.catsandmice.dto.world.Subway;
 import at.ac.tuwien.catsandmice.dto.world.World;
-import at.ac.tuwien.catsandmice.server.util.Constants;
+import at.ac.tuwien.catsandmice.server.util.ServerConstants;
 import com.google.gson.annotations.Expose;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ServerMouse extends ServerCharacter {
@@ -51,7 +49,7 @@ public class ServerMouse extends ServerCharacter {
         String line = null;
         try {
             while (null != (line = inputStream.readLine())) {
-                MouseUpdateMessage mouseUpdateMessage =  Constants.getGson().fromJson(line, MouseUpdateMessage.class);
+                MouseUpdateMessage mouseUpdateMessage =  ServerConstants.getGson().fromJson(line, MouseUpdateMessage.class);
                 Mouse mouse = mouseUpdateMessage.getMouse();
                 super.update(mouse);
                 if(!mouseUpdateMessage.getContainedInUUID().equals(this.mouse.getBoundaries().getUuid())) {
@@ -100,7 +98,7 @@ public class ServerMouse extends ServerCharacter {
 
     @Override
     public void notifyClient(World world) {
-        super.printWriter.println(Constants.getGson().toJson(world));
+        super.printWriter.println(ServerConstants.getGson().toJson(world));
         super.printWriter.flush();
     }
 }

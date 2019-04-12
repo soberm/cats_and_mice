@@ -15,9 +15,9 @@ public abstract class Character {
     private boolean alive = true;
 
     @Expose
-    private int x = 0;
+    private Integer x;
     @Expose
-    private int y = 0;
+    private Integer y;
 
     @Expose
     private int width = 0;
@@ -41,7 +41,7 @@ public abstract class Character {
         this.alive = alive;
     }
 
-    public int getX() {
+    public Integer getX() {
         return x;
     }
 
@@ -49,7 +49,7 @@ public abstract class Character {
         this.x = x;
     }
 
-    public int getY() {
+    public Integer getY() {
         return y;
     }
 

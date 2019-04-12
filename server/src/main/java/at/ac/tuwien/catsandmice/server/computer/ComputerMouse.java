@@ -10,24 +10,23 @@ import java.util.Queue;
 
 public class ComputerMouse implements IComputerPlayer{
     private Mouse mouse;
-    private Subway destSub, currentSub, nextSub;
+    private Subway currentSub, nextSub;
     private int speed, xDest, yDest;
     private Queue<Point> steps;
 
-    public ComputerMouse(Mouse mouse, Subway currentSub, Subway destSub) {
+    public ComputerMouse(Mouse mouse, Subway currentSub) {
         this.mouse = mouse;
         this.xDest = mouse.getX();
         this.yDest = mouse.getY();
         this.currentSub = currentSub;
         this.nextSub = currentSub;
-        this.destSub = destSub;
         steps = new LinkedList<>();
         this.speed = 3;
     }
 
     @Override
     public void move(World world) {
-        if (!mouse.isAlive() || (currentSub != null && currentSub.getUuid().equals(destSub.getUuid()))) {
+        if (!mouse.isAlive() || (currentSub != null && currentSub.isEnd())) {
             return;
         }
 

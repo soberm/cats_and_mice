@@ -31,6 +31,7 @@ public class SubwayRepresantation extends Subway {
     public SubwayRepresantation(Subway subway) {
         this(subway.getX1(), subway.getY1(), subway.getX2(), subway.getY2(), subway.getContainedIn());
         this.miceRepresentations = new ArrayList<>();
+        this.setEnd(subway.isEnd());
         this.setUuid(subway.getUuid());
         this.setKnownCatLocations(subway.getKnownCatLocations());
         this.setContainedMice(subway.getContainedMice());
@@ -73,7 +74,8 @@ public class SubwayRepresantation extends Subway {
 
     public void draw(Graphics2D g2d, ImageObserver observer){
         Paint old = g2d.getPaint();
-        g2d.setPaint(new Color(Color.blue.getRed(), Color.blue.getGreen(), Color.blue.getBlue(), (getContainedMice().isEmpty() ? 30 : 100)));
+        Color baseColor = isEnd() ? Color.green : Color.blue;
+        g2d.setPaint(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), (getContainedMice().isEmpty() ? 30 : 100)));
         g2d.fill(subwayTube);
         g2d.setPaint(Color.black);
         g2d.fill(entry1);

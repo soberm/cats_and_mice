@@ -7,6 +7,7 @@ import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.Constants;
 import at.ac.tuwien.catsandmice.dto.world.Boundaries;
+import at.ac.tuwien.catsandmice.dto.world.World;
 
 
 import javax.swing.*;
@@ -111,7 +112,7 @@ public class Board extends JPanel implements ActionListener {
         world.addMouse(mouse);
     }
 
-    public Boundaries getWorld() {
+    public WorldRepresentation getWorld() {
         return world;
     }
 
@@ -164,7 +165,26 @@ public class Board extends JPanel implements ActionListener {
                 worldJson = bufferedReader.readLine();
 
                 world = ClientConstants.getGson().fromJson(worldJson, WorldRepresentation.class);
-                System.out.println(world);
+                if(player != null && !player.isInitialised()) {
+                    for(CatRepresentation cat : world.getCatRepresentations()) {
+                        if(cat.getUuid().equals(player.getCharacter().getUuid())) {
+                            player.updateCharacter(cat);
+                        }
+                    }
+                    for(MouseRepresentation mouse : world.getMouseRepresentations()) {
+                        if (mouse.getUuid().equals(player.getCharacter().getUuid())) {
+                            player.updateCharacter(mouse);
+                        }
+                    }
+                    for(SubwayRepresantation subway : world.getSubwayRepresantations()) {
+                        for(MouseRepresentation mouse : subway.getMiceRepresentations()) {
+                            if (mouse.getUuid().equals(player.getCharacter().getUuid())) {
+                                player.updateCharacter(mouse);
+                            }
+                        }
+                    }
+                }
+
                 repaint();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -4,12 +4,11 @@ import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Character;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.world.World;
-import at.ac.tuwien.catsandmice.server.util.Constants;
+import at.ac.tuwien.catsandmice.server.util.ServerConstants;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class ServerCat extends ServerCharacter {
 
@@ -24,7 +23,7 @@ public class ServerCat extends ServerCharacter {
         String line = null;
         try {
             while ((line = inputStream.readLine()) != null) {
-                Cat cat = Constants.getGson().fromJson(line, Cat.class);
+                Cat cat = ServerConstants.getGson().fromJson(line, Cat.class);
                 super.update(cat);
 /*                World world = (World) this.cat.getBoundaries();
                 for(Mouse mouse : world.getMice()) {
@@ -62,7 +61,7 @@ public class ServerCat extends ServerCharacter {
 
     @Override
     public void notifyClient(World world) {
-        super.printWriter.println(Constants.getGson().toJson(world));
+        super.printWriter.println(ServerConstants.getGson().toJson(world));
         super.printWriter.flush();
     }
 }

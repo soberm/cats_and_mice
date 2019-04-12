@@ -3,10 +3,12 @@ package at.ac.tuwien.catsandmice.client.application;
 import at.ac.tuwien.catsandmice.client.board.Board;
 import at.ac.tuwien.catsandmice.client.characters.*;
 import at.ac.tuwien.catsandmice.client.util.ClientConstants;
+import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
 import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.Constants;
 import at.ac.tuwien.catsandmice.dto.util.LoginMessage;
+import at.ac.tuwien.catsandmice.dto.world.Subway;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,23 +38,18 @@ public class Application extends JFrame {
             switch (ch) {
                 case "mouse":
                     MouseRepresentation mouse = new MouseRepresentation();
-                    mouse.setX(500);
-                    mouse.setY(500);
                     player = new MousePlayer(mouse);
                     register(mouse, socket);
                     break;
                 case "cat":
                     CatRepresentation cat = new CatRepresentation();
-                    cat.setX(500);
-                    cat.setY(500);
                     player = new CatPlayer(cat);
                     register(cat, socket);
                     break;
             }
 
-
             board.initWorld(socket);
-            player.getCharacter().setBoundaries(board.getWorld());
+
             player.setSocket(socket);
             board.setPlayer(player);
 

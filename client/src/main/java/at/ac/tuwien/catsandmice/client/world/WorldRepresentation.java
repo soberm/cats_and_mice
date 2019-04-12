@@ -44,6 +44,9 @@ public class WorldRepresentation extends World {
 
     public void setCatRepresentations(List<CatRepresentation> cats) {
         this.cats = cats;
+        for(Cat cat : cats) {
+            cat.setBoundaries(this);
+        }
     }
 
     public List<MouseRepresentation> getMouseRepresentations() {

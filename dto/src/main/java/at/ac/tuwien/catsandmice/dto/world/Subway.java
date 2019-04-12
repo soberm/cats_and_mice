@@ -19,6 +19,8 @@ public class Subway extends Boundaries {
     @Expose
     private int y2;
 
+    @Expose
+    private boolean isEnd;
 
     @Expose
     private List<Mouse> containedMice;
@@ -41,6 +43,8 @@ public class Subway extends Boundaries {
     }
 
     public Subway() {
+        containedMice = new ArrayList<Mouse>();
+        knownCatLocations = new ArrayList<Cat>();
     }
 
     public int getX1() {
@@ -73,6 +77,14 @@ public class Subway extends Boundaries {
 
     public void setY2(int y2) {
         this.y2 = y2;
+    }
+
+    public boolean isEnd() {
+        return isEnd;
+    }
+
+    public void setEnd(boolean end) {
+        isEnd = end;
     }
 
     public List<Mouse> getContainedMice() {

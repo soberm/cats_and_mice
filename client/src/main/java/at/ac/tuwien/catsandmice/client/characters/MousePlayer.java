@@ -66,8 +66,8 @@ public class MousePlayer extends Player {
     }
 
     public void moveTo(int x, int y) {
-        mouse.setX(x-getWidth()/2);
-        mouse.setY(y-getHeight()/2);
+        mouse.setX(x-mouse.getWidth()/2);
+        mouse.setY(y-mouse.getHeight()/2);
     }
 
     public MouseRepresentation getMouse() {

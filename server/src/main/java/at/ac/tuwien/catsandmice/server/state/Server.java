@@ -18,6 +18,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static java.lang.Thread.sleep;
@@ -25,8 +27,8 @@ import static java.lang.Thread.sleep;
 public class Server implements Runnable {
 
     private World world;
-    private List<ServerCharacter> allCharacters = new ArrayList<>();
-    private List<IComputerPlayer> computerPlayers = new ArrayList<>();
+    private List<ServerCharacter> allCharacters = new CopyOnWriteArrayList<>();
+    private List<IComputerPlayer> computerPlayers = new CopyOnWriteArrayList<>();
 
     private ServerSocket socket;
 

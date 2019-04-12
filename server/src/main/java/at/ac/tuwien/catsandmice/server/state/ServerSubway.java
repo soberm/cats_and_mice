@@ -4,6 +4,7 @@ import at.ac.tuwien.catsandmice.dto.characters.Cat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ServerSubway extends Model{
 
@@ -24,8 +25,8 @@ public class ServerSubway extends Model{
     public ServerSubway(int x1, int y1, int x2, int y2) {
         super();
 
-        containedMice = new ArrayList<>();
-        knownCats = new ArrayList<>();
+        containedMice = new CopyOnWriteArrayList<>();
+        knownCats = new CopyOnWriteArrayList<>();
 
         goal = false;
 

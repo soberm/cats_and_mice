@@ -19,8 +19,6 @@ public abstract class Player {
     private boolean initialised = false;
 
     private Image image;
-    private int height;
-    private int width;
 
     private int speed = 2;
 
@@ -53,7 +51,7 @@ public abstract class Player {
                     character.setX(character.getX() + dx);
                 }
             } else if (dx < 0) {
-                if (character.getX() + dx >= character.getBoundaries().getMinWidth()) {
+                if (character.getX() + dx >= getCorrectMinWidthBoundary()) {
                     character.setX(character.getX() + dx);
                 }
             }
@@ -90,17 +88,27 @@ public abstract class Player {
         if(character.getRotation() % 180 == 0) {
             height = character.getBoundaries().getMinHeight();
         } else {
-            height = character.getBoundaries().getMinHeight() + (this.width-this.height)/2;
+            height = character.getBoundaries().getMinHeight() + (character.getWidth()-character.getHeight())/2;
         }
         return height;
+    }
+
+    private int getCorrectMinWidthBoundary() {
+        int width;
+        if(character.getRotation() % 180 == 0) {
+            width = character.getBoundaries().getMinWidth();
+        } else {
+            width = character.getBoundaries().getMinWidth() - (character.getWidth()-character.getHeight())/2;
+        }
+        return width;
     }
 
     private int getHeightOfCurrentRotatedSprite() {
         int height ;
         if(character.getRotation() % 180 == 0) {
-            height = this.height;
+            height = character.getHeight();
         } else {
-            height = this.height + (this.width-this.height)/2;
+            height = character.getHeight() + (character.getWidth()-character.getHeight())/2;
         }
         return height;
     }
@@ -108,9 +116,9 @@ public abstract class Player {
     private int getWidthOfCurrentRotatedSprite() {
         int width;
         if(character.getRotation() % 180 == 0) {
-            width = this.width;
+            width = character.getWidth();
         } else {
-            width = this.width + (this.width-this.height)/2;
+            width = character.getWidth() - (character.getWidth()-character.getHeight())/2;
         }
         return  width;
     }
@@ -215,21 +223,6 @@ public abstract class Player {
         this.image = image;
     }
 
-    public int getHeight() {
-        return height;
-    }
-
-    protected void setHeight(int height) {
-        this.height = height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    protected void setWidth(int width) {
-        this.width = width;
-    }
 
     public int getSpeed() {
         return speed;

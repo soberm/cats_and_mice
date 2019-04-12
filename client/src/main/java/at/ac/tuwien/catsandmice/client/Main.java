@@ -14,6 +14,12 @@ public class Main {
         option.setRequired(true);
         options.addOption(option);
 
+        option = new Option("u", "url", true, "url of server");
+        options.addOption(option);
+
+        option = new Option("p", "port", true, "port of server");
+        options.addOption(option);
+
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd;
@@ -32,7 +38,10 @@ public class Main {
             return;
         }
 
-        Application application = new Application(ch);
+        String url = cmd.getOptionValue("u", "localhost");
+        int port = Integer.valueOf(cmd.getOptionValue("p", "2222"));
+
+        Application application = new Application(ch, url, port);
         application.setVisible(true);
     }
 }

@@ -33,11 +33,13 @@ public class Server implements Runnable {
     private ServerSocket socket;
 
     private int mousebots, catbots;
+    private int port;
 
-    public Server(int catbots, int mousebots) {
+    public Server(int catbots, int mousebots, int port) {
         super();
         this.catbots = catbots;
         this.mousebots = mousebots;
+        this.port = port;
         initWorld();
     }
 
@@ -47,7 +49,7 @@ public class Server implements Runnable {
         for(int i = 0; i < 7; i++) {
             Subway subway = createRandomSubway();
             if(subway != null) {
-                world.addSubway(createRandomSubway());
+                world.addSubway(subway);
             }
         }
         ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -216,7 +218,7 @@ public class Server implements Runnable {
         @Override
         public void run() {
             try {
-                ServerSocket serverSocket = new ServerSocket(2222);
+                ServerSocket serverSocket = new ServerSocket(port);
                 initComputerPlayers();
                 while(true) {
                     try {

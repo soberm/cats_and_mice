@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class World extends Boundaries {
 
@@ -19,9 +20,9 @@ public class World extends Boundaries {
 
     public World() {
         super();
-        this.cats = new ArrayList<>();
-        this.mice = new ArrayList<>();
-        this.subways = new ArrayList<>();
+        this.cats = new CopyOnWriteArrayList<>();
+        this.mice = new CopyOnWriteArrayList<>();
+        this.subways = new CopyOnWriteArrayList<>();
     }
 
 

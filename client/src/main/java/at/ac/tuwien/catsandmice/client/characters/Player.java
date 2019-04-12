@@ -138,7 +138,9 @@ public abstract class Player {
         if(this.character.getRotation() == null) {
             this.character.setRotation(character.getRotation());
         }
-        this.character.setBoundaries(character.getBoundaries());
+        if(this.character.getBoundaries() == null) {
+            this.character.setBoundaries(character.getBoundaries());
+        }
 
             this.character.setAlive(character.isAlive());
 

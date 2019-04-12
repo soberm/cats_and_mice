@@ -19,6 +19,9 @@ public class Main {
         options.addOption(catOption);
         options.addOption(mouseOption);
 
+        Option portOption = new Option("p", "port", true, "port to open server on");
+        options.addOption(portOption);
+
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd;
@@ -33,8 +36,8 @@ public class Main {
         try {
             int catbots = Integer.parseInt(cmd.getOptionValue("cc"));
             int mousebots = Integer.parseInt(cmd.getOptionValue("cm"));
-
-            server = new Server(catbots, mousebots);
+            int port = Integer.valueOf(cmd.getOptionValue("p", "2222"));
+            server = new Server(catbots, mousebots, port);
             new Thread(server).start();
         } catch (NumberFormatException ne) {
             formatter.printHelp("utility-name", options);

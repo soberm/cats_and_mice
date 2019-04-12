@@ -21,9 +21,14 @@ import java.net.Socket;
 public class Application extends JFrame {
 
     private Board board;
+    private int port;
+    private String url;
 
-    public Application(String ch) {
+    public Application(String ch, String url, int port) {
+        this.port = port;
+        this.url = url;
         initUI(ch);
+
     }
 
     private void initUI(String ch) {
@@ -32,7 +37,7 @@ public class Application extends JFrame {
         board.setDoubleBuffered(true);
         Player player = null;
         try {
-            Socket socket = new Socket(ClientConstants.url, ClientConstants.port);
+            Socket socket = new Socket(url, port);
 
 
             switch (ch) {

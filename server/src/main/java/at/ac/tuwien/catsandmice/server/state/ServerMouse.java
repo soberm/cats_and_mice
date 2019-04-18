@@ -23,8 +23,8 @@ public class ServerMouse extends ServerCharacter {
 
     private Mouse mouse;
 
-    public ServerMouse(Mouse mouse) {
-        super(mouse);
+    public ServerMouse(Mouse mouse,Server server) {
+        super(mouse,server);
         this.mouse = mouse;
     }
 
@@ -60,6 +60,7 @@ public class ServerMouse extends ServerCharacter {
                             world.removeMouse(this.mouse);
                             this.mouse.setBoundaries(subwayList.get(0));
                             subwayList.get(0).addMouse(this.mouse);
+                            subwayList.get(0).setKnownCatLocations(world.getCats());
                         }
                     } else {
                         Subway subway = (Subway) this.mouse.getBoundaries();
@@ -72,6 +73,16 @@ public class ServerMouse extends ServerCharacter {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            server.removePlayer(this);
+        } finally {
+            try {
+                inputStream.close();
+                printWriter.close();
+            } catch (IOException e) {
+                //ignore as nothing can be done
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -100,5 +111,9 @@ public class ServerMouse extends ServerCharacter {
     public void notifyClient(World world) {
         super.printWriter.println(ServerConstants.getGson().toJson(world));
         super.printWriter.flush();
+    }
+
+    public Mouse getMouse() {
+        return mouse;
     }
 }

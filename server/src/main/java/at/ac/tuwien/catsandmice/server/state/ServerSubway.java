@@ -103,7 +103,7 @@ public class ServerSubway extends Model{
     public void setKnownCats(List<ServerCat> knownCats) {
         knownCats.clear();
         for(ServerCat cat : knownCats) {
-            ServerCat copy = new ServerCat(new Cat());
+            ServerCat copy = new ServerCat(new Cat(), null);
             copy.setUuid(cat.getUuid());
             copy.setX(cat.getX());
             copy.setY(cat.getY());
@@ -111,6 +111,7 @@ public class ServerSubway extends Model{
 
             knownCats.add(cat);
         }
+
     }
 
     @Override

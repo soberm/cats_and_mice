@@ -20,6 +20,8 @@ public class WorldDeserializer implements JsonDeserializer<WorldRepresentation> 
         WorldRepresentation worldRepresentation = new WorldRepresentation();
         World world = ClientConstants.getGson().fromJson(jsonElement, World.class);
         worldRepresentation.setUuid(world.getUuid());
+        worldRepresentation.setEnded(world.isEnded());
+        worldRepresentation.setStarted(world.isStarted());
 
         JsonArray jsonArray = jsonObject.getAsJsonArray("subways");
         worldRepresentation.setSubwayRepresantations(getSubwayRepresentations(jsonArray));

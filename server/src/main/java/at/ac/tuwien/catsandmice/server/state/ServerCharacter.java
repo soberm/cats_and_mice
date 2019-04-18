@@ -16,8 +16,11 @@ public abstract class ServerCharacter extends Model implements Runnable{
 
     private Character character;
 
-    public ServerCharacter(Character character) {
+    protected Server server;
+
+    public ServerCharacter(Character character, Server server) {
         super();
+        this.server = server;
         this.character = character;
     }
 

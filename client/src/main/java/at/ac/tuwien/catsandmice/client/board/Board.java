@@ -54,7 +54,7 @@ public class Board extends JPanel implements ActionListener {
         setFocusable(true);
 
         timer = new Timer(DELAY, this);
-        timer.start();
+
         new Thread(stateUpdateReader).start();
 
     }
@@ -72,7 +72,7 @@ public class Board extends JPanel implements ActionListener {
 
     private void drawBoard(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        if(player.isAlive()) {
+        if(player.isAlive() && !world.isEnded()) {
             player.draw(g2d, this, world);
         } else {
             for(SubwayRepresantation subway : world.getSubwayRepresantations()) {
@@ -98,15 +98,10 @@ public class Board extends JPanel implements ActionListener {
         step();
     }
     private void step() {
-        if(player.isAlive()) {
+        if(player.isAlive() && !world.isEnded()) {
             player.move();
         }
-//        for(CatRepresentation cat : world.getCatRepresentations()) {
-//            for(MouseRepresentation mouse : world.getMouseRepresentations()) {
-//                cat.kill(mouse);
-//            }
-//        }
-//        repaint();
+
     }
 
     public void addMouse(MouseRepresentation mouse) {
@@ -165,19 +160,24 @@ public class Board extends JPanel implements ActionListener {
             try {
                 worldJson = bufferedReader.readLine();
 
-                world = ClientConstants.getGson().fromJson(worldJson, WorldRepresentation.class);
+                WorldRepresentation worldRep = ClientConstants.getGson().fromJson(worldJson, WorldRepresentation.class);
+                if(worldRep.isStarted() && !world.isStarted()) {
+                    timer.start();
+                }
+                world = worldRep;
+
                 if(player != null) {
-                    for(CatRepresentation cat : world.getCatRepresentations()) {
+                    for(CatRepresentation cat : worldRep.getCatRepresentations()) {
                         if(cat.getUuid().equals(player.getCharacter().getUuid())) {
                             player.updateCharacter(cat);
                         }
                     }
-                    for(MouseRepresentation mouse : world.getMouseRepresentations()) {
+                    for(MouseRepresentation mouse : worldRep.getMouseRepresentations()) {
                         if (mouse.getUuid().equals(player.getCharacter().getUuid())) {
                             player.updateCharacter(mouse);
                         }
                     }
-                    for(SubwayRepresantation subway : world.getSubwayRepresantations()) {
+                    for(SubwayRepresantation subway : worldRep.getSubwayRepresantations()) {
                         for(MouseRepresentation mouse : subway.getMiceRepresentations()) {
                             if (mouse.getUuid().equals(player.getCharacter().getUuid())) {
                                 player.updateCharacter(mouse);
@@ -187,6 +187,9 @@ public class Board extends JPanel implements ActionListener {
                 }
 
                 repaint();
+                if(world.isEnded()) {
+                    timer.stop();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -14,8 +14,8 @@ public class ServerCat extends ServerCharacter {
 
     private Cat cat;
 
-    public ServerCat(Cat cat) {
-        super(cat);
+    public ServerCat(Cat cat,Server server) {
+        super(cat, server);
         this.cat = cat;
     }
 
@@ -32,6 +32,7 @@ public class ServerCat extends ServerCharacter {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            server.removePlayer(this);
         }
     }
 
@@ -63,5 +64,9 @@ public class ServerCat extends ServerCharacter {
     public void notifyClient(World world) {
         super.printWriter.println(ServerConstants.getGson().toJson(world));
         super.printWriter.flush();
+    }
+
+    public Cat getCat() {
+        return this.cat;
     }
 }

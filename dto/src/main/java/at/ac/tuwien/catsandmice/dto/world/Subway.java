@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Subway extends Boundaries {
     @Expose
@@ -26,14 +27,14 @@ public class Subway extends Boundaries {
     private List<Mouse> containedMice;
 
     @Expose
-    private List<Cat> knownCatLocations;
+    private final List<Cat> knownCatLocations;
 
     private Boundaries containedIn;
 
     public Subway(int x1, int y1, int x2, int y2, Boundaries containedIn) {
         super();
-        containedMice = new ArrayList<Mouse>();
-        knownCatLocations = new ArrayList<Cat>();
+        containedMice = new CopyOnWriteArrayList<>();
+        knownCatLocations = new CopyOnWriteArrayList<>();
         this.containedIn = containedIn;
 
         this.x1 = x1;
@@ -127,7 +128,18 @@ public class Subway extends Boundaries {
     }
 
     public void setKnownCatLocations(List<Cat> knownCatLocations) {
-        this.knownCatLocations = knownCatLocations;
+        this.knownCatLocations.clear();
+        synchronized (this.knownCatLocations) {
+            for (Cat cat : knownCatLocations) {
+                Cat copy = new Cat();
+                copy.setUuid(cat.getUuid());
+                copy.setX(cat.getX());
+                copy.setY(cat.getY());
+                copy.setRotation(cat.getRotation());
+
+                this.knownCatLocations.add(copy);
+            }
+        }
     }
 
     public void addMouse(Mouse mouse) {

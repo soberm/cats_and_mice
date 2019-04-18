@@ -12,6 +12,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class World extends Boundaries {
 
     @Expose
+    private boolean started = false;
+    @Expose
+    private boolean ended = false;
+    @Expose
     private List<Cat> cats;
     @Expose
     private List<Mouse> mice;
@@ -92,6 +96,22 @@ public class World extends Boundaries {
 
     public int getMinWidth() {
         return 0;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    public boolean isEnded() {
+        return ended;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended = ended;
     }
 
     @Override

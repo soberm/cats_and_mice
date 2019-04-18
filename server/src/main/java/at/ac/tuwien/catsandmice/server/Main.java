@@ -6,7 +6,6 @@ import org.apache.commons.cli.*;
 public class Main {
 
     private static Server server;
-    private static ServerSubway subway;
 
     public static void main(String[] args) {
         Options options = new Options();
@@ -16,11 +15,18 @@ public class Main {
         Option mouseOption = new Option("cm", "computer-mouse", true, "choose number of mouse bots");
         mouseOption.setRequired(true);
 
-        options.addOption(catOption);
-        options.addOption(mouseOption);
+        Option playerOption = new Option("pc", "player-count", true, "number of players expected to connect");
+        playerOption.setRequired(true);
 
         Option portOption = new Option("p", "port", true, "port to open server on");
+
+
+        options.addOption(catOption);
+        options.addOption(mouseOption);
+        options.addOption(playerOption);
         options.addOption(portOption);
+
+
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
@@ -37,7 +43,8 @@ public class Main {
             int catbots = Integer.parseInt(cmd.getOptionValue("cc"));
             int mousebots = Integer.parseInt(cmd.getOptionValue("cm"));
             int port = Integer.valueOf(cmd.getOptionValue("p", "2222"));
-            server = new Server(catbots, mousebots, port);
+            int players = Integer.valueOf(cmd.getOptionValue("pc"));
+            server = new Server(catbots, mousebots, port, players);
             new Thread(server).start();
         } catch (NumberFormatException ne) {
             formatter.printHelp("utility-name", options);

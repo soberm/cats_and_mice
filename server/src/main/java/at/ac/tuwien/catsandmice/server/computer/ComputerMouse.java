@@ -36,6 +36,7 @@ public class ComputerMouse implements IComputerPlayer{
                 // enter subway
                 world.removeMouse(mouse);
                 nextSub.getContainedMice().add(mouse);
+                nextSub.setKnownCatLocations(world.getCats());
                 mouse.setBoundaries(nextSub);
             } else {
                 if (nextSub == null) {
@@ -94,6 +95,15 @@ public class ComputerMouse implements IComputerPlayer{
                 mouse.setRotation(Integer.compare(yDest, mouse.getY()) > 0 ? 270 : 90);
             }
         }
+    }
+
+    public Mouse getMouse() {
+        return mouse;
+    }
+
+
+    public Subway getCurrentSub() {
+        return currentSub;
     }
 
     @Override

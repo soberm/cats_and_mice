@@ -15,12 +15,10 @@ import java.awt.geom.Ellipse2D;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.Thread.sleep;
 
@@ -30,16 +28,23 @@ public class Server implements Runnable {
     private List<ServerCharacter> allCharacters = new CopyOnWriteArrayList<>();
     private List<IComputerPlayer> computerPlayers = new CopyOnWriteArrayList<>();
 
+    private Subway goalSubway;
+
     private ServerSocket socket;
+    private int players;
+    private AtomicInteger currentPlayerCount;
 
     private int mousebots, catbots;
     private int port;
 
-    public Server(int catbots, int mousebots, int port) {
+    public Server(int catbots, int mousebots, int port, int players) {
         super();
         this.catbots = catbots;
         this.mousebots = mousebots;
         this.port = port;
+        this.players = players;
+        this.currentPlayerCount = new AtomicInteger(0);
+
         initWorld();
     }
 
@@ -54,7 +59,9 @@ public class Server implements Runnable {
         }
         ThreadLocalRandom random = ThreadLocalRandom.current();
         int goal = random.nextInt(0, world.getSubways().size());
-        world.getSubways().get(goal).setEnd(true);
+        goalSubway = world.getSubways().get(goal);
+        goalSubway.setEnd(true);
+
         System.out.println(world);
 
 
@@ -177,12 +184,12 @@ public class Server implements Runnable {
     public void login(Cat cat, Socket socket) {
         if(cat != null) {
             cat.setBoundaries(world);
-            ServerCat serverCat = new ServerCat(cat);
+            ServerCat serverCat = new ServerCat(cat, this);
             cat.setX((int) (Math.random() * world.getMaxWidth()));
             cat.setY((int) (Math.random() * world.getMaxHeight()));
             world.addCat(cat);
             allCharacters.add(serverCat);
-            startReading(serverCat, socket);
+            serverCat.setClient(socket);
         }
     }
 
@@ -193,15 +200,10 @@ public class Server implements Runnable {
             mouse.setX((currentSub.getX1() + currentSub.getX2()) / 2);
             mouse.setY((currentSub.getY1() + currentSub.getY2()) / 2);
             currentSub.addMouse(mouse);
-            ServerMouse serverMouse = new ServerMouse(mouse);
+            ServerMouse serverMouse = new ServerMouse(mouse, this);
             allCharacters.add(serverMouse);
-            startReading(serverMouse, socket);
+            serverMouse.setClient(socket);
         }
-    }
-
-    public void startReading(ServerCharacter character, Socket socket) {
-        character.setClient(socket);
-        new Thread(character).start();
     }
 
 
@@ -209,8 +211,31 @@ public class Server implements Runnable {
     @Override
     public void run() {
         new Thread(new LoginService()).start();
-        new Thread(new UpdateService()).start();
+    }
 
+    public void removePlayer(ServerCat serverCat) {
+        int index = allCharacters.indexOf(serverCat);
+        if(index >= 0) {
+            allCharacters.remove(serverCat);
+            world.removeCat(serverCat.getCat());
+            //decrease player count if disconnect happens before start
+            currentPlayerCount.decrementAndGet();
+        }
+    }
+
+    public void removePlayer(ServerMouse serverMouse) {
+        int index = allCharacters.indexOf(serverMouse);
+        if(index >= 0) {
+            allCharacters.remove(serverMouse);
+            if(serverMouse.getCharacter().getBoundaries() instanceof World) {
+                world.removeMouse(serverMouse.getMouse());
+            } else if(serverMouse.getCharacter().getBoundaries() instanceof Subway) {
+                Subway subway = (Subway) serverMouse.getCharacter().getBoundaries();
+                subway.removeMouse(serverMouse.getMouse());
+            }
+            //decrease player count if disconnect happens before start
+            currentPlayerCount.decrementAndGet();
+        }
     }
 
     private class LoginService implements Runnable {
@@ -220,9 +245,10 @@ public class Server implements Runnable {
             try {
                 ServerSocket serverSocket = new ServerSocket(port);
                 initComputerPlayers();
-                while(true) {
+                while(!(currentPlayerCount.get() == players)) {
                     try {
                         Socket socket = serverSocket.accept();
+                        currentPlayerCount.incrementAndGet();
                         System.out.println("got connection");
                         BufferedReader inputStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         PrintWriter writer = new PrintWriter(socket.getOutputStream());
@@ -236,9 +262,19 @@ public class Server implements Runnable {
                             login(message.getCat(), socket);
                             login(message.getMouse(), socket);
                         }
+                        if(currentPlayerCount.get() == players) {
+                            world.setStarted(true);
+                            for(ServerCharacter serverCharacter : allCharacters) {
+                                new Thread(serverCharacter).start();
+                            }
+                            new Thread(new UpdateService()).start();
+                        }
 
                     } catch (IOException e) {
                         e.printStackTrace();
+                        if(currentPlayerCount.get() > 0) {
+                            currentPlayerCount.decrementAndGet();
+                        }
                     }
                 }
             } catch (IOException e) {
@@ -251,13 +287,16 @@ public class Server implements Runnable {
 
         @Override
         public void run() {
-            while(true) {
-                for (IComputerPlayer pc : computerPlayers) {
-                    pc.move(world);
+            while(!world.isEnded()) {
+                world.setEnded(checkEnded());
+                if(!world.isEnded()) {
+                    for (IComputerPlayer pc : computerPlayers) {
+                        pc.move(world);
+                    }
                 }
 
                 for(Cat cat : world.getCats()) {
-                    ServerCat serverCat = new ServerCat(cat);
+                    ServerCat serverCat = new ServerCat(cat, null);
                     for(Mouse mouse : world.getMice()) {
                         serverCat.kill(mouse);
                     }
@@ -271,6 +310,40 @@ public class Server implements Runnable {
                     e.printStackTrace();
                 }
             }
+        }
+
+        private boolean checkEnded() {
+            boolean ended = true;
+            for(ServerCharacter serverCharacter : allCharacters) {
+                if(serverCharacter.getCharacter() instanceof  Mouse) {
+                    Mouse mouse = (Mouse) serverCharacter.getCharacter();
+                    if(mouse.isAlive()) {
+                        if (mouse.getBoundaries() instanceof Subway && !((Subway) mouse.getBoundaries()).isEnd()) {
+                            ended = false;
+
+                            break;
+                        } else if(mouse.getBoundaries() instanceof World) {
+                            ended = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if(ended) {
+                for(IComputerPlayer pc : computerPlayers) {
+                    if(pc instanceof ComputerMouse) {
+                        ComputerMouse mouse = (ComputerMouse) pc;
+                        if(mouse.getMouse().isAlive() && (mouse.getCurrentSub() == null || !mouse.getCurrentSub().isEnd())) {
+                            ended = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if(ended) {
+                System.out.println("world end: " + world);
+            }
+            return ended;
         }
     }
 }

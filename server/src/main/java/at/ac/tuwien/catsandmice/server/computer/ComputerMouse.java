@@ -1,6 +1,7 @@
 package at.ac.tuwien.catsandmice.server.computer;
 
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
+import at.ac.tuwien.catsandmice.dto.util.PingedExit;
 import at.ac.tuwien.catsandmice.dto.world.Subway;
 import at.ac.tuwien.catsandmice.dto.world.World;
 
@@ -83,6 +84,27 @@ public class ComputerMouse implements IComputerPlayer{
             xDest = tmp.getX();
             yDest = tmp.getY();
             nextSub = tmp.getSubway();
+            if(currentSub != null) {
+                if (currentSub.getX1() == currentSub.getX2()) {
+                    //vertical subway
+                    if (mouse.getRotation() % 180 != 0) {
+                        if (mouse.getRotation() == 90) {
+                            mouse.setPingedExit(PingedExit.ENTRY1);
+                        } else {
+                            mouse.setPingedExit(PingedExit.ENTRY2);
+                        }
+                    }
+                } else {
+                    //horizontal subway
+                    if (mouse.getRotation() % 180 == 0) {
+                        if (mouse.getRotation() == 180) {
+                            mouse.setPingedExit(PingedExit.ENTRY2);
+                        } else {
+                            mouse.setPingedExit(PingedExit.ENTRY1);
+                        }
+                    }
+                }
+            }
         } else {
             // move to xDest yDest
             if (Math.abs(xDest - mouse.getX()) > 4) {

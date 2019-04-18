@@ -36,6 +36,7 @@ public class Server implements Runnable {
 
     private int mousebots, catbots;
     private int port;
+    private String name;
 
     public Server(int catbots, int mousebots, int port, int players) {
         super();
@@ -51,7 +52,7 @@ public class Server implements Runnable {
     private void initWorld() {
         this.world = new World();
         world.initUuid();
-        for(int i = 0; i < 7; i++) {
+        for(int i = 0; i < 10; i++) {
             Subway subway = createRandomSubway();
             if(subway != null) {
                 world.addSubway(subway);
@@ -166,7 +167,7 @@ public class Server implements Runnable {
         }
 
         for (int i=0; i<mousebots; ++i) {
-            Mouse mouse = new Mouse();
+            Mouse mouse = new Mouse("pc"+i);
             //TODO set width & height according to sprites
             mouse.setWidth(50);
             mouse.setHeight(25);

@@ -7,9 +7,11 @@ import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
 import at.ac.tuwien.catsandmice.dto.characters.Character;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.MouseUpdateMessage;
+import at.ac.tuwien.catsandmice.dto.world.Subway;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 import java.util.List;
 import java.util.function.Predicate;
@@ -114,6 +116,7 @@ public class MousePlayer extends Player {
         }
     }
 
+
     @Override
     public void resetClicks() {
         super.resetClicks();
@@ -125,6 +128,13 @@ public class MousePlayer extends Player {
         super.keyPressed(e);
         if(e.getKeyCode() == KeyEvent.VK_E) {
             setTryToEnter(true);
+        }
+        if(e.getKeyCode() == KeyEvent.VK_F) {
+            if (mouse.getBoundaries() instanceof SubwayRepresantation) {
+                SubwayRepresantation subwayRepresantation = (SubwayRepresantation) mouse.getBoundaries();
+                System.out.println(subwayRepresantation.getPingedExit(mouse));
+                mouse.setPingedExit(subwayRepresantation.getPingedExit(mouse));
+            }
         }
     }
 

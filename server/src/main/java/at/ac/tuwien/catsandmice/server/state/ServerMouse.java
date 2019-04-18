@@ -52,6 +52,8 @@ public class ServerMouse extends ServerCharacter {
                 MouseUpdateMessage mouseUpdateMessage =  ServerConstants.getGson().fromJson(line, MouseUpdateMessage.class);
                 Mouse mouse = mouseUpdateMessage.getMouse();
                 super.update(mouse);
+                this.mouse.setPingedExit(mouse.getPingedExit());
+                this.mouse.setName(mouse.getName());
                 if(!mouseUpdateMessage.getContainedInUUID().equals(this.mouse.getBoundaries().getUuid())) {
                     if(this.mouse.getBoundaries() instanceof World) {
                         World world = (World) this.mouse.getBoundaries();

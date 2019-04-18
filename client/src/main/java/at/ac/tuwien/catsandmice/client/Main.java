@@ -20,6 +20,10 @@ public class Main {
         option = new Option("p", "port", true, "port of server");
         options.addOption(option);
 
+        Option nameOption = new Option("n", "name", true, "name of player");
+        nameOption.setRequired(true);
+        options.addOption(nameOption);
+
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd;
@@ -38,10 +42,12 @@ public class Main {
             return;
         }
 
+        String name = cmd.getOptionValue("n");
+
         String url = cmd.getOptionValue("u", "localhost");
         int port = Integer.valueOf(cmd.getOptionValue("p", "2222"));
 
-        Application application = new Application(ch, url, port);
+        Application application = new Application(ch, url, port, name);
         application.setVisible(true);
     }
 }

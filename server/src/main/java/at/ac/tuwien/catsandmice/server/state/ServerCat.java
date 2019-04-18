@@ -61,7 +61,7 @@ public class ServerCat extends ServerCharacter {
     }
 
     @Override
-    public void notifyClient(World world) {
+    public synchronized void notifyClient(World world) {
         super.printWriter.println(ServerConstants.getGson().toJson(world));
         super.printWriter.flush();
     }

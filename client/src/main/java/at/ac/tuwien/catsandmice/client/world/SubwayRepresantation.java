@@ -6,6 +6,7 @@ import at.ac.tuwien.catsandmice.client.characters.MouseRepresentation;
 import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.Constants;
+import at.ac.tuwien.catsandmice.dto.util.PingedExit;
 import at.ac.tuwien.catsandmice.dto.world.Boundaries;
 import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 import at.ac.tuwien.catsandmice.dto.world.Subway;
@@ -25,6 +26,8 @@ public class SubwayRepresantation extends Subway {
 
     private List<MouseRepresentation> miceRepresentations;
     private List<CatRepresentation> knownCatRepresentationLocations;
+
+    private boolean isVertical;
 
     public SubwayRepresantation() {
         super();
@@ -69,6 +72,7 @@ public class SubwayRepresantation extends Subway {
                     Constants.SUBWAY_ENTRY_WIDTH,
                     this.getY2()-this.getY1()
             );
+            isVertical = true;
         } else {
             subwayTube = new Rectangle(
                     this.getX1(),
@@ -76,6 +80,7 @@ public class SubwayRepresantation extends Subway {
                     getX2()-getX1(),
                     Constants.SUBWAY_ENTRY_WIDTH
             );
+            isVertical = false;
         }
     }
 
@@ -85,8 +90,38 @@ public class SubwayRepresantation extends Subway {
         g2d.setPaint(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), (opaque ? 30 : 100)));
         g2d.fill(subwayTube);
         g2d.setPaint(Color.black);
+        List<String> entry1NamesList = new ArrayList<>();
+        List<String> entry2NamesList = new ArrayList<>();
+        if(!opaque) {
+            for (Mouse mouse : getMiceRepresentations()) {
+                switch (mouse.getPingedExit()) {
+                    case ENTRY1:
+                        entry1NamesList.add(mouse.getName());
+                        break;
+                    case ENTRY2:
+                        entry2NamesList.add(mouse.getName());
+                        break;
+                }
+            }
+        }
         g2d.fill(entry1);
+        if(!isEnd() && !entry1NamesList.isEmpty()) {
+            int x = getX1() + 5 + (isVertical ? Constants.SUBWAY_ENTRY_WIDTH / 2 : 0);
+            int y = getY1() + 5 + (isVertical ? 0 : Constants.SUBWAY_ENTRY_WIDTH / 2);
+            for(String name : entry1NamesList) {
+                y+= g2d.getFontMetrics().getHeight();
+                g2d.drawString(name, x, y);
+            }
+        }
         g2d.fill(entry2);
+        if(!isEnd() && !entry2NamesList.isEmpty()) {
+            int x = getX2() + 5 + (isVertical ? Constants.SUBWAY_ENTRY_WIDTH / 2 : 0);
+            int y = getY2() + 5 + (isVertical ? 0 : Constants.SUBWAY_ENTRY_WIDTH / 2);
+            for(String name : entry2NamesList) {
+                y+= g2d.getFontMetrics().getHeight();
+                g2d.drawString(name, x, y);
+            }
+        }
         g2d.setPaint(old);
     }
 
@@ -121,6 +156,7 @@ public class SubwayRepresantation extends Subway {
     private void exit(MousePlayer mouse) {
         removeMouse(mouse.getMouse());
         mouse.getMouse().setBoundaries(getContainedIn());
+        mouse.getMouse().setPingedExit(PingedExit.NONE);
     }
 
     public int getMaxWidth() {
@@ -153,6 +189,29 @@ public class SubwayRepresantation extends Subway {
 
     public void setKnownCatRepresentationLocations(List<CatRepresentation> knownCatRepresentationLocations) {
         this.knownCatRepresentationLocations = knownCatRepresentationLocations;
+    }
+
+    public PingedExit getPingedExit(Mouse mouse) {
+        if(isVertical) {
+            //vertical subway
+            if(mouse.getRotation() % 180 != 0) {
+                if(mouse.getRotation() == 90) {
+                    return PingedExit.ENTRY1;
+                } else {
+                    return PingedExit.ENTRY2;
+                }
+            }
+        } else {
+            //horizontal subway
+            if(mouse.getRotation() % 180 == 0) {
+                if(mouse.getRotation() == 180) {
+                    return PingedExit.ENTRY2;
+                } else {
+                    return PingedExit.ENTRY1;
+                }
+            }
+        }
+        return mouse.getPingedExit();
     }
 
     @Override

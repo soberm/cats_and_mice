@@ -23,14 +23,17 @@ public class Application extends JFrame {
     private Board board;
     private int port;
     private String url;
+    private String name;
 
-    public Application(String ch, String url, int port) {
+    public Application(String ch, String url, int port, String name) {
         this.port = port;
         this.url = url;
+        this.name = name;
         initUI(ch);
 
     }
 
+    //Strin ch either "mouse" or "cat"
     private void initUI(String ch) {
 
         board = new Board();
@@ -42,7 +45,8 @@ public class Application extends JFrame {
 
             switch (ch) {
                 case "mouse":
-                    MouseRepresentation mouse = new MouseRepresentation();
+                    MouseRepresentation mouse = new MouseRepresentation(this.name);
+                    System.out.println(mouse);
                     player = new MousePlayer(mouse);
                     register(mouse, socket);
                     break;

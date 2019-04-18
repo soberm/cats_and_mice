@@ -17,20 +17,22 @@ public class MouseRepresentation extends Mouse implements Representation {
     private static int width;
     private static Image image;
 
-    public MouseRepresentation() {
+    public MouseRepresentation(String name) {
+        super(name);
         loadImage();
     }
 
-    public MouseRepresentation(Boundaries boundaries) {
-        super(boundaries);
+    public MouseRepresentation(Boundaries boundaries, String name) {
+        super(name, boundaries);
 
         loadImage();
 
     }
 
     public MouseRepresentation(Mouse mouse) {
-        super();
+        super(mouse.getName());
         this.setBoundaries(mouse.getBoundaries());
+        this.setPingedExit(mouse.getPingedExit());
         this.setX(mouse.getX());
         this.setY(mouse.getY());
         this.setUuid(mouse.getUuid());

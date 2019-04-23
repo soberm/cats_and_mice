@@ -11,33 +11,17 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ImageObserver;
 
-public class MouseRepresentation extends Mouse implements Representation {
+public class MouseRepresentation implements Representation {
 
     private static int height;
     private static int width;
     private static Image image;
 
-    public MouseRepresentation(String name) {
-        super(name);
-        loadImage();
-    }
-
-    public MouseRepresentation(Boundaries boundaries, String name) {
-        super(name, boundaries);
-
-        loadImage();
-
-    }
+    private Mouse mouse;
 
     public MouseRepresentation(Mouse mouse) {
-        super(mouse.getName());
-        this.setBoundaries(mouse.getBoundaries());
-        this.setPingedExit(mouse.getPingedExit());
-        this.setX(mouse.getX());
-        this.setY(mouse.getY());
-        this.setUuid(mouse.getUuid());
-        this.setRotation(mouse.getRotation());
-        this.setAlive(mouse.isAlive());
+        this.mouse = mouse;
+        loadImage();
     }
 
     @Override
@@ -52,8 +36,8 @@ public class MouseRepresentation extends Mouse implements Representation {
 
             setImage(original.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH));
         }
-        super.setHeight(height);
-        super.setWidth(width);
+        this.mouse.setHeight(height);
+        this.mouse.setWidth(width);
     }
 
     @Override
@@ -64,16 +48,16 @@ public class MouseRepresentation extends Mouse implements Representation {
 
     private AffineTransform getTransformation() {
         AffineTransform transformation = getRotate();
-        transformation.translate(getX(), getY());
+        transformation.translate(this.mouse.getX(), this.mouse.getY());
         return transformation;
     }
 
     private AffineTransform getRotate() {
-        return AffineTransform.getRotateInstance(Math.toRadians(getRotation()), getX() + getWidth() / 2, getY() + getHeight() / 2);
+        return AffineTransform.getRotateInstance(Math.toRadians(this.mouse.getRotation()), this.mouse.getX() + getWidth() / 2, this.mouse.getY() + getHeight() / 2);
     }
 
     public Rectangle getBounds() {
-        Rectangle rectangle = new Rectangle(getX(), getY(), getWidth(), getHeight());
+        Rectangle rectangle = new Rectangle(this.mouse.getX(), this.mouse.getY(), getWidth(), getHeight());
         AffineTransform transform = getRotate();
         Shape shape = transform.createTransformedShape(rectangle);
         return shape.getBounds();
@@ -101,5 +85,9 @@ public class MouseRepresentation extends Mouse implements Representation {
 
     public void setImage(Image i) {
         image = i;
+    }
+
+    public Mouse getMouse() {
+        return this.mouse;
     }
 }

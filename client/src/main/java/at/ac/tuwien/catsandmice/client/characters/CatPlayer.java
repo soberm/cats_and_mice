@@ -1,12 +1,7 @@
 package at.ac.tuwien.catsandmice.client.characters;
 
 
-import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
-import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
-
-import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.ImageObserver;
 
 public class CatPlayer extends Player {
 
@@ -14,7 +9,7 @@ public class CatPlayer extends Player {
 
     public CatPlayer(CatRepresentation cat) {
         this.cat = cat;
-        setCharacter(this.cat);
+        setCharacter(this.cat.getCat());
 
         UP = KeyEvent.VK_UP;
         DOWN = KeyEvent.VK_DOWN;

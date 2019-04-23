@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class World extends Boundaries {
@@ -88,6 +89,9 @@ public class World extends Boundaries {
 
     public void setSubways(List<Subway> subways) {
         this.subways = subways;
+        for(Subway subway : subways) {
+            subway.setContainedIn(this);
+        }
     }
 
     public int getMinHeight() {

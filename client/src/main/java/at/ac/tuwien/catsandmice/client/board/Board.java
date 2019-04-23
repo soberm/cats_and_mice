@@ -2,11 +2,11 @@ package at.ac.tuwien.catsandmice.client.board;
 
 import at.ac.tuwien.catsandmice.client.characters.*;
 import at.ac.tuwien.catsandmice.client.util.ClientConstants;
-import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
-import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
+import at.ac.tuwien.catsandmice.client.world.SubwayRepresentation;
+import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.Constants;
-import at.ac.tuwien.catsandmice.dto.world.Boundaries;
+import at.ac.tuwien.catsandmice.dto.world.Subway;
 import at.ac.tuwien.catsandmice.dto.world.World;
 
 
@@ -22,7 +22,7 @@ public class Board extends JPanel implements ActionListener {
 
     private Player player;
 
-    private WorldRepresentation world;
+    private World world;
 
     private StateUpdateReader stateUpdateReader;
 
@@ -72,21 +72,25 @@ public class Board extends JPanel implements ActionListener {
         if(player.isAlive() && !world.isEnded()) {
             player.draw(g2d, this, world);
         } else {
-            for(SubwayRepresantation subway : world.getSubwayRepresantations()) {
-                subway.draw(g2d, this, subway.getKnownCatRepresentationLocations().isEmpty());
-                for(MouseRepresentation mouse : subway.getMiceRepresentations()) {
+            for(Subway subway : world.getSubways()) {
+                SubwayRepresentation subwayRepresentation = new SubwayRepresentation(subway);
+                subwayRepresentation.draw(g2d, this, subway.getContainedMice().isEmpty());
+                for(Mouse mouse : subway.getContainedMice()) {
                     if(mouse.isAlive()) {
-                        mouse.draw(g2d, this);
+                        MouseRepresentation mouseRepresentation = new MouseRepresentation(mouse);
+                        mouseRepresentation.draw(g2d, this);
                     }
                 }
             }
-            for(MouseRepresentation mouse : world.getMouseRepresentations()) {
+            for(Mouse mouse : world.getMice()) {
                 if(mouse.isAlive()) {
-                    mouse.draw(g2d, this);
+                    MouseRepresentation mouseRepresentation = new MouseRepresentation(mouse);
+                    mouseRepresentation.draw(g2d, this);
                 }
             }
-            for(CatRepresentation cat : world.getCatRepresentations()) {
-                cat.draw(g2d, this);
+            for(Cat cat : world.getCats()) {
+                CatRepresentation catRepresentation = new CatRepresentation(cat);
+                catRepresentation.draw(g2d, this);
             }
         }
     }
@@ -101,11 +105,7 @@ public class Board extends JPanel implements ActionListener {
 
     }
 
-    public void addMouse(MouseRepresentation mouse) {
-        world.addMouse(mouse);
-    }
-
-    public WorldRepresentation getWorld() {
+    public World getWorld() {
         return world;
     }
 
@@ -157,34 +157,35 @@ public class Board extends JPanel implements ActionListener {
             try {
                 worldJson = bufferedReader.readLine();
 
-                WorldRepresentation worldRep = ClientConstants.getGson().fromJson(worldJson, WorldRepresentation.class);
-                if(worldRep.isStarted() && !world.isStarted()) {
+                World newWorld = ClientConstants.getGson().fromJson(worldJson, World.class);
+                if(newWorld.isStarted() && !world.isStarted()) {
                     timer.start();
                 }
-                world = worldRep;
+                world = newWorld;
 
                 if(player != null) {
-                    for(CatRepresentation cat : worldRep.getCatRepresentations()) {
+                    for(Cat cat : world.getCats()) {
                         if(cat.getUuid().equals(player.getCharacter().getUuid())) {
-                            player.updateCharacter(cat);
+                            player.updateCharacter(cat, world);
                         }
                     }
-                    for(MouseRepresentation mouse : worldRep.getMouseRepresentations()) {
+                    for(Mouse mouse : world.getMice()) {
                         if (mouse.getUuid().equals(player.getCharacter().getUuid())) {
-                            player.updateCharacter(mouse);
+                            player.updateCharacter(mouse, world);
                         }
                     }
-                    for(SubwayRepresantation subway : worldRep.getSubwayRepresantations()) {
-                        for(MouseRepresentation mouse : subway.getMiceRepresentations()) {
+                    for(Subway subway : world.getSubways()) {
+                        subway.setContainedIn(world);
+                        for(Mouse mouse : subway.getContainedMice()) {
                             if (mouse.getUuid().equals(player.getCharacter().getUuid())) {
-                                player.updateCharacter(mouse);
+                                player.updateCharacter(mouse, subway);
                             }
                         }
                     }
                 }
 
                 repaint();
-                if(world.isEnded()) {
+                if(newWorld.isEnded()) {
                     timer.stop();
                 }
             } catch (IOException e) {

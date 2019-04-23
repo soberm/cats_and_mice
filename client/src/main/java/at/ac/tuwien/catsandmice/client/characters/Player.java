@@ -1,14 +1,16 @@
 package at.ac.tuwien.catsandmice.client.characters;
 
 import at.ac.tuwien.catsandmice.client.util.ClientConstants;
-import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
-import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
+import at.ac.tuwien.catsandmice.client.world.SubwayRepresentation;
+import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Character;
-import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
+import at.ac.tuwien.catsandmice.dto.characters.Mouse;
+import at.ac.tuwien.catsandmice.dto.world.Boundaries;
+import at.ac.tuwien.catsandmice.dto.world.Subway;
+import at.ac.tuwien.catsandmice.dto.world.World;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,10 +41,6 @@ public abstract class Player {
     protected PrintWriter writer;
 
     public Player() {
-
-    }
-
-    public void resetClicks() {
 
     }
 
@@ -126,39 +124,45 @@ public abstract class Player {
         return  width;
     }
 
-    public synchronized void updateCharacter(Character character) {
-
+    public synchronized void updateCharacter(Character character, Boundaries boundaries) {
         this.character.setHeight(character.getHeight());
         this.character.setWidth(character.getWidth());
+
         if(this.character.getX() == null) {
             this.character.setX(character.getX());
         }
+
         if(this.character.getY() == null) {
             this.character.setY(character.getY());
         }
+
         if(this.character.getRotation() == null) {
             this.character.setRotation(character.getRotation());
         }
+
         if(this.character.getBoundaries() == null) {
-            this.character.setBoundaries(character.getBoundaries());
+            this.character.setBoundaries(boundaries);
         }
 
-            this.character.setAlive(character.isAlive());
+        this.character.setAlive(character.isAlive());
 
         setInitialised(true);
     }
 
-    public void draw(Graphics2D g2d, ImageObserver observer, WorldRepresentation worldRepresentation) {
-        for(SubwayRepresantation subway : worldRepresentation.getSubwayRepresantations()) {
-            subway.draw(g2d, observer, true);
+    public void draw(Graphics2D g2d, ImageObserver observer, World world) {
+        for(Subway subway : world.getSubways()) {
+            SubwayRepresentation subRepresentation = new SubwayRepresentation(subway);
+            subRepresentation.draw(g2d, observer, true);
         }
-        for(MouseRepresentation mouse : worldRepresentation.getMouseRepresentations()) {
+        for(Mouse mouse : world.getMice()) {
             if(mouse.isAlive()) {
-                mouse.draw(g2d, observer);
+                MouseRepresentation mouseRepresentation = new MouseRepresentation(mouse);
+                mouseRepresentation.draw(g2d, observer);
             }
         }
-        for(CatRepresentation cat : worldRepresentation.getCatRepresentations()) {
-            cat.draw(g2d, observer);
+        for(Cat cat : world.getCats()) {
+            CatRepresentation catRepresentation = new CatRepresentation(cat);
+            catRepresentation.draw(g2d, observer);
         }
     }
 
@@ -170,7 +174,7 @@ public abstract class Player {
         this.initialised = initialised;
     }
 
-    public void enterSubway(SubwayRepresantation subway) {
+    public void enterSubway(SubwayRepresentation subway) {
         return;
     }
 

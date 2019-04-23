@@ -31,7 +31,7 @@ public class Boundaries implements IBoundaries{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Boundaries)) return false;
         Boundaries that = (Boundaries) o;
         return Objects.equals(uuid, that.uuid);
     }

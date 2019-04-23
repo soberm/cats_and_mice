@@ -2,6 +2,7 @@ package at.ac.tuwien.catsandmice.client.characters;
 
 import at.ac.tuwien.catsandmice.client.board.Board;
 import at.ac.tuwien.catsandmice.dto.characters.Cat;
+import at.ac.tuwien.catsandmice.dto.characters.Character;
 import at.ac.tuwien.catsandmice.dto.world.Boundaries;
 import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 
@@ -10,27 +11,16 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.ImageObserver;
 
-public class CatRepresentation extends Cat implements Representation {
+public class CatRepresentation implements Representation {
+
+    private Cat cat;
 
     private static int height;
     private static int width;
     private static Image image;
 
-    public CatRepresentation() {
-        loadImage();
-    }
-
     public CatRepresentation(Cat cat) {
-        this.setBoundaries(cat.getBoundaries());
-        this.setX(cat.getX());
-        this.setY(cat.getY());
-        this.setUuid(cat.getUuid());
-        this.setRotation(cat.getRotation());
-        loadImage();
-    }
-
-    public CatRepresentation(Boundaries boundaries) {
-        super(boundaries);
+        this.cat = cat;
         loadImage();
     }
 
@@ -45,8 +35,8 @@ public class CatRepresentation extends Cat implements Representation {
             setWidth(width / 5);
             setImage(original.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH));
         }
-        super.setHeight(height);
-        super.setWidth(width);
+        this.cat.setHeight(height);
+        this.cat.setWidth(width);
     }
 
     @Override
@@ -57,29 +47,19 @@ public class CatRepresentation extends Cat implements Representation {
 
     private AffineTransform getTransformation() {
         AffineTransform transformation = getRotate();
-        transformation.translate(getX(), getY());
+        transformation.translate(this.cat.getX(), this.cat.getY());
         return transformation;
     }
 
     private AffineTransform getRotate() {
-        return AffineTransform.getRotateInstance(Math.toRadians(getRotation()), getX() + getWidth() / 2, getY() + getHeight() / 2);
+        return AffineTransform.getRotateInstance(Math.toRadians(this.cat.getRotation()), this.cat.getX() + getWidth() / 2, this.cat.getY() + getHeight() / 2);
     }
 
     public Rectangle getBounds() {
-        Rectangle rectangle = new Rectangle(getX(), getY(), getWidth(), getHeight());
+        Rectangle rectangle = new Rectangle(this.cat.getX(), this.cat.getY(), getWidth(), getHeight());
         AffineTransform transform = getRotate();
         Shape shape = transform.createTransformedShape(rectangle);
         return shape.getBounds();
-    }
-
-    public void kill(MouseRepresentation mouse) {
-//        if (mouse.getBoundaries().equals(getBoundaries()) ) {
-//            System.out.println(mouse.getBounds());
-//            System.out.println(getBounds());
-//            System.out.println(getBounds().intersects(mouse.getBounds()));
-//            if(getBounds().intersects(mouse.getBounds()))
-//                mouse.setAlive(false);
-//        }
     }
 
 
@@ -105,5 +85,9 @@ public class CatRepresentation extends Cat implements Representation {
 
     public void setWidth(int w) {
         width = w;
+    }
+
+    public Cat getCat() {
+        return this.cat;
     }
 }

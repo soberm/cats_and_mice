@@ -3,18 +3,14 @@ package at.ac.tuwien.catsandmice.client.application;
 import at.ac.tuwien.catsandmice.client.board.Board;
 import at.ac.tuwien.catsandmice.client.characters.*;
 import at.ac.tuwien.catsandmice.client.util.ClientConstants;
-import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
 import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.Constants;
 import at.ac.tuwien.catsandmice.dto.util.LoginMessage;
-import at.ac.tuwien.catsandmice.dto.world.Subway;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -45,16 +41,19 @@ public class Application extends JFrame {
 
             switch (ch) {
                 case "mouse":
-                    MouseRepresentation mouse = new MouseRepresentation(this.name);
-                    System.out.println(mouse);
-                    player = new MousePlayer(mouse);
+                    Mouse mouse = new Mouse(this.name);
+                    MouseRepresentation mouseRepresentation = new MouseRepresentation(mouse);
+                    player = new MousePlayer(mouseRepresentation);
                     register(mouse, socket);
                     break;
                 case "cat":
-                    CatRepresentation cat = new CatRepresentation();
-                    player = new CatPlayer(cat);
+                    Cat cat = new Cat();
+                    CatRepresentation catRep = new CatRepresentation(cat);
+                    player = new CatPlayer(catRep);
                     register(cat, socket);
                     break;
+                default:
+                    return;
             }
 
             board.initWorld(socket);

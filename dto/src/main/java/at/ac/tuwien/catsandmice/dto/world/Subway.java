@@ -44,8 +44,8 @@ public class Subway extends Boundaries {
     }
 
     public Subway() {
-        containedMice = new ArrayList<Mouse>();
-        knownCatLocations = new ArrayList<Cat>();
+        containedMice = new CopyOnWriteArrayList<>();
+        knownCatLocations = new CopyOnWriteArrayList<>();
     }
 
     public int getX1() {
@@ -94,25 +94,26 @@ public class Subway extends Boundaries {
 
     public void setContainedMice(List<Mouse> containedMice) {
         this.containedMice = containedMice;
-        for(Mouse mouse : containedMice) {
+        for (Mouse mouse : containedMice) {
             mouse.setBoundaries(this);
         }
+
     }
 
     public int getMaxWidth() {
-        return x1 + (x1 == x2 ? 0 : (Constants.SUBWAY_ENTRY_WIDTH/2 + x2-x1));
+        return x2 + Constants.SUBWAY_ENTRY_WIDTH / 2;
     }
 
     public int getMaxHeight() {
-        return y1 + (y1 == y2 ? 0 : (Constants.SUBWAY_ENTRY_WIDTH/2 + y2-y1));
+        return y2 + Constants.SUBWAY_ENTRY_WIDTH / 2;
     }
 
     public int getMinHeight() {
-        return y1  - (y1 == y2 ? 0 : Constants.SUBWAY_ENTRY_WIDTH/2);
+        return y1 - Constants.SUBWAY_ENTRY_WIDTH / 2;
     }
 
     public int getMinWidth() {
-        return x1 - (x1 == x2 ? 0 : Constants.SUBWAY_ENTRY_WIDTH/2);
+        return x1 - Constants.SUBWAY_ENTRY_WIDTH / 2;
     }
 
     public Boundaries getContainedIn() {
@@ -144,11 +145,12 @@ public class Subway extends Boundaries {
 
     public void addMouse(Mouse mouse) {
         this.containedMice.add(mouse);
-
+        mouse.setBoundaries(this);
     }
 
     public void removeMouse(Mouse mouse) {
         this.containedMice.remove(mouse);
+        mouse.setBoundaries(this.containedIn);
     }
 
     @Override

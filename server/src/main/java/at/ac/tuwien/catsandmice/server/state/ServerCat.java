@@ -25,10 +25,6 @@ public class ServerCat extends ServerCharacter {
             while ((line = inputStream.readLine()) != null) {
                 Cat cat = ServerConstants.getGson().fromJson(line, Cat.class);
                 super.update(cat);
-/*                World world = (World) this.cat.getBoundaries();
-                for(Mouse mouse : world.getMice()) {
-                    kill(mouse);
-                }*/
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -2,16 +2,15 @@ package at.ac.tuwien.catsandmice.client.characters;
 
 
 import at.ac.tuwien.catsandmice.client.util.ClientConstants;
-import at.ac.tuwien.catsandmice.client.world.SubwayRepresantation;
-import at.ac.tuwien.catsandmice.client.world.WorldRepresentation;
-import at.ac.tuwien.catsandmice.dto.characters.Character;
+import at.ac.tuwien.catsandmice.client.world.SubwayRepresentation;
+import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.MouseUpdateMessage;
 import at.ac.tuwien.catsandmice.dto.world.Subway;
+import at.ac.tuwien.catsandmice.dto.world.World;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 import java.util.List;
 import java.util.function.Predicate;
@@ -20,11 +19,11 @@ import java.util.stream.Collectors;
 public class MousePlayer extends Player {
 
     private boolean tryToEnter = false;
-    private MouseRepresentation mouse;
+    private MouseRepresentation mouseRepresentation;
 
-    public MousePlayer(MouseRepresentation mouse) {
-        this.mouse = mouse;
-        setCharacter(mouse);
+    public MousePlayer(MouseRepresentation mouseRepresentation) {
+        this.mouseRepresentation = mouseRepresentation;
+        setCharacter(mouseRepresentation.getMouse());
 
         UP = KeyEvent.VK_W;
         DOWN = KeyEvent.VK_S;
@@ -44,8 +43,8 @@ public class MousePlayer extends Player {
 
     protected void updateOnServer() {
         MouseUpdateMessage mouseUpdateMessage = new MouseUpdateMessage();
-        mouseUpdateMessage.setMouse(mouse);
-        mouseUpdateMessage.setContainedInUUID(mouse.getBoundaries().getUuid());
+        mouseUpdateMessage.setMouse(mouseRepresentation.getMouse());
+        mouseUpdateMessage.setContainedInUUID(mouseRepresentation.getMouse().getBoundaries().getUuid());
 
         String json = ClientConstants.getGson().toJson(mouseUpdateMessage);
         writer.println(json);
@@ -53,74 +52,72 @@ public class MousePlayer extends Player {
     }
 
     @Override
-    public void draw(Graphics2D g2d, ImageObserver observer, WorldRepresentation worldRepresentation) {
-        if(!isInitialised() || mouse.getBoundaries().equals(worldRepresentation) ) {
-            if(isInitialised() && mouse.isAlive() && tryToEnter) {
-                for(SubwayRepresantation subwayRepresantation : worldRepresentation.getSubwayRepresantations()) {
-                    if(tryToEnter && subwayRepresantation.enterOrExit(this)) {
+    public void draw(Graphics2D g2d, ImageObserver observer, World world) {
+        if(!isInitialised() || mouseRepresentation.getMouse().getBoundaries().equals(world) ) {
+            if(isInitialised() && mouseRepresentation.getMouse().isAlive() && tryToEnter) {
+                for(Subway subway : world.getSubways()) {
+                    SubwayRepresentation subwayRepresentation = new SubwayRepresentation(subway);
+                    if(tryToEnter && subwayRepresentation.enterOrExit(this)) {
                         tryToEnter = false;
-                        drawWorld(g2d, observer, worldRepresentation, subwayRepresantation);
+                        drawWorld(g2d, observer, world, subway);
                     }
                 }
                 if(tryToEnter) {
-                    drawWorld(g2d, observer, worldRepresentation);
+                    drawWorld(g2d, observer, world);
                 }
             } else {
-                drawWorld(g2d, observer, worldRepresentation);
+                drawWorld(g2d, observer, world);
             }
         } else {
             //we know we are in a subway, so only exiting is possible
-            List<SubwayRepresantation> subwayRepresantations = worldRepresentation.getSubwayRepresantations().stream().filter(new Predicate<SubwayRepresantation>() {
+            List<Subway> subways = world.getSubways().stream().filter(new Predicate<Subway>() {
                 @Override
-                public boolean test(SubwayRepresantation subwayRepresantation) {
-                    return subwayRepresantation.getUuid().equals(mouse.getBoundaries().getUuid());
+                public boolean test(Subway subwayRepresantation) {
+                    return subwayRepresantation.getUuid().equals(mouseRepresentation.getMouse().getBoundaries().getUuid());
                 }
             }).collect(Collectors.toList());
 
-            SubwayRepresantation subwayRepresantation = subwayRepresantations.get(0);
+            Subway subway= subways.get(0);
+            SubwayRepresentation subwayRepresentation = new SubwayRepresentation(subway);
 
-            if(tryToEnter && subwayRepresantation.enterOrExit(this)) {
+            if(tryToEnter && subwayRepresentation.enterOrExit(this)) {
                 //if it wants to exit and it succeeds to exit
-                drawWorld(g2d, observer, worldRepresentation);
+                drawWorld(g2d, observer, world);
             } else {
                 //if it either does not want to exit or fails to do so
-                drawWorld(g2d, observer, worldRepresentation, subwayRepresantation);
+                drawWorld(g2d, observer, world, subway);
             }
 
         }
         tryToEnter = false;
     }
 
-    private void drawWorld(Graphics2D g2d, ImageObserver observer, WorldRepresentation worldRepresentation) {
-        super.draw(g2d, observer, worldRepresentation);
+    private void drawWorld(Graphics2D g2d, ImageObserver observer, World world) {
+        super.draw(g2d, observer, world);
     }
 
-    private void drawWorld(Graphics2D g2d, ImageObserver observer, WorldRepresentation worldRepresentation, SubwayRepresantation subwayRepresantation) {
-        for(SubwayRepresantation subway : worldRepresentation.getSubwayRepresantations()) {
-            subway.draw(g2d, observer, !subway.equals(subwayRepresantation));
+    private void drawWorld(Graphics2D g2d, ImageObserver observer, World world, Subway subway) {
+        for(Subway s : world.getSubways()) {
+            SubwayRepresentation subwayRepresentation = new SubwayRepresentation(s);
+            subwayRepresentation.draw(g2d, observer, !subway.equals(s));
         }
-        for(MouseRepresentation mouse : subwayRepresantation.getMiceRepresentations()) {
+        for(Mouse mouse : subway.getContainedMice()) {
             if(mouse.isAlive()) {
-                mouse.draw(g2d, observer);
+                MouseRepresentation mouseRepresentation = new MouseRepresentation(mouse);
+                mouseRepresentation.draw(g2d, observer);
             }
         }
-        for(CatRepresentation cat : subwayRepresantation.getKnownCatRepresentationLocations()) {
-            cat.draw(g2d, observer);
+        for(Cat cat : subway.getKnownCatLocations()) {
+            CatRepresentation catRepresentation = new CatRepresentation(cat);
+            catRepresentation.draw(g2d, observer);
         }
     }
 
     @Override
-    public void enterSubway(SubwayRepresantation subway) {
+    public void enterSubway(SubwayRepresentation subway) {
         if(isTryToEnter()) {
             tryToEnter = !subway.enterOrExit(this);
         }
-    }
-
-
-    @Override
-    public void resetClicks() {
-        super.resetClicks();
-        this.tryToEnter = false;
     }
 
     @Override
@@ -130,24 +127,23 @@ public class MousePlayer extends Player {
             setTryToEnter(true);
         }
         if(e.getKeyCode() == KeyEvent.VK_F) {
-            if (mouse.getBoundaries() instanceof SubwayRepresantation) {
-                SubwayRepresantation subwayRepresantation = (SubwayRepresantation) mouse.getBoundaries();
-                System.out.println(subwayRepresantation.getPingedExit(mouse));
-                mouse.setPingedExit(subwayRepresantation.getPingedExit(mouse));
+            if (mouseRepresentation.getMouse().getBoundaries() instanceof Subway) {
+                SubwayRepresentation subwayRepresentation = new SubwayRepresentation((Subway) mouseRepresentation.getMouse().getBoundaries());
+                mouseRepresentation.getMouse().setPingedExit(subwayRepresentation.getPingedExit(mouseRepresentation.getMouse()));
             }
         }
     }
 
     public void moveTo(int x, int y) {
-        mouse.setX(x-mouse.getWidth()/2);
-        mouse.setY(y-mouse.getHeight()/2);
+        mouseRepresentation.getMouse().setX(x- mouseRepresentation.getWidth()/2);
+        mouseRepresentation.getMouse().setY(y- mouseRepresentation.getHeight()/2);
     }
 
-    public MouseRepresentation getMouse() {
-        return mouse;
+    public MouseRepresentation getMouseRepresentation() {
+        return mouseRepresentation;
     }
 
-    public void setMouse(MouseRepresentation mouse) {
-        this.mouse = mouse;
+    public void setMouseRepresentation(MouseRepresentation mouseRepresentation) {
+        this.mouseRepresentation = mouseRepresentation;
     }
 }

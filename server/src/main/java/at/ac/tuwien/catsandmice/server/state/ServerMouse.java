@@ -16,9 +16,6 @@ import java.util.stream.Collectors;
 public class ServerMouse extends ServerCharacter {
 
     @Expose
-    private Model contained;
-
-    @Expose
     private boolean alive = true;
 
     private Mouse mouse;
@@ -26,15 +23,6 @@ public class ServerMouse extends ServerCharacter {
     public ServerMouse(Mouse mouse,Server server) {
         super(mouse,server);
         this.mouse = mouse;
-    }
-
-
-    public Model getContained() {
-        return contained;
-    }
-
-    public void setContained(Model contained) {
-        this.contained = contained;
     }
 
     public boolean isAlive() {
@@ -104,7 +92,6 @@ public class ServerMouse extends ServerCharacter {
     public String toString() {
         return "ServerMouse{" +
                 super.toString() + ", " +
-                "contained=" + contained +
                 ", alive=" + alive +
                 '}';
     }

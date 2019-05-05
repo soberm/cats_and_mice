@@ -2,8 +2,8 @@
 
 ## how to import old project
 
-check if MetaCello and Filetree are installed (or google it)
-probably we have to use Squeak 5.1 
+check if MetaCello and Filetree are installed (https://github.com/dalehenrich/filetree)
+probably we have to use Squeak 5.1 (Michis 5.2 version is also working)
 
 in the Monticello browser press +Repository, select //filetree (or sth like that), select the repo folder of the old project
 
@@ -14,10 +14,8 @@ open a new Morphic project
 copy the images provided in imgSmalltalk into the squeak installation folder, create a background image and most easily call it: bg-1-320x200.png , then open a workspace and run:
 
 |game| 
-game := GameWindow new.
-game initialize.
 
-game show: 1920@1080
+game := SnakesGame runWithPlayers: 1.
 
 you will have to select images for the players
 

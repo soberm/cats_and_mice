@@ -1,0 +1,14 @@
+{
+	"category" : "Snakes-Domain",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "Food",
+	"pools" : [
+		 ],
+	"super" : "Item",
+	"type" : "normal" }

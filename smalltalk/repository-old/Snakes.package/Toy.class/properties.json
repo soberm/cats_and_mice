@@ -1,0 +1,14 @@
+{
+	"category" : "Snakes-Domain",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "Toy",
+	"pools" : [
+		 ],
+	"super" : "Item",
+	"type" : "normal" }

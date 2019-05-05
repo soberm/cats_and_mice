@@ -1,0 +1,3 @@
+private
+sidePaneWidth
+	^200.

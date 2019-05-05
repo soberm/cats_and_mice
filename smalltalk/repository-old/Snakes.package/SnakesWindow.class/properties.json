@@ -1,0 +1,22 @@
+{
+	"category" : "Snakes-Game",
+	"classinstvars" : [
+		"sidePaneWidth" ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"game",
+		"healthMorphs",
+		"bgImageMorph",
+		"backgroundMorph",
+		"sidePaneMorph",
+		"gridPaneMorph",
+		"playingFieldMorph",
+		"gridWidth",
+		"gridHeight" ],
+	"name" : "SnakesWindow",
+	"pools" : [
+		 ],
+	"super" : "SystemWindow",
+	"type" : "normal" }

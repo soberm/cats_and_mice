@@ -1,0 +1,7 @@
+{
+	"class" : {
+		"withSnake:" : "MP 6/27/2017 21:49" },
+	"instance" : {
+		"initialize" : "MP 6/27/2017 23:05",
+		"snake:" : "MP 6/27/2017 23:05",
+		"update" : "MP 6/27/2017 23:10" } }

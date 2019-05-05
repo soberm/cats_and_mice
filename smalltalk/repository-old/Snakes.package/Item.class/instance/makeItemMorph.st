@@ -1,0 +1,3 @@
+private
+makeItemMorph
+	self subclassResponsibility.

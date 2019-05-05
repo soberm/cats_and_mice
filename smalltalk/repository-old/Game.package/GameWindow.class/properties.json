@@ -1,0 +1,15 @@
+{
+	"category" : "Game",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"playerimagemorph",
+		"bgimagemorph" ],
+	"name" : "GameWindow",
+	"pools" : [
+		 ],
+	"super" : "SystemWindow",
+	"type" : "normal" }

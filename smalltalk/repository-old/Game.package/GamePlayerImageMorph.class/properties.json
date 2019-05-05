@@ -1,0 +1,15 @@
+{
+	"category" : "Game",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"stepLength",
+		"direction" ],
+	"name" : "GamePlayerImageMorph",
+	"pools" : [
+		 ],
+	"super" : "GameImageMorph",
+	"type" : "normal" }

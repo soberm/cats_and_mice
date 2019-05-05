@@ -1,0 +1,14 @@
+{
+	"category" : "CatsAndMice-Game",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "CatsAndMiceGame",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

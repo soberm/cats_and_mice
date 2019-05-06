@@ -6,6 +6,8 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
+		"game",
+		"cat",
 		"bgimagemorph" ],
 	"name" : "CatsAndMiceWindow",
 	"pools" : [

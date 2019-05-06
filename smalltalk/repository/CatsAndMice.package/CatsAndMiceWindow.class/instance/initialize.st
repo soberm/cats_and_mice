@@ -4,7 +4,6 @@ initialize
 
 	| backgroundMorph |
 	super initialize.
-	
 	bgimagemorph := GameBackgroundImageMorph new.
 	bgimagemorph load.
 	

@@ -1,6 +1,5 @@
 initialize-release
 initialize
-	"comment stating purpose of message"
-
-	| initVar |
-	initVar := 5.
+	""
+	cats := OrderedCollection new.
+	mice := OrderedCollection new.

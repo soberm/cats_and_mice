@@ -6,7 +6,11 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		 ],
+		"window",
+		"cats",
+		"mice",
+		"fieldWidth",
+		"fieldHeight" ],
 	"name" : "CatsAndMiceGame",
 	"pools" : [
 		 ],

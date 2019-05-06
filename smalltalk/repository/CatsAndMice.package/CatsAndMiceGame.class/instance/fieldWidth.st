@@ -1,0 +1,4 @@
+accessing
+fieldWidth
+
+	^ fieldWidth

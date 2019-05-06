@@ -1,0 +1,14 @@
+{
+	"category" : "CatsAndMice-Model",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "Mouse",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

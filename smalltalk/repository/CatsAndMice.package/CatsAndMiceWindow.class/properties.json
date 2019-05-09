@@ -8,7 +8,11 @@
 	"instvars" : [
 		"game",
 		"cat",
-		"bgimagemorph" ],
+		"bgimagemorph",
+		"backgroundMorph",
+		"playingFieldMorph",
+		"gridWidth",
+		"gridHeight" ],
 	"name" : "CatsAndMiceWindow",
 	"pools" : [
 		 ],

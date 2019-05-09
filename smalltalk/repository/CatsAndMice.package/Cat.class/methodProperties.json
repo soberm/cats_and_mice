@@ -2,4 +2,11 @@
 	"class" : {
 		 },
 	"instance" : {
-		"makeMorph" : "MS 5/6/2019 21:16" } }
+		"makeMorph" : "MS 5/6/2019 21:16",
+		"morph" : "MS 5/9/2019 21:34",
+		"morph:" : "MS 5/9/2019 21:34",
+		"placeOnGameField:at:" : "MS 5/9/2019 20:23",
+		"playingField" : "MS 5/9/2019 21:34",
+		"playingField:" : "MS 5/9/2019 21:34",
+		"position" : "MS 5/9/2019 21:34",
+		"position:" : "MS 5/9/2019 21:34" } }

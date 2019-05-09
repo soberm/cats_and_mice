@@ -10,7 +10,8 @@
 		"cats",
 		"mice",
 		"fieldWidth",
-		"fieldHeight" ],
+		"fieldHeight",
+		"rand" ],
 	"name" : "CatsAndMiceGame",
 	"pools" : [
 		 ],

@@ -6,7 +6,9 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		 ],
+		"position",
+		"playingField",
+		"morph" ],
 	"name" : "Cat",
 	"pools" : [
 		 ],

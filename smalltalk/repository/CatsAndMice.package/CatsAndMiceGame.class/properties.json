@@ -9,8 +9,6 @@
 		"window",
 		"cats",
 		"mice",
-		"fieldWidth",
-		"fieldHeight",
 		"rand" ],
 	"name" : "CatsAndMiceGame",
 	"pools" : [

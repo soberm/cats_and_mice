@@ -1,4 +1,0 @@
-accessing
-gridWidth
-
-	^ gridWidth

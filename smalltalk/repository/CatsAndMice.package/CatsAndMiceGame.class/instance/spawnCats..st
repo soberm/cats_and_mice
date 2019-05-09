@@ -3,8 +3,8 @@ spawnCats: count
 	| cat x y |
 
 	count timesRepeat: [
-		x := rand nextInt: fieldWidth.
-		y := rand nextInt: fieldHeight.
+		x := rand nextInt: window width.
+		y := rand nextInt: window height.
 		
 		cat := Cat new.
 		cat position: x@y.

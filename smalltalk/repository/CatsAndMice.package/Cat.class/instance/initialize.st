@@ -1,5 +1,6 @@
 initialize-release
 initialize
 	"initializes this instance"
-	
-	self morph: CatMorph new.
+	stepLength := 1.
+	direction := 0@0.
+	morph := CatMorph new.

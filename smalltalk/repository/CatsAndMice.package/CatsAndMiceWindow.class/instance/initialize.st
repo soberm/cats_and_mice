@@ -1,10 +1,8 @@
 initialize-release
 initialize
-	""
-	
+
 	super initialize.
-	bgimagemorph := GameBackgroundImageMorph new.
-	bgimagemorph load.
+	bgimagemorph := BackgroundImageMorph new.
 	
 	backgroundMorph := BackgroundMorph new.
 	backgroundMorph

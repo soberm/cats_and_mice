@@ -6,16 +6,24 @@ handleKeystroke: anEvent
 	keyValue := anEvent keyValue.
 
 	keyValue = 30 "up arrow"
-		ifTrue: [].
+		ifTrue: [
+			self game player up.
+		].
 
 	keyValue = 31 "down arrow"
-		ifTrue: [].
+		ifTrue: [
+			self game player down.	
+		].
 
 	keyValue = 29 "right arrow"
-		ifTrue: [].
+		ifTrue: [
+			self game player right.
+		].
 
 	keyValue = 28 "left arrow"
-		ifTrue: [].
+		ifTrue: [
+			self game player left.	
+		].
 
 	keyValue = ($q asInteger)
 		ifTrue: [self delete].

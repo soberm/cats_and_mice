@@ -1,0 +1,14 @@
+{
+	"category" : "CatsAndMice-Morph",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		 ],
+	"name" : "BackgroundImageMorph",
+	"pools" : [
+		 ],
+	"super" : "CatsAndMiceMorph",
+	"type" : "normal" }

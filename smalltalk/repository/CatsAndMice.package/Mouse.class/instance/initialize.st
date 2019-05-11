@@ -1,5 +1,6 @@
 initialize-release
 initialize
 	"initializes this instance"
-	
-	self morph: MouseMorph new.
+	stepLength := 2.
+	direction := 0@0.
+	morph := MouseMorph new.

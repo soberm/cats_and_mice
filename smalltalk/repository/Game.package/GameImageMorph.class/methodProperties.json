@@ -1,9 +1,0 @@
-{
-	"class" : {
-		 },
-	"instance" : {
-		"addMorphTo:" : "jc 8/15/2013 12:40",
-		"gamemorph" : "jc 8/15/2013 12:39",
-		"initialize" : "jc 8/15/2013 12:58",
-		"load:" : "jc 8/15/2013 13:01",
-		"new" : "jc 8/15/2013 13:26" } }

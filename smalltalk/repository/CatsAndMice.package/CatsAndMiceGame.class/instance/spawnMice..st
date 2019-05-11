@@ -8,11 +8,9 @@ spawnMice: count
 		
 		mouse := Mouse new.
 		mouse position: x@y.
-		mouse playingField: self.
-		mouse morph: mouse makeMorph.
 				
 		mice add: mouse.
-		mouse placeOnGameField: self at: x@y
+		self placeMorph: mouse morph at: x@y
 	]. 
 			
 		

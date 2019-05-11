@@ -1,15 +1,14 @@
 {
-	"category" : "CatsAndMice-Model",
+	"category" : "CatsAndMice-Morph",
 	"classinstvars" : [
 		 ],
 	"classvars" : [
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"position",
-		"morph" ],
-	"name" : "Cat",
+		 ],
+	"name" : "CatMorph",
 	"pools" : [
 		 ],
-	"super" : "Object",
+	"super" : "CatsAndMiceMorph",
 	"type" : "normal" }

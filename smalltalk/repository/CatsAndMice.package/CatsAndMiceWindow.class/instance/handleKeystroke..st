@@ -4,6 +4,8 @@ handleKeystroke: anEvent
 	
 	| keyValue  |
 	keyValue := anEvent keyValue.
+	(self isStepping not)
+		ifTrue: [self startStepping].
 
 	keyValue = 30 "up arrow"
 		ifTrue: [

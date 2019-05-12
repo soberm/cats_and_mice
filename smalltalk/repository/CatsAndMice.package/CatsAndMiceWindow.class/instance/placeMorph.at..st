@@ -10,3 +10,5 @@ placeMorph: aMorph at: position
 	playingFieldMorph addMorph: aMorph fullFrame: (LayoutFrame
 		fractions: (left@top corner: right@bottom)
 		offsets: (0@0 corner: 0@0)).
+	
+	"playingFieldMorph addMorph: aMorph."

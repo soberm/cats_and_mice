@@ -1,6 +1,5 @@
 initialize-release
 initialize
-
 	super initialize.
 	bgimagemorph := BackgroundImageMorph new.
 	

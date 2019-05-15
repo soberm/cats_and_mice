@@ -1,0 +1,20 @@
+{
+	"category" : "CatsAndMice-Model",
+	"classinstvars" : [
+		 ],
+	"classvars" : [
+		 ],
+	"commentStamp" : "",
+	"instvars" : [
+		"entry1",
+		"entry2",
+		"path",
+		"entryWidth",
+		"position1",
+		"position2",
+		"pathPosition" ],
+	"name" : "Subway",
+	"pools" : [
+		 ],
+	"super" : "Object",
+	"type" : "normal" }

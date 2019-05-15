@@ -2,7 +2,7 @@ as yet unclassified
 start: player width: width height: height cats: cats mice: mice isCat: isCat
 	""
 	
-	| window game |
+	| window game subway|
 	
 	window := CatsAndMiceWindow new.
 	window openInWorld.
@@ -15,4 +15,8 @@ start: player width: width height: height cats: cats mice: mice isCat: isCat
 	game spawnCats: cats.
 	game spawnPlayer: isCat.
 	
+	subway := Subway createFrom: 100@100 to: 100@200.
+	window placeMorph: subway path at: subway path position.
+	window placeMorph: subway entry1 at: subway entry1 position.
+	window placeMorph: subway entry2 at: subway entry2 position.
 	window game: game.

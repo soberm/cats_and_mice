@@ -4,8 +4,12 @@ placeMorph: aMorph at: position
 	| left top bottom right |
 	left := (position x) / self width.
 	top := (position y) / self height.
-	right := (position x + 1) / self width.
-	bottom := (position y + 1) / self height.
+	right := (position x + aMorph width) / self width.
+	bottom := (position y + aMorph height) / self height.
+	
+	Transcript show: String cr, aMorph.
+	Transcript show: String cr, left.
+	Transcript show:  String cr, right.
 	
 	playingFieldMorph addMorph: aMorph fullFrame: (LayoutFrame
 		fractions: (left@top corner: right@bottom)

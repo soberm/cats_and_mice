@@ -12,7 +12,9 @@
 		"entryWidth",
 		"position1",
 		"position2",
-		"pathPosition" ],
+		"pathPosition",
+		"mice",
+		"knownCatLocations" ],
 	"name" : "Subway",
 	"pools" : [
 		 ],

@@ -17,17 +17,49 @@ tick
 						cat := cats at: catIndex.
 						intersects := intersects or: (cat morph intersects: ((mouse morph) bounds)).
 				].
-			Transcript show: String cr, 'intersects: ', intersects printString, ' ', mouseIndex, String cr.
-			mouse alive: intersects.
-			intersects ifTrue: [
-				mouse alive: false.
-				removableMice add: mouse.
-				self removeMorph: (mouse morph).
+			
+			intersects 
+				ifTrue: [
+					mouse alive: false.
+					removableMice add: mouse.
+					Transcript show: String cr, mouseIndex.
+					self removeMorph: (mouse morph).
 				]
 				ifFalse: [
-						self placeMorph: mouse morph at: mouse position.
+					mouse alive
+						ifTrue: [
+							mouse enterOrExit
+								ifTrue: [
+									|canEnter |
+									1 to: subways size do: [
+										:subwayIndex |
+											|subway|
+											mouse enterOrExit
+												ifTrue: [
+													subway := subways at: subwayIndex.
+													canEnter :=  subway entry1 intersects: ((mouse morph) bounds).
+													canEnter
+														ifTrue: [
+																subway enter: mouse at: subway position1.
+															]
+														ifFalse: [
+															canEnter :=  subway entry2 intersects: ((mouse morph) bounds).
+															canEnter
+																ifTrue: [
+																		subway enter: mouse at: subway position2.
+																	].
+														].
+													
+												].	
+										].
+								].
+							mouse enterOrExit: false.
+							self placeMorph: mouse morph at: mouse position.
+						].
 					].
+					
 			].
+			
 		1 to: cats size do: [
 				:catIndex |
 						|cat|

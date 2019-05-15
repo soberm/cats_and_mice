@@ -1,11 +1,11 @@
 {
 	"class" : {
 		"start:width:height:cats:mice:" : "MS 5/11/2019 21:45",
-		"start:width:height:cats:mice:isCat:" : "LN 5/15/2019 22:30" },
+		"start:width:height:cats:mice:isCat:" : "LN 5/15/2019 22:54" },
 	"instance" : {
 		"cats" : "MS 5/6/2019 21:31",
 		"cats:" : "MS 5/6/2019 21:30",
-		"initialize" : "MS 5/9/2019 21:30",
+		"initialize" : "LN 5/15/2019 22:52",
 		"mice" : "MS 5/6/2019 21:31",
 		"mice:" : "MS 5/6/2019 21:30",
 		"placeMorph:at:" : "MS 5/6/2019 21:27",
@@ -18,6 +18,7 @@
 		"spawnMice:" : "MS 5/11/2019 21:11",
 		"spawnPlayer" : "LN 5/15/2019 10:08",
 		"spawnPlayer:" : "LN 5/15/2019 10:14",
-		"tick" : "LN 5/15/2019 10:28",
+		"subways" : "LN 5/15/2019 22:53",
+		"tick" : "LN 5/15/2019 23:26",
 		"window" : "MS 5/6/2019 21:31",
 		"window:" : "MS 5/6/2019 21:31" } }

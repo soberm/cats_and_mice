@@ -1,6 +1,9 @@
 initialize-release
 initialize
 	"comment stating purpose of message"
+	mice := OrderedCollection new.
+	knownCatLocations := OrderedCollection new.
+	
 	entry1 := CircleMorph new.
 	entry1 bounds: (position1 corner: position1 + (60@60)).
 	entry1 position: position1.

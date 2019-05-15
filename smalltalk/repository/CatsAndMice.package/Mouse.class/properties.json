@@ -10,7 +10,8 @@
 		"direction",
 		"stepLength",
 		"morph",
-		"alive" ],
+		"alive",
+		"enterOrExit" ],
 	"name" : "Mouse",
 	"pools" : [
 		 ],

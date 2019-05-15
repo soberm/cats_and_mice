@@ -4,3 +4,4 @@ initialize
 	stepLength := 2.
 	direction := 0@0.
 	morph := MouseMorph new.
+	alive := true.

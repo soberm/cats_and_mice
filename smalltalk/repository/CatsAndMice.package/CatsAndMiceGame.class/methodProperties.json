@@ -1,7 +1,7 @@
 {
 	"class" : {
 		"start:width:height:cats:mice:" : "MS 5/11/2019 21:45",
-		"start:width:height:cats:mice:isCat:" : "LN 5/15/2019 10:07" },
+		"start:width:height:cats:mice:isCat:" : "LN 5/15/2019 10:39" },
 	"instance" : {
 		"cats" : "MS 5/6/2019 21:31",
 		"cats:" : "MS 5/6/2019 21:30",
@@ -18,6 +18,6 @@
 		"spawnMice:" : "MS 5/11/2019 21:11",
 		"spawnPlayer" : "LN 5/15/2019 10:08",
 		"spawnPlayer:" : "LN 5/15/2019 10:14",
-		"tick" : "LN 5/15/2019 10:17",
+		"tick" : "LN 5/15/2019 10:28",
 		"window" : "MS 5/6/2019 21:31",
 		"window:" : "MS 5/6/2019 21:31" } }

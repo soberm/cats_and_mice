@@ -15,4 +15,4 @@ start: player width: width height: height cats: cats mice: mice isCat: isCat
 	game spawnCats: cats.
 	game spawnPlayer: isCat.
 	
-	window game: game
+	window game: game.

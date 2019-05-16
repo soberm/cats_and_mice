@@ -34,5 +34,5 @@ handleKeyDown: anEvent
 	keyValue = 81 "q"
 		ifTrue: [self delete].
 		
-	Transcript show: keyValue; cr.
+	"Transcript show: keyValue; cr."
 

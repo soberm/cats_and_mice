@@ -3,6 +3,7 @@ initialize
 	"comment stating purpose of message"
 	mice := OrderedCollection new.
 	knownCatLocations := OrderedCollection new.
+	isGoal := false.
 	
 	entry1 := CircleMorph new.
 	entry1 bounds: (position1 corner: position1 + (60@60)).

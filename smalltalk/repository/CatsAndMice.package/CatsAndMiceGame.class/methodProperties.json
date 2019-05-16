@@ -1,14 +1,15 @@
 {
 	"class" : {
 		"start:width:height:cats:mice:" : "MS 5/11/2019 21:45",
-		"start:width:height:cats:mice:isCat:" : "LN 5/15/2019 22:54" },
+		"start:width:height:cats:mice:isCat:" : "LN 5/16/2019 08:58" },
 	"instance" : {
 		"cats" : "MS 5/6/2019 21:31",
 		"cats:" : "MS 5/6/2019 21:30",
 		"initialize" : "LN 5/15/2019 22:52",
 		"mice" : "MS 5/6/2019 21:31",
 		"mice:" : "MS 5/6/2019 21:30",
-		"moveCharacters" : "LN 5/16/2019 07:34",
+		"miceTick" : "LN 5/16/2019 08:22",
+		"moveCharacters" : "LN 5/16/2019 08:15",
 		"placeMorph:at:" : "MS 5/6/2019 21:27",
 		"player" : "MS 5/11/2019 21:26",
 		"player:" : "MS 5/11/2019 21:26",
@@ -19,7 +20,8 @@
 		"spawnMice:" : "MS 5/11/2019 21:11",
 		"spawnPlayer" : "LN 5/15/2019 10:08",
 		"spawnPlayer:" : "LN 5/15/2019 10:14",
+		"subwayTick" : "LN 5/16/2019 09:04",
 		"subways" : "LN 5/15/2019 22:53",
-		"tick" : "LN 5/16/2019 07:23",
+		"tick" : "LN 5/16/2019 08:50",
 		"window" : "MS 5/6/2019 21:31",
 		"window:" : "MS 5/6/2019 21:31" } }

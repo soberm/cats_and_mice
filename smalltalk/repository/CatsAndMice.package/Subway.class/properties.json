@@ -14,7 +14,8 @@
 		"position2",
 		"pathPosition",
 		"mice",
-		"knownCatLocations" ],
+		"knownCatLocations",
+		"isGoal" ],
 	"name" : "Subway",
 	"pools" : [
 		 ],

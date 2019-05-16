@@ -1,0 +1,4 @@
+accessing
+maxX
+
+	^self width.

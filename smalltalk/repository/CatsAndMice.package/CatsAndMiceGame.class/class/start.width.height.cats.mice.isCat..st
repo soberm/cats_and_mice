@@ -15,7 +15,7 @@ start: player width: width height: height cats: cats mice: mice isCat: isCat
 	game spawnCats: cats.
 	game spawnPlayer: isCat.
 	
-	subway := Subway createFrom: 100@100 to: 100@200.
+	subway := Subway createFrom: 100@100 to: 100@500.
 	game subways add: subway.
 	
 	window placeMorph: subway path at: subway path position.

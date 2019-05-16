@@ -5,13 +5,14 @@ moveCharacters
 			|mouse|
 		
 			mouse := mice at: mouseIndex.
-			mouse move.
+			mouse move: self window.
 	].
 	1 to: cats size do: [
 		:catIndex |
 			|cat|
 			cat := cats at: catIndex.
 			cat move.
+			cat move: self window.
 		].
 	1 to: subways size do: [
 		:subwayIndex |
@@ -23,7 +24,7 @@ moveCharacters
 				|mouse|
 			
 				mouse := mice at: mouseIndex.
-				mouse move.
+				mouse move: subway.
 			].
 		].
 	"AI"

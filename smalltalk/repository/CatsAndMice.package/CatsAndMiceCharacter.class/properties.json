@@ -6,9 +6,12 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		 ],
-	"name" : "Cat",
+		"position",
+		"direction",
+		"stepLength",
+		"morph" ],
+	"name" : "CatsAndMiceCharacter",
 	"pools" : [
 		 ],
-	"super" : "CatsAndMiceCharacter",
+	"super" : "Object",
 	"type" : "normal" }

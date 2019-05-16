@@ -1,5 +1,5 @@
 as yet unclassified
-handleKeystroke: anEvent
+handleKeyDown: anEvent
 	""
 	
 	| keyValue  |
@@ -26,12 +26,13 @@ handleKeystroke: anEvent
 		ifTrue: [
 			self game player left.	
 		].
-	keyValue = 101 "e"
+	keyValue = 69 "e"
 		ifTrue: [
 			self game player enterOrExit: true.	
 		].
 
-	keyValue = ($q asInteger)
+	keyValue = 81 "q"
 		ifTrue: [self delete].
 		
 	Transcript show: keyValue; cr.
+

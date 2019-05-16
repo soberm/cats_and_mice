@@ -5,7 +5,7 @@ tick
 	removableMice := OrderedCollection new.
 
 	"Check if cat eats mouse"
-	
+	self moveCharacters.
 	1 to: mice size do: [
 		 :mouseIndex | 
 			|mouse|

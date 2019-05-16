@@ -6,14 +6,10 @@
 		 ],
 	"commentStamp" : "",
 	"instvars" : [
-		"position",
-		"direction",
-		"stepLength",
-		"morph",
 		"alive",
 		"enterOrExit" ],
 	"name" : "Mouse",
 	"pools" : [
 		 ],
-	"super" : "Object",
+	"super" : "CatsAndMiceCharacter",
 	"type" : "normal" }

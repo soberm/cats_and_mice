@@ -1,0 +1,23 @@
+{
+	"class" : {
+		 },
+	"instance" : {
+		"direction" : "LN 5/16/2019 07:45",
+		"direction:" : "LN 5/16/2019 07:47",
+		"down" : "LN 5/16/2019 07:51",
+		"downStop" : "LN 5/16/2019 07:51",
+		"enterOrExit" : "LN 5/16/2019 07:48",
+		"enterOrExit:" : "LN 5/16/2019 07:48",
+		"left" : "LN 5/16/2019 07:51",
+		"leftStop" : "LN 5/16/2019 07:51",
+		"morph" : "LN 5/16/2019 07:48",
+		"morph:" : "LN 5/16/2019 07:49",
+		"move" : "LN 5/16/2019 07:49",
+		"position" : "LN 5/16/2019 07:49",
+		"position:" : "LN 5/16/2019 07:50",
+		"right" : "LN 5/16/2019 07:51",
+		"rightStop" : "LN 5/16/2019 07:51",
+		"stepLength" : "LN 5/16/2019 07:50",
+		"stepLength:" : "LN 5/16/2019 07:50",
+		"up" : "LN 5/16/2019 07:52",
+		"upStop" : "LN 5/16/2019 07:52" } }

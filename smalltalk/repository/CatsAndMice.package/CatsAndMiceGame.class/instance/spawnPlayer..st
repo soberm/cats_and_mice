@@ -1,29 +1,37 @@
 as yet unclassified
 spawnPlayer: isCat
-	| character x y |
+	| character x y height width |
 
 	isCat 
 		ifTrue: [
-			x := rand nextInt: window width.
-			y := rand nextInt: window height.
-	
 			character := Cat new.
+		
+			height := window height - character morph height.
+			width := window width - character morph width.
+		
+			x := rand nextInt: width.
+			y := rand nextInt: height.
+		
 			character position: x@y.
-
-			player := character.				
-			cats add: character.
-			self placeMorph: character morph at: x@y.
-			]
-		ifFalse: [
-				x := rand nextInt: window width.
-				y := rand nextInt: window height.
-	
-				character := Mouse new.
-				character position: x@y.
-				mice add: character.
 				
-				player := character.				
-				self placeMorph: character morph at: x@y.
-			].
+			cats add: character.
+			player := character.
+			self placeMorph: character morph at: x@y
+		]
+		ifFalse: [
+			character := Mouse new.
+		
+			height := window height - character morph height.
+			width := window width - character morph width.
+		
+			x := rand nextInt: width.
+			y := rand nextInt: height.
+		
+			character position: x@y.
+			
+			mice add: character.	
+			player := character.
+			self placeMorph: character morph at: x@y
+		].
 	
 			

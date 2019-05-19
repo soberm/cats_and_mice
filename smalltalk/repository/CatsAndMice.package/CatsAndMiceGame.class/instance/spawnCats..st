@@ -1,12 +1,17 @@
 as yet unclassified
 spawnCats: count
-	| cat x y |
+	| cat x y height width |
 
 	count timesRepeat: [
-		x := rand nextInt: window width.
-		y := rand nextInt: window height.
-		
+
 		cat := Cat new.
+		
+		height := window height - cat morph height.
+		width := window width - cat morph width.
+		
+		x := rand nextInt: width.
+		y := rand nextInt: height.
+		
 		cat position: x@y.
 				
 		cats add: cat.

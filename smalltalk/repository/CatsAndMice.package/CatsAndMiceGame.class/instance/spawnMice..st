@@ -1,15 +1,21 @@
 as yet unclassified
 spawnMice: count
-	| mouse x y |
+	| mouse x y height width|
 
 	count timesRepeat: [
-		x := rand nextInt: window width.
-		y := rand nextInt: window height.
 		
 		mouse := Mouse new.
+		
+		height := window height - mouse morph height.
+		width := window width - mouse morph width.
+		
+		x := rand nextInt: width.
+		y := rand nextInt: height.
+		
 		mouse position: x@y.
-				
-		mice add: mouse.
+			
+		mice add: mouse.	
+		
 		self placeMorph: mouse morph at: x@y
 	]. 
 			

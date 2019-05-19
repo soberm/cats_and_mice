@@ -45,6 +45,7 @@ createSubways: count withMinLength: minLength
 		window placeMorph: subway entry2 at: subway entry2 position.
 		
 		i := i + 1.
+		subways add: subway.
 	].
 
 	

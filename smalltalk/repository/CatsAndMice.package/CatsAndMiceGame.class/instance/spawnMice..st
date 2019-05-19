@@ -13,6 +13,8 @@ spawnMice: count
 		y := rand nextInt: height.
 		
 		mouse position: x@y.
+		"TODO add mouse into a subway"
+		mouse parent: window.
 			
 		mice add: mouse.	
 		

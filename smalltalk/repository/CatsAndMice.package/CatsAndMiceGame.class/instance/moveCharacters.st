@@ -11,7 +11,6 @@ moveCharacters
 		:catIndex |
 			|cat|
 			cat := cats at: catIndex.
-			cat move.
 			cat move: self window.
 		].
 	1 to: subways size do: [

@@ -8,7 +8,7 @@
 		"bgimagemorph:" : "MS 5/6/2019 22:08",
 		"game" : "MS 5/6/2019 22:25",
 		"game:" : "MS 5/6/2019 22:25",
-		"handleKeyDown:" : "LN 5/19/2019 17:24",
+		"handleKeyDown:" : "LN 5/19/2019 17:55",
 		"handleKeyUp:" : "LN 5/16/2019 07:30",
 		"initialize" : "LN 5/13/2019 13:07",
 		"keyUp:" : "LN 5/16/2019 07:19",
@@ -19,6 +19,6 @@
 		"placeMorph:at:" : "LN 5/15/2019 22:40",
 		"playingFieldMorph" : "MS 5/9/2019 20:52",
 		"playingFieldMorph:" : "MS 5/9/2019 20:52",
-		"removeObjectMorph:" : "MS 5/9/2019 20:54",
+		"removeObjectMorph:" : "LN 5/19/2019 18:00",
 		"step" : "MS 5/12/2019 12:37",
 		"stepTime" : "LN 5/15/2019 10:30" } }

@@ -1,17 +1,17 @@
-as yet unclassified
+ticks
 subwayTick
 	1 to: subways size do: [
 		:subwayIndex |
-		|removeableMice mice subway|
+		|removeableMice subwayMice subway|
 
 		subway := subways at: subwayIndex.
-		mice := subway mice.
+		subwayMice := subway mice.
 		removeableMice := OrderedCollection new.
-		1 to: mice size do: [
+		1 to: subwayMice size do: [
 			 :mouseIndex | 
 			
 				|mouse canExit|
-				mouse := mice at: mouseIndex.
+				mouse := subwayMice at: mouseIndex.
 				canExit := false.
 				mouse enterOrExit
 					ifTrue: [
@@ -19,13 +19,30 @@ subwayTick
 						canExit :=  subway entry1 intersects: ((mouse morph) bounds).
 						canExit
 							ifTrue: [
+									self removeMorph: mouse morph.
+									1 to:  subway knownCatLocations size do: [
+										:catIndex |
+											|cat|
+											cat := subway knownCatLocations at: catIndex.
+											self removeMorph: cat morph.
+										].
+									mouse parent: window.
 									subway exit: mouse at: subway position1.
 								]
 							ifFalse: [
 								canExit :=  subway entry2 intersects: ((mouse morph) bounds).
 								canExit
 									ifTrue: [
+											self removeMorph: mouse morph.
+											1 to:  subway knownCatLocations size do: [
+												:catIndex |
+													|cat|
+													cat := subway knownCatLocations at: catIndex.
+													self removeMorph: cat morph.
+												].
+											mouse parent: window.
 											subway exit: mouse at: subway position2.
+
 										].
 							].
 						].
@@ -33,17 +50,14 @@ subwayTick
 				canExit
 					ifTrue: [
 							removeableMice add: mouse.
-							self mice add: mouse.
+							mice add: mouse.
 						]
-					ifFalse: [
-							self placeMorph: mouse morph at: mouse position.
-						].
 						
 			].
 		1 to:  removeableMice size do: [
 			:rmMouseIndex |
 				|mouse|
 				mouse := removeableMice at: rmMouseIndex.
-				mice remove: mouse.
+				subwayMice remove: mouse.
 			].
 	].

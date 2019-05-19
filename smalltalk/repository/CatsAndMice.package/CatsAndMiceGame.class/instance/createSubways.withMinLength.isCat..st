@@ -1,5 +1,5 @@
 as yet unclassified
-createSubways: count withMinLength: minLength
+createSubways: count withMinLength: minLength isCat: isCat
 	| subway i x1 x2 y1 y2 z width height |
 	
 	height := window height - 120.
@@ -40,7 +40,10 @@ createSubways: count withMinLength: minLength
 		
 		subway := Subway createFrom: x1@y1 to: x2@y2.
 	
-		window placeMorph: subway path at: subway path position.
+		isCat
+			ifFalse: [
+				window placeMorph: subway path at: subway path position.
+			].
 		window placeMorph: subway entry1 at: subway entry1 position.
 		window placeMorph: subway entry2 at: subway entry2 position.
 		

@@ -1,4 +1,4 @@
-as yet unclassified
+ticks
 miceTick
 	|intersects removeableMice|
 	removeableMice := OrderedCollection new.
@@ -37,13 +37,32 @@ miceTick
 													canEnter :=  subway entry1 intersects: ((mouse morph) bounds).
 													canEnter
 														ifTrue: [
+																self removeMorph: (mouse morph).
+																mouse parent: subway.
 																subway enter: mouse at: subway position1.
+																1 to:  subway knownCatLocations size do: [
+																			:catIndex |
+																				|cat|
+																				cat := subway knownCatLocations at: catIndex.
+																				self removeMorph: cat morph.
+																			].
+																subway knownCatLocations: cats.
 															]
 														ifFalse: [
 															canEnter :=  subway entry2 intersects: ((mouse morph) bounds).
 															canEnter
 																ifTrue: [
-																		subway enter: mouse at: subway position2.
+																	self removeMorph: (mouse morph).
+																	mouse parent: subway.
+
+																	subway enter: mouse at: subway position2.
+																	1 to:  subway knownCatLocations size do: [
+																		:catIndex |
+																			|cat|
+																			cat := subway knownCatLocations at: catIndex.
+																			self removeMorph: cat morph.
+																		].
+																	subway knownCatLocations: cats.
 																	].
 														].
 													
@@ -56,7 +75,6 @@ miceTick
 										].
 								].
 							mouse enterOrExit: false.
-							self placeMorph: mouse morph at: mouse position.
 						].
 					].
 					

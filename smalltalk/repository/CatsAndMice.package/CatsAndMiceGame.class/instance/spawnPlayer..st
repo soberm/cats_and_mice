@@ -29,7 +29,8 @@ spawnPlayer: isCat
 		
 			character position: x@y.
 			
-			mice add: character.	
+			mice add: character.
+			character parent: window.
 			player := character.
 			self placeMorph: character morph at: x@y
 		].

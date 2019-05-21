@@ -9,6 +9,7 @@ public class ServerConstants {
     public static Gson getGson() {
         if(gson == null) {
             GsonBuilder gsonBuilder = new GsonBuilder();
+
             gson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
         }
         return gson;

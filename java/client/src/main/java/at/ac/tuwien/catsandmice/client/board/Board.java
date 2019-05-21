@@ -187,6 +187,21 @@ public class Board extends JPanel implements ActionListener {
                 repaint();
                 if(newWorld.isEnded()) {
                     timer.stop();
+
+                    int sumCatKills = 0;
+                    for(Cat cat : newWorld.getCats()) {
+                        sumCatKills += cat.getKilledMice();
+                    }
+                    int sumSurvivedMice = 0;
+                    for(Subway subway : newWorld.getSubways()) {
+                        if(subway.isEnd()) {
+                            sumSurvivedMice = subway.getContainedMice().size();
+                        }
+                    }
+                    String message = "Cats: " + sumCatKills +  "; Mice: " + sumSurvivedMice + "\n";
+                    message += sumCatKills > sumSurvivedMice ? "Cats have won!" : (sumSurvivedMice > sumCatKills ? "Mice have won!" : "Tie!");
+                    JOptionPane.showMessageDialog(null, message, "ENDED", JOptionPane.INFORMATION_MESSAGE);
+                    System.exit(0);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

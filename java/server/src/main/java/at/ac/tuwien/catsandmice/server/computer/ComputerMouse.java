@@ -6,7 +6,9 @@ import at.ac.tuwien.catsandmice.dto.world.Subway;
 import at.ac.tuwien.catsandmice.dto.world.World;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class ComputerMouse implements IComputerPlayer{
@@ -14,6 +16,7 @@ public class ComputerMouse implements IComputerPlayer{
     private Subway currentSub, nextSub;
     private int speed, xDest, yDest;
     private Queue<Point> steps;
+    private List<Subway> visitedSubways = new ArrayList<>();
 
     public ComputerMouse(Mouse mouse, Subway currentSub) {
         this.mouse = mouse;
@@ -21,6 +24,7 @@ public class ComputerMouse implements IComputerPlayer{
         this.yDest = mouse.getY();
         this.currentSub = currentSub;
         this.nextSub = currentSub;
+        visitedSubways = new ArrayList<>();
         steps = new LinkedList<>();
         this.speed = 3;
     }
@@ -65,7 +69,7 @@ public class ComputerMouse implements IComputerPlayer{
                 Point nextPoint = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE, null);
 
                 for (Subway s : world.getSubways()) {
-                    if (s.getUuid().equals(currentSub.getUuid())) {
+                    if (s.getUuid().equals(currentSub.getUuid()) ||visitedSubways.contains(s)) {
                         continue;
                     }
 
@@ -77,7 +81,9 @@ public class ComputerMouse implements IComputerPlayer{
 
                 // let mouse walk to the middle of the next subway
                 steps.add(calculateSubwayCenter(nextPoint));
+                visitedSubways.add(nextPoint.getSubway());
             }
+
 
             // get next dest from queue
             Point tmp = steps.remove();

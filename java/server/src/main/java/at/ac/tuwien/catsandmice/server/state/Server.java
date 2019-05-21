@@ -171,7 +171,10 @@ public class Server implements Runnable {
             //TODO set width & height according to sprites
             mouse.setWidth(50);
             mouse.setHeight(25);
-            Subway currentSub = world.getSubways().get(ThreadLocalRandom.current().nextInt(world.getSubways().size()));
+            Subway currentSub = null;
+            while(currentSub == null || currentSub.isEnd()) {
+                currentSub = world.getSubways().get(ThreadLocalRandom.current().nextInt(world.getSubways().size()));
+            }
             mouse.setBoundaries(currentSub);
             currentSub.addMouse(mouse);
             mouse.setX((currentSub.getX1() + currentSub.getX2()) / 2);
@@ -196,7 +199,10 @@ public class Server implements Runnable {
 
     public void login(Mouse mouse, Socket socket) {
         if(mouse != null) {
-            Subway currentSub = world.getSubways().get(ThreadLocalRandom.current().nextInt(world.getSubways().size()));
+            Subway currentSub = null;
+            while(currentSub == null || currentSub.isEnd()) {
+                currentSub = world.getSubways().get(ThreadLocalRandom.current().nextInt(world.getSubways().size()));
+            }
             mouse.setBoundaries(currentSub);
             mouse.setX((currentSub.getX1() + currentSub.getX2()) / 2);
             mouse.setY((currentSub.getY1() + currentSub.getY2()) / 2);
@@ -311,6 +317,7 @@ public class Server implements Runnable {
                     e.printStackTrace();
                 }
             }
+            System.exit(0);
         }
 
         private boolean checkEnded() {

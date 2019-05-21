@@ -151,6 +151,9 @@ public abstract class Player {
 
     public void draw(Graphics2D g2d, ImageObserver observer, World world) {
         for(Subway subway : world.getSubways()) {
+            if(character instanceof Cat) {
+                subway.setEnd(false);
+            }
             SubwayRepresentation subRepresentation = new SubwayRepresentation(subway);
             subRepresentation.draw(g2d, observer, true);
         }

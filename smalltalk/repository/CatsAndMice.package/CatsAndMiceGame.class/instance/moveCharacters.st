@@ -9,14 +9,12 @@ moveCharacters
 	1
 		to: cats size
 		do: [:catIndex | 
-			| cat x1 y1 targetX targetY distance xDiff yDiff |
+			| cat x1 y1 targetX targetY distance |
 			cat := cats at: catIndex.
 			x1 := cat position x.
 			y1 := cat position y.
 			targetX := 0.
 			targetY := 0.
-			xDiff := 0.
-			yDiff := 0.
 			distance := 2 raisedTo: 31.
 			cat == player
 				ifFalse: [1
@@ -32,16 +30,13 @@ moveCharacters
 								ifTrue: [distance := tmp.
 									targetX := x2.
 									targetY := y2]].
-					xDiff := (x1 - targetX) abs.
-					yDiff := (y1 - targetY) abs.
-					
-						x1 <= targetX
-								ifTrue: [cat right]
-								ifFalse: [cat left].
-						 y1 <= targetY
-							ifTrue: [cat down]
-							ifFalse: [cat up].
-					cat move: self window]].
+					y1 <= targetY
+						ifTrue: [cat down]
+						ifFalse: [cat up].
+					x1 <= targetX
+						ifTrue: [cat right]
+						ifFalse: [cat left]].
+			cat move: self window].
 	1
 		to: subways size
 		do: [:subwayIndex | 

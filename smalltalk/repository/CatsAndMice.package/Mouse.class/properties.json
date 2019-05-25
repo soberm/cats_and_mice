@@ -8,7 +8,10 @@
 	"instvars" : [
 		"alive",
 		"enterOrExit",
-		"parent" ],
+		"parent",
+		"nextGoalX",
+		"nextGoalY",
+		"visitedSubways" ],
 	"name" : "Mouse",
 	"pools" : [
 		 ],

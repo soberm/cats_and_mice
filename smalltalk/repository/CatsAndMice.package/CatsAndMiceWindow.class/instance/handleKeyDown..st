@@ -26,7 +26,7 @@ handleKeyDown: anEvent
 		ifTrue: [
 			self game player left.	
 		].
-	keyValue = 101 "e"
+	keyValue = 69 "e"
 		ifTrue: [
 			self game player enterOrExit: true.	
 		].

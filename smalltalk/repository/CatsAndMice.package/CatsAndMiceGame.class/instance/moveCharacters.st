@@ -5,11 +5,17 @@ moveCharacters
 		do: [:mouseIndex | 
 			| mouse |
 			mouse := mice at: mouseIndex.
-			mouse move: self window].
+			mouse == player
+				ifFalse: [
+						self aiMoveMouse: mouse.
+					].
+				
+				mouse move: self window			
+			].
 	1
 		to: cats size
 		do: [:catIndex | 
-			| cat x1 y1 targetX targetY distance |
+			| cat x1 y1 targetX targetY distance  |
 			cat := cats at: catIndex.
 			x1 := cat position x.
 			y1 := cat position y.
@@ -30,12 +36,32 @@ moveCharacters
 								ifTrue: [distance := tmp.
 									targetX := x2.
 									targetY := y2]].
-					y1 <= targetY
+					y1 < (targetY-4)
 						ifTrue: [cat down]
-						ifFalse: [cat up].
-					x1 <= targetX
+						ifFalse: [
+							y1 > (targetY+4) 
+								ifTrue: 
+								[
+									cat up
+								]
+								ifFalse: [
+										cat upStop.
+										cat downStop.
+									].
+
+							].
+					x1 < (targetX-4)
 						ifTrue: [cat right]
-						ifFalse: [cat left]].
+						ifFalse: [
+							x1 > (targetX + 4)
+								ifTrue: [
+									cat left
+									]
+								ifFalse: [
+									cat leftStop.
+									cat rightStop.
+									].
+							]].
 			cat move: self window].
 	1
 		to: subways size
@@ -48,4 +74,8 @@ moveCharacters
 				do: [:mouseIndex | 
 					| mouse |
 					mouse := mice at: mouseIndex.
+					mouse == player
+						ifFalse: [
+								self aiMoveMouse: mouse.
+							].
 					mouse move: subway]]

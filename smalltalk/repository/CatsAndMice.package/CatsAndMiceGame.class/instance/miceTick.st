@@ -18,7 +18,6 @@ miceTick
 				ifTrue: [
 					mouse alive: false.
 					removeableMice add: mouse.
-					Transcript show: String cr, mouseIndex.
 					self removeMorph: (mouse morph).
 				]
 				ifFalse: [
@@ -30,7 +29,6 @@ miceTick
 									1 to: subways size do: [
 										:subwayIndex |
 											|subway|
-											Transcript show: mouse enterOrExit.
 											mouse enterOrExit
 												ifTrue: [
 													subway := subways at: subwayIndex.

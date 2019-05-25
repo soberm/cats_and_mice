@@ -33,4 +33,5 @@ handleKeyDown: anEvent
 
 	keyValue = 81 "q"
 		ifTrue: [self delete].
+	"Transcript show: String cr, keyValue."
 

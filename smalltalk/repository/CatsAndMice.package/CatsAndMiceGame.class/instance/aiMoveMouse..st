@@ -59,17 +59,16 @@ aiMoveMouse: mouse
 								mouse nextGoalY: mouse parent position1 y.
 							]
 						ifFalse: [
-								mouse nextGoalX: mouse parent position2 x + 60.
-								mouse nextGoalY: mouse parent position2 y + 60.
+								mouse nextGoalX: mouse parent position2 x.
+								mouse nextGoalY: mouse parent position2 y.
 							].
 				].
 			].
 		"only move if smaller than step size"
-
-		y1 < (mouse nextGoalY - mouse morph height-3)
+		y1 < (mouse nextGoalY -4)
 			ifTrue: [mouse down]
 			ifFalse: [
-				y1 > (mouse nextGoalY + 3) 
+				y1 > (mouse nextGoalY+4) 
 					ifTrue: 
 					[
 						mouse up
@@ -80,10 +79,10 @@ aiMoveMouse: mouse
 						].
 
 				].
-			x1 < (mouse nextGoalX - mouse morph width-3)
+			x1 < (mouse nextGoalX -4)
 				ifTrue: [mouse right]
 				ifFalse: [
-					x1 > (mouse nextGoalX + 3)
+					x1 > (mouse nextGoalX + 4)
 						ifTrue: [
 							mouse left
 							]
@@ -93,15 +92,12 @@ aiMoveMouse: mouse
 						].
 					].
 			"check wheter we are at the goal"
-
 			enter := mouse direction x = 0.
 			enter := enter and:  [mouse direction y = 0].
 			enter
 				ifTrue: [
 						Transcript show: String cr,'resetting'.
 						mouse enterOrExit: true.
-						mouse nextGoalX: nil.
-						mouse nextGoalY: nil.
 					].
 
 						

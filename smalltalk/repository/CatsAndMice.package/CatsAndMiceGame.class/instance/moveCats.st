@@ -5,8 +5,8 @@ moveCats
 		do: [:catIndex | 
 			| cat x1 y1 targetX targetY distance |
 			cat := cats at: catIndex.
-			x1 := cat position x.
-			y1 := cat position y.
+			x1 := cat morph position x.
+			y1 := cat morph position y.
 			targetX := 0.
 			targetY := 0.
 			distance := 2 raisedTo: 31.

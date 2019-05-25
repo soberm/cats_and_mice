@@ -31,7 +31,6 @@ subwayTick
 								]
 							ifFalse: [
 								canExit :=  subway entry2 intersects: ((mouse morph) bounds).
-								Transcript show: String cr, canExit.
 								canExit
 									ifTrue: [
 											self removeMorph: mouse morph.

@@ -1,6 +1,5 @@
 as yet unclassified
 step
-	"makes one step during stepping"
 	| message miceScore catScore |
 	game tick.
 	"Check for a winner and stop"
@@ -9,7 +8,7 @@ step
 			miceScore := game goal mice size.
 			catScore := game eatenMice.
 			catScore > miceScore
-				ifTrue: [message := 'Cats won! ', catScore , ' Mice eaten.']
-				ifFalse: [message := 'Mice won! ', miceScore , ' Mice in goal.'].
+				ifTrue: [message := 'Cats won! ' , catScore , ' Mice eaten.']
+				ifFalse: [message := 'Mice won! ' , miceScore , ' Mice in goal.'].
 			UIManager default inform: message.
 			self delete]

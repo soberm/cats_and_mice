@@ -1,22 +1,25 @@
-# cats_and_mice smalltalk
+# Cats and Mice in Smalltalk
 
-## how to import old project
+## Install
 
-check if MetaCello and Filetree are installed (https://github.com/dalehenrich/filetree)
-probably we have to use Squeak 5.1 (Michis 5.2 version is also working)
+1. Install FileTree in Squeak
 
-in the Monticello browser press +Repository, select //filetree (or sth like that), select the repo folder of the old project
+```Smalltalk
+Installer ss3
+    project: 'FileTree';
+    install: 'ConfigurationOfFileTree'.
+((Smalltalk at: #ConfigurationOfFileTree) project version: #'stable') load.
+```
+2. In the Monticello browser press +Repository, select filetree:// and select the repository folder.
 
-select the new filetree imported repository on the right side, select Game, Select Game-MP.7, press Load, the same thing for snakes --> now the classes should be available in the browser
+3. Select the new filetree imported repository on the right side, select CatsAndMice and press Load.
 
-open a new Morphic project
+4. Copy the images provided in images into the squeak installation folder.
 
-copy the images provided in imgSmalltalk into the squeak installation folder, create a background image and most easily call it: bg-1-320x200.png , then open a workspace and run:
+## Run
 
-|game| 
+Open a Transcript and run:
 
-game := SnakesGame runWithPlayers: 1.
-
-you will have to select images for the players
-
-finished, now we only have to rewrite it so work for our project
+```
+CatsAndMiceGame width: 1920 height: 1080 cats: 2 mice: 3 isCat: false.
+```

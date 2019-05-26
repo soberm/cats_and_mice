@@ -1,3 +1,0 @@
-private
-makeItemMorph
-	self subclassResponsibility.

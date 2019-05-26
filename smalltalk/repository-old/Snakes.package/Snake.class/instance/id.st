@@ -1,3 +1,0 @@
-Snakes
-id
-	^id.

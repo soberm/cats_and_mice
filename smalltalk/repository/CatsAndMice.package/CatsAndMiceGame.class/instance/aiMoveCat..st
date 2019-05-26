@@ -31,4 +31,6 @@ aiMoveCat: cat
 				ifFalse: [x1 > (targetX + 4)
 						ifTrue: [cat left]
 						ifFalse: [cat leftStop.
-							cat rightStop]]]
+							cat rightStop]].
+			(targetX = 0) & (targetY = 0)
+				ifTrue: [cat direction: 0 @ 0]]

@@ -8,5 +8,3 @@ tick
 	self miceTick.
 	
 	self renderTick.
-	"AI"
-	"make sure to filter out the player in mice/cats, by using e.g. cats at: catindex !== player, adding the player to these lists makes rendering and collision detection a lot easier"

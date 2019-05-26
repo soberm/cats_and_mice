@@ -50,7 +50,8 @@ createSubways: count withMinLength: minLength isCat: isCat
 		i := i + 1.
 		subways add: subway.
 	].
-	(subways at: (rand nextInt: subways size)) isGoal: true.
+	goal := subways at: (rand nextInt: subways size).
+	goal isGoal: true.
 	
 
 	

@@ -18,6 +18,7 @@ miceTick
 				ifTrue: [
 					mouse alive: false.
 					removeableMice add: mouse.
+					eatenMice := eatenMice + 1.
 					self removeMorph: (mouse morph).
 				]
 				ifFalse: [

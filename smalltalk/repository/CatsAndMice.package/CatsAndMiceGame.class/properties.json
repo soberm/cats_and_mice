@@ -11,7 +11,9 @@
 		"cats",
 		"mice",
 		"rand",
-		"subways" ],
+		"subways",
+		"goal",
+		"eatenMice" ],
 	"name" : "CatsAndMiceGame",
 	"pools" : [
 		 ],

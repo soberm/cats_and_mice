@@ -14,7 +14,7 @@ aiMoveMouse: mouse
 		mouse nextGoalY: 0.
 		visitedSubways := mouse visitedSubways.
 		inSubway := mouse parent isMemberOf: Subway.
-		Transcript show: String cr, mouse parent.
+
 		inSubway 
 			ifFalse: [
 				"we are not in a subway, look for the closest one we have not been at"
@@ -96,7 +96,6 @@ aiMoveMouse: mouse
 			enter := enter and:  [mouse direction y = 0].
 			enter
 				ifTrue: [
-						Transcript show: String cr,'resetting'.
 						mouse enterOrExit: true.
 					].
 

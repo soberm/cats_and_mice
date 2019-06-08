@@ -19,13 +19,22 @@ feature {NONE} -- Initialization
 			user_cat: USER_CAT
 			playfield: PLAYFIELD
 			ticks: INTEGER
+			subways: LINKED_LIST [SUBWAY]
+			s1: SUBWAY
+			s2: SUBWAY
 			-- Run application.
 		do
 			io.put_string ("Start cats and mice!%N")
 
 			prepare_input
-			create user_cat.make (10,10)
-			create playfield.make(1,1,user_cat)
+			create subways.make
+			create s1.make (10, 10, 10, 16, True)
+			create s2.make (30, 14, 50, 14, False)
+			subways.extend (s1)
+			subways.extend (s2)
+
+			create user_cat.make (10, 10)
+			create playfield.make(1, 1, user_cat, subways)
 
 			from
 				ticks := 0

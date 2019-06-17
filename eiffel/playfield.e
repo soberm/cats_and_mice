@@ -21,9 +21,10 @@ feature {NONE} -- fields
 	cat_bots: LINKED_LIST [COMPUTER_CAT]
 	mouse_bots: LINKED_LIST [COMPUTER_MOUSE]
 	subways: LINKED_LIST [SUBWAY]
+	target_subway: SUBWAY
 
 feature -- initialization
-	make (cat_players : INTEGER; mouse_players : INTEGER; u : USER; s: LINKED_LIST [SUBWAY])
+	make (cat_players : INTEGER; mouse_players : INTEGER; u : USER; s: LINKED_LIST [SUBWAY]; target: SUBWAY)
 		require
 			positive_cat_players: cat_players > 0
 			positive_mouse_players: mouse_players > 0
@@ -33,7 +34,9 @@ feature -- initialization
 			create cat_bots.make
 			create mouse_bots.make
 			create subways.make
+
 			subways := s
+			target_subway := target
 			create_bots
 		end
 
@@ -45,15 +48,15 @@ feature -- initialization
 			m2: COMPUTER_MOUSE
 		do --TODO set proper random positions, generify number of bots
 
-			create c1.make (1, 1)
-			create c2.make (2, 2)
-			create m1.make (3, 3)
-			create m2.make (4, 4)
-
-			cat_bots.extend (c1)
-			cat_bots.extend (c2)
+			create m1.make (75, 24, subways, target_subway)
+			create m2.make (75, 1, subways, target_subway)
 			mouse_bots.extend (m1)
 			mouse_bots.extend (m2)
+
+			create c1.make (1, 24, subways, mouse_bots)
+			create c2.make (1, 2, subways, mouse_bots)
+			cat_bots.extend (c1)
+			cat_bots.extend (c2)
 		end
 
 feature -- helper functions
@@ -83,11 +86,6 @@ feature -- game logic
 feature -- display logic
 	display_playfield
 		local
-			i: INTEGER
-			j: INTEGER
-			s_cnt: INTEGER
-			s_min: INTEGER
-			s_max: INTEGER
 			field : ARRAY2[CHARACTER]
 		do
 			create field.make_filled(' ', MAX_Y_POS, MAX_X_POS)

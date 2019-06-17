@@ -12,14 +12,14 @@ inherit
 
 feature --fields
 	alive : BOOLEAN
-	-- TODO change type to subway
-	target_subway : INTEGER
-	current_subway : INTEGER
-
+	target_subway : SUBWAY
+	current_subway : detachable SUBWAY
+	known_cat_positions : HASH_TABLE[POINT, INTEGER]
 
 feature -- overriden inherited methods
 	init
 		do
+			create known_cat_positions.make (2)
 			speed := 1
 			alive := TRUE
 		end
@@ -40,14 +40,18 @@ feature -- mouse specific methods
 			alive := FALSE
 		end
 
-	set_current_subway (cs : INTEGER)
+	set_current_subway (cs : SUBWAY)
 		do
 			current_subway := cs
 		end
 
-	set_target_subway (ts : INTEGER)
+	set_target_subway (ts : SUBWAY)
 		do
 			target_subway := ts
 		end
 
+	inform_about_cats(info: HASH_TABLE[POINT, INTEGER])
+		do
+			known_cat_positions := info
+		end
 end

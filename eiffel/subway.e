@@ -59,6 +59,21 @@ feature
 			RESULT := (entrance1 = p.position) or (entrance2 = p.position)
 		end
 
+	calculuate_distance_to (point: POINT): INTEGER
+		local
+			dist1: INTEGER
+			dist2: INTEGER
+		do
+			dist1 := entrance1.calculuate_distance_to (point)
+			dist2 := entrance2.calculuate_distance_to (point)
+
+			if(dist1 < dist2) then
+				RESULT := dist1
+			else
+				RESULT := dist2
+
+		end
+end
 
 invariant
 	valid_x1: entrance1.x > MIN_X_POS + 1 and entrance1.x < MAX_X_POS - 1

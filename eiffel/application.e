@@ -28,13 +28,13 @@ feature {NONE} -- Initialization
 
 			prepare_input
 			create subways.make
-			create s1.make (10, 10, 10, 16, True)
-			create s2.make (30, 14, 50, 14, False)
+			create s1.make (10, 10, 10, 16, False)
+			create s2.make (30, 14, 50, 14, True)
 			subways.extend (s1)
 			subways.extend (s2)
 
 			create user_cat.make (10, 10)
-			create playfield.make(1, 1, user_cat, subways)
+			create playfield.make(1, 1, user_cat, subways, s1)
 
 			from
 				ticks := 0
@@ -48,7 +48,7 @@ feature {NONE} -- Initialization
 				clear_screen
 				playfield.display_playfield
 
-				sleep (1000 * 1000 * 1000)
+				sleep (1000 * 1000 * 100)
 				ticks := ticks + 1
 			end
 

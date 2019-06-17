@@ -44,7 +44,7 @@ feature --initialization
 feature
 	on_entry_or_exit (p: PLAYER): BOOLEAN
 		do
-			RESULT := (x1 = p.x_pos and y1 = p.y_pos) or (x2 = p.x_pos and y2 = p.y_pos)
+			RESULT := (x1 = p.position.x and y1 = p.position.y) or (x2 = p.position.x and y2 = p.position.y)
 		end
 
 

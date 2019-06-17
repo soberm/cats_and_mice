@@ -16,10 +16,12 @@ create
 
 feature -- initialization
 	make (x: INTEGER; y: INTEGER)
+		local
+			initPosition: POINT
 		do
+			create initPosition.make (x, y)
 			init
-			x_pos := x
-			y_pos := y
+			position := initPosition
 		end
 
 feature -- overriden inherited features
@@ -33,7 +35,7 @@ feature -- overriden inherited features
 			RESULT := identity_symbol
 		end
 
-	validate_move (x_tmp : INTEGER; y_tmp : INTEGER) : BOOLEAN
+	validate_move (tmp : POINT) : BOOLEAN
 		do
 			RESULT := true
 		end

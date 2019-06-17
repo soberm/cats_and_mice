@@ -14,32 +14,29 @@ feature -- implement deferred methods
 	move
 		local
 			read_char : CHARACTER
-			y_tmp : INTEGER
-			x_tmp : INTEGER
+			tmp : POINT
 		do
 			read_char := get_char
-			y_tmp := y_pos
-			x_tmp := x_pos
+			tmp := position
 
-			if (read_char = 'w') and y_pos > MIN_Y_POS then
-				y_tmp := y_pos - 1
-			elseif (read_char = 's') and y_pos < MAX_Y_POS then
-				y_tmp := y_pos + 1
-			elseif (read_char = 'a') and x_pos > MIN_X_POS then
-				x_tmp := x_pos - 1
-			elseif (read_char = 'd') and x_pos < MAX_X_POS then
-				x_tmp := x_pos + 1
+			if (read_char = 'w') and position.y > MIN_Y_POS then
+				tmp.y := position.y - 1
+			elseif (read_char = 's') and position.y < MAX_Y_POS then
+				tmp.y := position.y + 1
+			elseif (read_char = 'a') and position.x > MIN_X_POS then
+				tmp.x := position.x - 1
+			elseif (read_char = 'd') and position.x < MAX_X_POS then
+				tmp.x := position.x + 1
 			end
 
-			if validate_move (x_tmp, y_tmp) then
-				y_pos := y_tmp
-				x_pos := x_tmp
+			if validate_move (tmp) then
+				position := tmp
 			end
 
 		end
 
 feature -- user specific features
-	validate_move (x_tmp : INTEGER; y_tmp : INTEGER) : BOOLEAN
+	validate_move (tmp : POINT) : BOOLEAN
 		deferred
 		end
 

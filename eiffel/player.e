@@ -14,8 +14,7 @@ feature -- constants
 	MAX_Y_POS: INTEGER = 25
 
 feature -- fields
-	x_pos: INTEGER
-	y_pos: INTEGER
+	position: POINT
 
 feature --methods implemented by inherited classes
 	move
@@ -31,30 +30,17 @@ feature --methods implemented by inherited classes
 		end
 
 feature -- setter methods
-	set_x_pos (newx: INTEGER)
+	set_new_pos(newPos: Point)
 		require
-			newx >= MIN_X_POS and newx <= MAX_X_POS
+			newPos.x >= MIN_X_POS and newPos.x <= MAX_X_POS
+			newPos.y >= MIN_Y_POS and newPos.y <= MAX_Y_POS
 		do
-			x_pos := newx
-
-		ensure -- maybe unnecessary because of invariant?
-			x_pos >= MIN_X_POS and x_pos <= MAX_X_POS
-
-		end
-
-	set_y_pos (newy: INTEGER)
-		require
-			newy >= MIN_Y_POS and newy <= MAX_Y_POS
-		do
-			y_pos := newy
-
-		ensure -- maybe unnecessary because of invariant?
-			y_pos >= MIN_Y_POS and y_pos <= MAX_Y_POS
+			position := newPos
 
 		end
 
 invariant
-	valid_x_pos: x_pos >= MIN_X_POS and x_pos <= MAX_X_POS
-	valid_y_pos: y_pos >= MIN_Y_POS and y_pos <= MAX_Y_POS
+	valid_x_pos: position.x >= MIN_X_POS and position.x <= MAX_X_POS
+	valid_y_pos: position.y >= MIN_Y_POS and position.y <= MAX_Y_POS
 
 end

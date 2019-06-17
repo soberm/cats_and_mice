@@ -16,17 +16,19 @@ create
 
 feature --initialization
 	make (x: INTEGER; y: INTEGER)
+		local
+			initPosition: POINT
 		do
+			create initPosition.make (x, y)
 			init
-			x_pos := x
-			y_pos := y
+			position := initPosition
 		end
 
 feature -- overridden inherited features
 	move
 		do
 			-- TODO: implement "AI" algorithm
-			y_pos := y_pos +1
+			position.y := position.y +1
 		end
 
 	get_speed : INTEGER

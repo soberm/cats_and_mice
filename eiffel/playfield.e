@@ -34,7 +34,6 @@ feature -- initialization
 			create mouse_bots.make
 			create subways.make
 			subways := s
-			-- TODO: initialize cat and mouse players
 			create_bots
 		end
 
@@ -44,7 +43,8 @@ feature -- initialization
 			c2: COMPUTER_CAT
 			m1: COMPUTER_MOUSE
 			m2: COMPUTER_MOUSE
-		do
+		do --TODO set proper random positions, generify number of bots
+
 			create c1.make (1, 1)
 			create c2.make (2, 2)
 			create m1.make (3, 3)
@@ -104,17 +104,17 @@ feature -- display logic
 		local
 		do
 			across cat_bots as cat loop
-				field.put (cat.item.get_symbol, cat.item.y_pos, cat.item.x_pos)
+				field.put (cat.item.get_symbol, cat.item.position.y, cat.item.position.x)
 			end
 
 			across mouse_bots as mouse loop
-				field.put (mouse.item.get_symbol, mouse.item.y_pos, mouse.item.x_pos)
+				field.put (mouse.item.get_symbol, mouse.item.position.y, mouse.item.position.x)
 			end
 		end
 
 	set_player (field : ARRAY2[CHARACTER])
 		do
-			field.put (user.get_symbol, user.y_pos, user.x_pos)
+			field.put (user.get_symbol, user.position.y, user.position.x)
 		end
 
 	set_subways(field : ARRAY2[CHARACTER])

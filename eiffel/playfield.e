@@ -35,6 +35,25 @@ feature -- initialization
 			create subways.make
 			subways := s
 			-- TODO: initialize cat and mouse players
+			create_bots
+		end
+
+	create_bots
+		local
+			c1: COMPUTER_CAT
+			c2: COMPUTER_CAT
+			m1: COMPUTER_MOUSE
+			m2: COMPUTER_MOUSE
+		do
+			create c1.make (1, 1)
+			create c2.make (2, 2)
+			create m1.make (3, 3)
+			create m2.make (4, 4)
+
+			cat_bots.extend (c1)
+			cat_bots.extend (c2)
+			mouse_bots.extend (m1)
+			mouse_bots.extend (m2)
 		end
 
 feature -- helper functions
@@ -52,6 +71,13 @@ feature -- game logic
 	execute_game_step
 		do
 			user.move
+			across cat_bots as cat loop
+				cat.item.move
+			end
+
+			across mouse_bots as mouse loop
+				mouse.item.move
+			end
 		end
 
 feature -- display logic
@@ -66,10 +92,37 @@ feature -- display logic
 		do
 			create field.make_filled(' ', MAX_Y_POS, MAX_X_POS)
 
-			-- TODO iterate over all players and draw symbol
-			field.put (user.get_symbol, user.y_pos, user.x_pos)
+			set_player(field)
+			set_bots(field)
 
-			-- TODO add subways to field
+			set_subways(field)
+			print_field(field)
+
+		end
+
+	set_bots (field : ARRAY2[CHARACTER])
+		local
+		do
+			across cat_bots as cat loop
+				field.put (cat.item.get_symbol, cat.item.y_pos, cat.item.x_pos)
+			end
+
+			across mouse_bots as mouse loop
+				field.put (mouse.item.get_symbol, mouse.item.y_pos, mouse.item.x_pos)
+			end
+		end
+
+	set_player (field : ARRAY2[CHARACTER])
+		do
+			field.put (user.get_symbol, user.y_pos, user.x_pos)
+		end
+
+	set_subways(field : ARRAY2[CHARACTER])
+		local
+			s_cnt: INTEGER
+			s_min: INTEGER
+			s_max: INTEGER
+		do
 			across subways as subway loop
 				if (subway.item.x1 = subway.item.x2) then
 					s_min := subway.item.y1
@@ -98,7 +151,13 @@ feature -- display logic
 					s_cnt := s_cnt + 1
 				end
 			end
+		end
 
+	print_field (field : ARRAY2[CHARACTER])
+		local
+			i: INTEGER
+			j: INTEGER
+		do
 			from
 				i := 1
 			until
@@ -120,5 +179,4 @@ feature -- display logic
 				i := i+1
 			end
 		end
-
 end

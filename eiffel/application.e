@@ -48,7 +48,7 @@ feature {NONE} -- Initialization
 				clear_screen
 				playfield.display_playfield
 
-				sleep (1000 * 1000 * 100)
+				sleep (1000 * 1000 * 1000)
 				ticks := ticks + 1
 			end
 

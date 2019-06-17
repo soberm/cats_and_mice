@@ -26,6 +26,7 @@ feature -- overridden inherited features
 	move
 		do
 			-- TODO: implement "AI" algorithm
+			x_pos := x_pos +1
 		end
 
 	get_speed : INTEGER

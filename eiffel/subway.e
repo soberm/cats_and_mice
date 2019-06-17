@@ -17,10 +17,8 @@ feature -- constants
 	MAX_Y_POS: INTEGER = 25
 
 feature -- fields
-	x1: INTEGER
-	y1: INTEGER
-	x2: INTEGER
-	y2: INTEGER
+	entrance1: POINT
+	entrance2: POINT
 	is_target: BOOLEAN
 
 
@@ -33,27 +31,41 @@ feature --initialization
 			valid_y2_init: y2_init > MIN_Y_POS + 1 and y2_init < MAX_Y_POS - 1
 			valid_x_init: x2_init >= x1_init
 			valid_y_init: y2_init >= y1_init
+		local
+			p1: POINT
+			p2: POINT
 		do
-			x1 := x1_init
-			y1 := y1_init
-			x2 := x2_init
-			y2 := y2_init
+			create p1.make (x1_init, y1_init)
+			create p2.make (x2_init, y2_init)
+
+			entrance1 := p1
+			entrance2 := p2
 			is_target := t
 		end
 
 feature
+	is_vertical: BOOLEAN
+		do
+			RESULT := (entrance1.x = entrance2.x)
+		end
+
+	is_horizontal: BOOLEAN
+		do
+			RESULT := (entrance1.y = entrance2.y)
+		end
+
 	on_entry_or_exit (p: PLAYER): BOOLEAN
 		do
-			RESULT := (x1 = p.position.x and y1 = p.position.y) or (x2 = p.position.x and y2 = p.position.y)
+			RESULT := (entrance1 = p.position) or (entrance2 = p.position)
 		end
 
 
 invariant
-	valid_x1: x1 > MIN_X_POS + 1 and x1 < MAX_X_POS - 1
-	valid_x2: x2 > MIN_X_POS + 1 and x2 < MAX_X_POS - 1
-	valid_y1: y1 > MIN_Y_POS + 1 and y1 < MAX_Y_POS - 1
-	valid_y2: y2 > MIN_Y_POS + 1 and y2 < MAX_Y_POS - 1
-	vaild_x_coordinate: x2 >= x1
-	valid_y_coordinate: y2 >= y1
+	valid_x1: entrance1.x > MIN_X_POS + 1 and entrance1.x < MAX_X_POS - 1
+	valid_x2: entrance2.x > MIN_X_POS + 1 and entrance2.x < MAX_X_POS - 1
+	valid_y1: entrance1.y > MIN_Y_POS + 1 and entrance1.y < MAX_Y_POS - 1
+	valid_y2: entrance2.y > MIN_Y_POS + 1 and entrance2.y < MAX_Y_POS - 1
+	vaild_x_coordinate: entrance2.x >= entrance1.x
+	valid_y_coordinate: entrance2.y >= entrance1.y
 
 end

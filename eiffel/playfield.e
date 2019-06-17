@@ -124,16 +124,16 @@ feature -- display logic
 			s_max: INTEGER
 		do
 			across subways as subway loop
-				if (subway.item.x1 = subway.item.x2) then
-					s_min := subway.item.y1
-					s_max := subway.item.y2
-					field.put ('-', s_min-1, subway.item.x1)
-					field.put ('-', s_max+1, subway.item.x1)
+				if (subway.item.is_vertical) then
+					s_min := subway.item.entrance1.y
+					s_max := subway.item.entrance2.y
+					field.put ('-', s_min-1, subway.item.entrance1.x)
+					field.put ('-', s_max+1, subway.item.entrance1.x)
 				else
-					s_min := subway.item.x1
-					s_max := subway.item.x2
-					field.put ('|', subway.item.y1, s_min-1)
-					field.put ('|', subway.item.y1, s_max+1)
+					s_min := subway.item.entrance1.x
+					s_max := subway.item.entrance2.x
+					field.put ('|', subway.item.entrance1.y, s_min-1)
+					field.put ('|', subway.item.entrance1.y, s_max+1)
 				end
 
 				from
@@ -141,12 +141,12 @@ feature -- display logic
 				until
 					s_cnt > s_max
 				loop
-					if (subway.item.x1 = subway.item.x2) then
-						field.put ('|', s_cnt, subway.item.x1+1)
-						field.put ('|', s_cnt, subway.item.x1-1)
+					if (subway.item.is_vertical) then
+						field.put ('|', s_cnt, subway.item.entrance1.x+1)
+						field.put ('|', s_cnt, subway.item.entrance1.x-1)
 					else
-						field.put ('-', subway.item.y1+1, s_cnt)
-						field.put ('-', subway.item.y1-1, s_cnt)
+						field.put ('-', subway.item.entrance1.y+1, s_cnt)
+						field.put ('-', subway.item.entrance1.y-1, s_cnt)
 					end
 					s_cnt := s_cnt + 1
 				end

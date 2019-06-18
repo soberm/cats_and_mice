@@ -17,7 +17,6 @@ feature {NONE} -- Initialization
 	make
 		local
 			playfield: PLAYFIELD
-			ticks: INTEGER
 			subways: LINKED_LIST [SUBWAY]
 			s1: SUBWAY
 			s2: SUBWAY
@@ -55,24 +54,28 @@ feature {NONE} -- Initialization
 
 			create playfield.make(cat_players, mouse_players, player_type, subways, s1)
 
+			-- TODO
+			-- remove ticks: game does not stop that way
+			-- add different view for mice and cat player (see aufgabe1.pdf)
+			-- test, test, test...
+			-- input issue when restarting the game
+			-- propagate playfield info when mouse enters subway
+
 			from
-				ticks := 0
-			invariant
-				ticks >= 0
+
 			until
-				ticks >= 5 or playfield.game_finished or playfield.is_user_dead
+				playfield.game_finished or playfield.is_user_dead
 			loop
 				playfield.execute_game_step
 				clear_screen
 				playfield.display_playfield
 
 				sleep (1000 * 1000 * 100)
-				ticks := ticks + 1
 			end
 
 			reset_input
 			clear_screen
-			
+
 			playfield.print_game_finished
 		end
 

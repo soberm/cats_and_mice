@@ -188,20 +188,35 @@ feature -- display logic
 		do
 			create field.make_filled(' ', MAX_Y_POS, MAX_X_POS)
 
-			-- set_player(field)
-			set_players(field)
+			if attached {MOUSE} user as mu then
+				set_players_for_mouse_player (field)
+			else
+				set_players_for_cat_player (field)
+			end
 
 			set_subways(field)
 			print_field(field)
 
 		end
 
-	set_players (field : ARRAY2[CHARACTER])
-		local
+	set_players_for_mouse_player (field : ARRAY2[CHARACTER])
 		do
 			across players as player loop
 				if attached {PLAYER_TYPE} player.item as pl then
 					field.put (pl.identity_symbol, player.item.position.y, player.item.position.x)
+				end
+			end
+		end
+
+	set_players_for_cat_player (field : ARRAY2[CHARACTER])
+		do
+			across players as player loop
+				if attached {MOUSE} player.item as mouse then
+					if not attached mouse.current_subway then
+						field.put (mouse.identity_symbol, player.item.position.y, player.item.position.x)
+					end
+				elseif attached {CAT} player.item as cat then
+					field.put (cat.identity_symbol, player.item.position.y, player.item.position.x)
 				end
 			end
 		end
@@ -225,20 +240,44 @@ feature -- display logic
 					field.put ('|', subway.item.entrance1.y, s_max+1)
 				end
 
-				from
+
+				if attached {MOUSE} user as mu then
+					from
 					s_cnt := s_min
-				until
-					s_cnt > s_max
-				loop
-					if (subway.item.is_vertical) then
-						field.put ('|', s_cnt, subway.item.entrance1.x+1)
-						field.put ('|', s_cnt, subway.item.entrance1.x-1)
-					else
-						field.put ('-', subway.item.entrance1.y+1, s_cnt)
-						field.put ('-', subway.item.entrance1.y-1, s_cnt)
+					until
+						s_cnt > s_max
+					loop
+						if (subway.item.is_vertical) then
+							field.put ('|', s_cnt, subway.item.entrance1.x+1)
+							field.put ('|', s_cnt, subway.item.entrance1.x-1)
+						else
+							field.put ('-', subway.item.entrance1.y+1, s_cnt)
+							field.put ('-', subway.item.entrance1.y-1, s_cnt)
+						end
+						s_cnt := s_cnt + 1
 					end
-					s_cnt := s_cnt + 1
+				else
+					if (subway.item.is_vertical) then
+						s_min := subway.item.entrance1.y
+						s_max := subway.item.entrance2.y
+						field.put ('-', s_min+1, subway.item.entrance1.x)
+						field.put ('-', s_max-1, subway.item.entrance1.x)
+						field.put ('|', s_min, subway.item.entrance1.x-1)
+						field.put ('|', s_min, subway.item.entrance1.x+1)
+						field.put ('|', s_max, subway.item.entrance1.x-1)
+						field.put ('|', s_max, subway.item.entrance1.x+1)
+					else
+						s_min := subway.item.entrance1.x
+						s_max := subway.item.entrance2.x
+						field.put ('|', subway.item.entrance1.y, s_min+1)
+						field.put ('|', subway.item.entrance1.y, s_max-1)
+						field.put ('-', subway.item.entrance1.y-1, s_min)
+						field.put ('-', subway.item.entrance1.y+1, s_min)
+						field.put ('-', subway.item.entrance1.y-1, s_max)
+						field.put ('-', subway.item.entrance1.y+1, s_max)
+					end
 				end
+
 			end
 		end
 

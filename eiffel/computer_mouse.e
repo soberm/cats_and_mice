@@ -86,6 +86,5 @@ feature -- overridden inherited features
 			else
 				RESULT := position.calculuate_distance_to (target_subway.entrance2)
 		end
-
-end
+	end
 end

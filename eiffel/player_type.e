@@ -7,6 +7,9 @@ note
 deferred class
 	PLAYER_TYPE
 
+inherit
+	PLAYER
+
 feature --fields
 	speed : INTEGER
 
@@ -14,7 +17,7 @@ feature
 	init
 		deferred
 		end
-	
+
 	identity_symbol : CHARACTER
 		deferred
 		end

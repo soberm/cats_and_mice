@@ -59,31 +59,42 @@ feature
 
 	calculate_next_position(point: POINT): POINT
 		local
+			top: INTEGER
+			down: INTEGER
+			left: INTEGER
+			right: INTEGER
 			distTop: INTEGER
 			distDown: INTEGER
 			distLeft: INTEGER
 			distRight: INTEGER
 			tmp: POINT
 		do
-			distRight := point.calculuate_distance_to_intern((x+1), y)
-			distLeft := point.calculuate_distance_to_intern((x-1), y)
-			distTop := point.calculuate_distance_to_intern(x, (y+1))
-			distDown := point.calculuate_distance_to_intern(x, (y-1))
+			top := y-1
+			down := y+1
+			left := x+1
+			right := x-1
+
+
+			distRight := point.calculuate_distance_to_intern(right, y)
+			distLeft := point.calculuate_distance_to_intern(left, y)
+
+			distDown := point.calculuate_distance_to_intern(x, down)
+			distTop := point.calculuate_distance_to_intern(x, top)
 
 			if is_minimum(distRight, distLeft, distTop, distDown) then
-				create tmp.make ((x+1), y)
+				create tmp.make (right, y)
 				RESULT := tmp
 
 			elseif is_minimum(distLeft, distTop, distDown, distRight) then
-				create tmp.make ((x-1), y)
+				create tmp.make (left, y)
 				RESULT := tmp
 
 			elseif is_minimum(distTop, distDown, distRight, distLeft) then
-				create tmp.make (x, (y+1))
+				create tmp.make (x, top)
 				RESULT := tmp
 
 			else --if is_minimum(distDown, distRight, distLeft, distTop) then
-				create tmp.make (x, (y-1))
+				create tmp.make (x, down)
 				RESULT := tmp
 			end
 		end
@@ -96,5 +107,10 @@ feature
 	is_equal(o: POINT): BOOLEAN
 		do
 			RESULT := x = o.x and y = o.y
+		end
+
+	is_valid: BOOLEAN
+		do
+			RESULT := x >= MIN_X and x <= MAX_X and	y >= MIN_Y and y <= MAX_Y
 		end
 end

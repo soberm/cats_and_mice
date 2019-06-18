@@ -6,6 +6,12 @@ note
 
 class
 	SUBWAY
+	
+inherit
+    ANY
+        redefine
+            is_equal
+        end
 
 create
 	make
@@ -83,6 +89,13 @@ feature
 				RESULT := (entrance1.x <= point.x) and (point.x <= entrance2.x)
 			end
 		end
+
+
+	is_equal(o: SUBWAY): BOOLEAN
+		do
+			RESULT := entrance1 = o.entrance1 and entrance2 = o.entrance2 and is_target = o.is_target
+		end
+
 
 invariant
 	valid_x1: entrance1.x > MIN_X_POS + 1 and entrance1.x < MAX_X_POS - 1

@@ -8,17 +8,22 @@ class
 	COMPUTER_CAT
 
 inherit
+
 	PLAYER
+
 	CAT
 
 create
 	make
 
-feature --fields	
+feature --fields
+
 	all_subways: LINKED_LIST [SUBWAY]
-	all_mouse: LINKED_LIST [COMPUTER_MOUSE]
+
+	all_mice: LINKED_LIST [MOUSE]
 
 feature -- initialization
+
 	make (x: INTEGER; y: INTEGER; subways: LINKED_LIST [SUBWAY]; mouses: LINKED_LIST [COMPUTER_MOUSE])
 		local
 			initPosition: POINT
@@ -27,10 +32,11 @@ feature -- initialization
 			init
 			position := initPosition
 			all_subways := subways
-			all_mouse := mouses
+			all_mice := mouses
 		end
 
 feature -- overridden inherited features
+
 	move
 		local
 			lowestDist: INTEGER
@@ -39,27 +45,33 @@ feature -- overridden inherited features
 			mousePos: POINT
 		do
 			lowestDist := 999999
+			nextPos := position
+			across
+				all_mice as mouse
+			loop
+				if mouse.item.current_subway = Void then --cats can onlu see mice outside
 
-			across all_mouse as mouse loop
-				mousePos := mouse.item.position
-				dist := position.calculuate_distance_to (mousePos)
-
-				if(dist < lowestDist) then -- is it a close mouse?
-					lowestDist := dist
-					nextPos := position.calculate_next_position (mousePos)
+					mousePos := mouse.item.position
+					dist := position.calculuate_distance_to (mousePos)
+					if (dist < lowestDist) then -- is it a close mouse?
+						lowestDist := dist
+						nextPos := position.calculate_next_position (mousePos)
+					end
 				end
-
 			end
-
-			if(nextPos /= Void) then
-				position.x := nextPos.x
-				position.y := nextPos.y
+			if (nextPos /= Void and nextPos.is_valid) then
+				position := nextPos
 			end
 		end
 
-	get_speed : INTEGER
+	get_speed: INTEGER
 		do
 			RESULT := speed
+		end
+
+	set_visible_mice (visible: LINKED_LIST [COMPUTER_MOUSE])
+		do
+			all_mice := visible
 		end
 
 end

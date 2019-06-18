@@ -25,10 +25,6 @@ feature --methods implemented by inherited classes
 		deferred
 		end
 
-	get_symbol : CHARACTER
-		deferred
-		end
-
 feature -- setter methods
 	set_new_pos(newPos: Point)
 		require

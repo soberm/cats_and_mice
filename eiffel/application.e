@@ -16,7 +16,6 @@ feature {NONE} -- Initialization
 
 	make
 		local
-			user_cat: USER_CAT
 			playfield: PLAYFIELD
 			ticks: INTEGER
 			subways: LINKED_LIST [SUBWAY]
@@ -33,15 +32,14 @@ feature {NONE} -- Initialization
 			subways.extend (s1)
 			subways.extend (s2)
 
-			create user_cat.make (10, 10)
-			create playfield.make(1, 1, user_cat, subways, s1)
+			create playfield.make(1, 1, 'c', subways, s1)
 
 			from
 				ticks := 0
 			invariant
 				ticks >= 0
 			until
-				ticks >= 150
+				ticks >= 150 or playfield.game_finished
 			loop
 				--read_char := get_char
 				playfield.execute_game_step
@@ -53,6 +51,8 @@ feature {NONE} -- Initialization
 			end
 
 			reset_input
+
+			-- TODO add "Finished" screen with stats
 
 			io.new_line
 			io.put_string ("Finished!%N")

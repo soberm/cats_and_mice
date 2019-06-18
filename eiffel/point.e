@@ -7,6 +7,12 @@ note
 class
 	POINT
 
+inherit
+    ANY
+        redefine
+            is_equal
+        end
+
 create
 	make
 
@@ -85,5 +91,10 @@ feature
 	is_minimum(min: INTEGER; a: INTEGER; b: INTEGER; c: INTEGER): BOOLEAN
 		do
 			RESULT := min < a and min < b and min < c
+		end
+
+	is_equal(o: POINT): BOOLEAN
+		do
+			RESULT := x = o.x and y = o.y
 		end
 end

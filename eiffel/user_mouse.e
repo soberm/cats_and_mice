@@ -15,13 +15,14 @@ create
 	make
 
 feature --initialization
-	make (x: INTEGER; y: INTEGER)
+	make (x: INTEGER; y: INTEGER; target: SUBWAY)
 		local
 			initPosition: POINT
 		do
 			create initPosition.make (x, y)
 			init
 			position := initPosition
+			target_subway := target
 		end
 
 feature -- overriden inherited features
@@ -30,15 +31,20 @@ feature -- overriden inherited features
 			RESULT := speed
 		end
 
-	get_symbol : CHARACTER
-		do
-			RESULT := identity_symbol
-		end
-
 	validate_move (tmp : POINT) : BOOLEAN
 		do
 			-- check for subway restriction
-			RESULT := TRUE
+			if attached current_subway as cr then
+				RESULT := cr.position_in_subway(tmp)
+			else
+				RESULT := TRUE
+			end
+
+--			if current_subway /= Void then
+--				RESULT := current_subway.position_in_subway(tmp)
+--			else
+--				RESULT := TRUE
+--			end
 		end
 
 end

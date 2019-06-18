@@ -30,11 +30,6 @@ feature -- overriden inherited features
 			RESULT := speed
 		end
 
-	get_symbol : CHARACTER
-		do
-			RESULT := identity_symbol
-		end
-
 	validate_move (tmp : POINT) : BOOLEAN
 		do
 			RESULT := true

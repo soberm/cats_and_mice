@@ -79,11 +79,6 @@ feature -- overridden inherited features
 			RESULT := speed
 		end
 
-	get_symbol : CHARACTER
-		do
-			RESULT := identity_symbol
-		end
-
 	current_distance: INTEGER
 		do
 			if(position.calculuate_distance_to (target_subway.entrance1) < position.calculuate_distance_to (target_subway.entrance2)) then

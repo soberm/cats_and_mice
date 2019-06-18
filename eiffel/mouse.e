@@ -14,6 +14,7 @@ feature --fields
 	alive : BOOLEAN
 	target_subway : SUBWAY
 	current_subway : detachable SUBWAY
+	-- maybe put that field into the subway -> mouse updates it after entry
 	known_cat_positions : HASH_TABLE[POINT, INTEGER]
 
 feature -- overriden inherited methods
@@ -40,7 +41,7 @@ feature -- mouse specific methods
 			alive := FALSE
 		end
 
-	set_current_subway (cs : SUBWAY)
+	set_current_subway (cs : detachable SUBWAY)
 		do
 			current_subway := cs
 		end
@@ -53,5 +54,10 @@ feature -- mouse specific methods
 	inform_about_cats(info: HASH_TABLE[POINT, INTEGER])
 		do
 			known_cat_positions := info
+		end
+
+	finished : BOOLEAN
+		do
+			RESULT := (current_subway /= Void) and (current_subway = target_subway)
 		end
 end

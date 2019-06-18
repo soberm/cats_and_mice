@@ -67,13 +67,22 @@ feature
 			dist1 := entrance1.calculuate_distance_to (point)
 			dist2 := entrance2.calculuate_distance_to (point)
 
-			if(dist1 < dist2) then
+			if (dist1 < dist2) then
 				RESULT := dist1
 			else
 				RESULT := dist2
+			end
 
 		end
-end
+
+	position_in_subway (point: POINT): BOOLEAN
+		do
+			if is_vertical then
+				RESULT := (entrance1.y <= point.y) and (point.y <= entrance2.y)
+			else
+				RESULT := (entrance1.x <= point.x) and (point.x <= entrance2.x)
+			end
+		end
 
 invariant
 	valid_x1: entrance1.x > MIN_X_POS + 1 and entrance1.x < MAX_X_POS - 1

@@ -268,4 +268,72 @@ feature -- display logic
 				i := i+1
 			end
 		end
+
+	print_game_finished
+		local
+			alive_cnt: INTEGER
+			dead_cnt: INTEGER
+			max_kills: INTEGER
+		do
+			io.new_line
+			io.put_string ("  $$$$$$  $$  $$    $  $$    $$   $$  $$  $$$$$  $$$   $$")
+			io.new_line
+			io.put_string ("  $$      $$  $$$   $  $$   $     $$  $$  $$     $$ $  $$")
+			io.new_line
+			io.put_string ("  $$$$    $$  $$ $  $  $$    $    $$$$$$  $$$$   $$ $  $$")
+			io.new_line
+			io.put_string ("  $$      $$  $$  $ $  $$      $  $$  $$  $$     $$ $    ")
+			io.new_line
+			io.put_string ("  $$      $$  $$   $$  $$    $$   $$  $$  $$$$$  $$$   $$")
+			io.new_line
+			io.new_line
+
+			across players as player loop
+				if attached {MOUSE} player.item as mouse then
+					if mouse.is_alive then
+						alive_cnt := alive_cnt + 1
+					else
+						dead_cnt := dead_cnt + 1
+					end
+				end
+			end
+
+			io.put_string ("Statistics:")
+			io.new_line
+			io.put_string ("Mice still alive: ")
+			io.put_integer (alive_cnt)
+			io.new_line
+			io.put_string ("Killed mice: ")
+			io.put_integer (dead_cnt)
+			io.new_line
+
+			io.put_string ("The user played ")
+			if attached {MOUSE} user as mu then
+				io.put_string ("mouse and ")
+				if mu.is_alive then
+					io.put_string ("survived! Congratulation!")
+				else
+					io.put_string ("sadly died... Maybe next time!")
+				end
+			end
+
+			if attached {CAT} user as cu then
+				io.put_string ("cat and killed ")
+				io.put_integer (cu.eaten_mice)
+				io.put_string (" mice!")
+			end
+
+			io.new_line
+
+			io.put_string ("Most killed mice by a single cat: ")
+			across players as player loop
+				if attached {CAT} player.item as cat then
+					if max_kills < cat.eaten_mice then
+						max_kills := cat.eaten_mice
+					end
+				end
+			end
+
+			io.put_integer (max_kills)
+		end
 end

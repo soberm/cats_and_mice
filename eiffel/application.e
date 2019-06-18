@@ -55,8 +55,6 @@ feature {NONE} -- Initialization
 			create playfield.make(cat_players, mouse_players, player_type, subways, s1)
 
 			-- TODO
-			-- remove ticks: game does not stop that way
-			-- add different view for mice and cat player (see aufgabe1.pdf)
 			-- test, test, test...
 			-- input issue when restarting the game
 			-- propagate playfield info when mouse enters subway

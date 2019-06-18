@@ -39,7 +39,7 @@ feature {NONE} -- Initialization
 			invariant
 				ticks >= 0
 			until
-				ticks >= 150 or playfield.game_finished
+				ticks >= 150 or playfield.game_finished or playfield.is_user_dead
 			loop
 				--read_char := get_char
 				playfield.execute_game_step

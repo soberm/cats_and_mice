@@ -39,12 +39,6 @@ feature -- overriden inherited features
 			else
 				RESULT := TRUE
 			end
-
---			if current_subway /= Void then
---				RESULT := current_subway.position_in_subway(tmp)
---			else
---				RESULT := TRUE
---			end
 		end
 
 end

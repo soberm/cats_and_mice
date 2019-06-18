@@ -17,9 +17,11 @@ feature {NONE} -- constants -> TODO: check how to use constants correctly
 	MAX_Y_POS: INTEGER = 25
 
 feature {NONE} -- fields
+	user: USER
 	players: LINKED_LIST [PLAYER]
 	subways: LINKED_LIST [SUBWAY]
 	target_subway: SUBWAY
+	random_sequence: RANDOM
 
 feature -- initialization
 	make (cat_players : INTEGER; mouse_players : INTEGER; user_char : CHARACTER; s: LINKED_LIST [SUBWAY]; target: SUBWAY)
@@ -31,6 +33,7 @@ feature -- initialization
 			user_cat: USER_CAT
 			user_mouse: USER_MOUSE
 		do
+			create random_sequence.set_seed(1337)
 			create players.make
 			create subways.make
 
@@ -39,38 +42,49 @@ feature -- initialization
 
 			if user_char = 'c' then
 				create user_cat.make (10, 10)
-				players.extend(user_cat)
+				user := user_cat
 			else
 				create user_mouse.make (10, 10, target_subway)
-				players.extend(user_mouse)
+				user := user_mouse
 			end
 
+			players.extend(user)
 
-			create_bots
+			create_bots (mouse_players, cat_players)
 		end
 
-	create_bots
+	create_bots (mice_cnt: INTEGER; cats_cnt: INTEGER)
+		require
+			valid_mice_cnt: mice_cnt > 0
+			valid_cats_cnt: cats_cnt > 0
 		local
-			c1: COMPUTER_CAT
-			c2: COMPUTER_CAT
-			m1: COMPUTER_MOUSE
-			m2: COMPUTER_MOUSE
-			mouses: LINKED_LIST [COMPUTER_MOUSE]
-		do --TODO set proper random positions, generify number of bots
+			cnt: INTEGER
+			pc_cat: COMPUTER_CAT
+			pc_mouse: COMPUTER_MOUSE
+			mice: LINKED_LIST [COMPUTER_MOUSE]
+		do
+			create mice.make
 
-			create mouses.make
+			from
+				cnt := 0
+			until
+				cnt >= mice_cnt
+			loop
+				create pc_mouse.make (new_random_x, new_random_y, subways, target_subway)
+				mice.extend (pc_mouse)
+				players.extend (pc_mouse)
+				cnt := cnt + 1
+			end
 
-			create m1.make (75, 24, subways, target_subway)
-			create m2.make (75, 1, subways, target_subway)
-			players.extend (m1)
-			players.extend (m2)
-			mouses.extend (m1)
-			mouses.extend (m2)
-
-			create c1.make (1, 24, subways, mouses)
-			create c2.make (1, 2, subways, mouses)
-			players.extend (c1)
-			players.extend (c2)
+			from
+				cnt := 0
+			until
+				cnt >= cats_cnt
+			loop
+				create pc_cat.make (new_random_x, new_random_y, subways, mice)
+				players.extend (pc_cat)
+				cnt := cnt + 1
+			end
 		end
 
 feature -- helper functions
@@ -83,11 +97,21 @@ feature -- helper functions
 			subway_added: subways.count = old subways.count + 1
 		end
 
+	new_random_x: INTEGER
+		do
+			random_sequence.forth
+			RESULT := random_sequence.item \\ MAX_X_POS + 1
+		end
+
+	new_random_y: INTEGER
+		do
+			random_sequence.forth
+			RESULT := random_sequence.item \\ MAX_Y_POS + 1
+		end
 
 feature -- game logic
 	execute_game_step
 		do
-
 			across players as player loop
 				if attached {CAT} player.item as cat then
 					player.item.move
@@ -117,55 +141,14 @@ feature -- game logic
 				if attached {CAT} outer_player.item as cat then
 					across players as inner_player loop
 						if attached {MOUSE} inner_player.item as mouse then
-							if outer_player.item.position.is_equal(inner_player.item.position) then
-							cat.increment_eaten_mice
-							mouse.kill_mouse
+							if not attached mouse.current_subway and outer_player.item.position.is_equal(inner_player.item.position) then
+								cat.increment_eaten_mice
+								mouse.kill_mouse
 							end
 						end
 					end
 				end
 			end
-
-
---			user.move
---			across cats as cat loop
---				cat.item.move
---			end
-
-			-- handle mouse moves
-
-			-- TODO:
-					--  - implement valid_move feature for mouse: check subway borders DONE
-					--  - remove user as playfield parameter +1
-					--  - mouse communication within subway
---			across mice as mouse loop
---				if (not mouse.item.finished) and mouse.item.is_alive then
---					mouse.item.move
-
---					-- handle subways
---					if attached mouse.item.current_subway as curr_sub then
---						if not curr_sub.position_in_subway(mouse.item.position) then
---							mouse.item.set_current_subway (Void)
---						end
---					else
---						across subways as subway loop
---							-- every mouse on entry/exit field without
---							if subway.item.on_entry_or_exit(mouse.item) then
---								mouse.item.set_current_subway (subway.item)
---							end
---						end
---					end
-
---					-- check if mouse gets killed
---					across cats as cat loop
---						if cat.item.position.is_equal(mouse.item.position) then
---							cat.item.increment_eaten_mice
---							mouse.item.kill_mouse
---						end
---					end
-
---				end
---			end
 		end
 
 	game_finished: BOOLEAN
@@ -185,14 +168,17 @@ feature -- game logic
 				end
 			end
 
---			across mice as mouse loop
---				if mouse.item.finished or not mouse.item.is_alive then
---					done_cnt := done_cnt + 1
---				end
---			end
-
 			RESULT := done_cnt = total_cnt
 
+		end
+
+	is_user_dead: BOOLEAN
+		do
+			if attached {MOUSE} user as us then
+				RESULT := us.is_alive
+			else
+				RESULT := FALSE
+			end
 		end
 
 feature -- display logic
@@ -218,25 +204,7 @@ feature -- display logic
 					field.put (pl.identity_symbol, player.item.position.y, player.item.position.x)
 				end
 			end
-
---			across cats as cat loop
---				if attached {PLAYER} cat.item as pl then
---				field.put (cat.item.identity_symbol, pl.position.y, pl.position.x)
---				end
-
---			end
-
---			across mice as mouse loop
---				if mouse.item.is_alive then
---					field.put (mouse.item.identity_symbol, mouse.item.position.y, mouse.item.position.x)
---				end
---			end
 		end
-
---	set_player (field : ARRAY2[CHARACTER])
---		do
---			field.put (user.get_symbol, user.position.y, user.position.x)
---		end
 
 	set_subways(field : ARRAY2[CHARACTER])
 		local

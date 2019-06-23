@@ -26,8 +26,8 @@ feature {NONE} -- fields
 feature -- initialization
 	make (cat_players : INTEGER; mouse_players : INTEGER; user_char : CHARACTER; s: LINKED_LIST [SUBWAY]; target: SUBWAY)
 		require
-			positive_cat_players: cat_players > 0
-			positive_mouse_players: mouse_players > 0
+			positive_cat_players: cat_players >= 0
+			positive_mouse_players: mouse_players >= 0
 			existing_subways: s.count > 0
 		local
 			user_cat: USER_CAT
@@ -44,7 +44,7 @@ feature -- initialization
 				create user_cat.make (10, 10)
 				user := user_cat
 			else
-				create user_mouse.make (10, 10, target_subway)
+				create user_mouse.make (new_random_x, new_random_y, target_subway)
 				user := user_mouse
 			end
 
@@ -55,8 +55,8 @@ feature -- initialization
 
 	create_bots (mice_cnt: INTEGER; cats_cnt: INTEGER)
 		require
-			valid_mice_cnt: mice_cnt > 0
-			valid_cats_cnt: cats_cnt > 0
+			valid_mice_cnt: mice_cnt >= 0
+			valid_cats_cnt: cats_cnt >= 0
 		local
 			cnt: INTEGER
 			pc_cat: COMPUTER_CAT
@@ -141,7 +141,7 @@ feature -- game logic
 				if attached {CAT} outer_player.item as cat then
 					across players as inner_player loop
 						if attached {MOUSE} inner_player.item as mouse then
-							if not attached mouse.current_subway and outer_player.item.position.is_equal(inner_player.item.position) then
+							if not attached mouse.current_subway and mouse.is_alive and outer_player.item.position.is_equal(inner_player.item.position) then
 								cat.increment_eaten_mice
 								mouse.kill_mouse
 							end
@@ -172,12 +172,12 @@ feature -- game logic
 
 		end
 
-	is_user_dead: BOOLEAN
+	is_user_alive: BOOLEAN
 		do
-			if attached {MOUSE} user as us then
-				RESULT := us.is_alive
+			if attached {MOUSE} user as mu then
+				RESULT := mu.is_alive
 			else
-				RESULT := FALSE
+				RESULT := TRUE
 			end
 		end
 
@@ -203,7 +203,14 @@ feature -- display logic
 		do
 			across players as player loop
 				if attached {PLAYER_TYPE} player.item as pl then
-					field.put (pl.identity_symbol, player.item.position.y, player.item.position.x)
+					if attached {MOUSE} player.item as mp then
+						if mp.is_alive then
+							field.put (pl.identity_symbol, player.item.position.y, player.item.position.x)
+						end
+					else
+						field.put (pl.identity_symbol, player.item.position.y, player.item.position.x)
+					end
+
 				end
 			end
 		end
@@ -212,7 +219,7 @@ feature -- display logic
 		do
 			across players as player loop
 				if attached {MOUSE} player.item as mouse then
-					if not attached mouse.current_subway then
+					if not attached mouse.current_subway and mouse.is_alive then
 						field.put (mouse.identity_symbol, player.item.position.y, player.item.position.x)
 					end
 				elseif attached {CAT} player.item as cat then

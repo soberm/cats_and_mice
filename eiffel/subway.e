@@ -6,7 +6,7 @@ note
 
 class
 	SUBWAY
-	
+
 inherit
     ANY
         redefine
@@ -93,7 +93,7 @@ feature
 
 	is_equal(o: SUBWAY): BOOLEAN
 		do
-			RESULT := entrance1 = o.entrance1 and entrance2 = o.entrance2 and is_target = o.is_target
+			RESULT := entrance1.is_equal (o.entrance1) and entrance2.is_equal (o.entrance2) and is_target = o.is_target
 		end
 
 

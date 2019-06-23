@@ -58,6 +58,11 @@ feature -- mouse specific methods
 
 	finished : BOOLEAN
 		do
-			RESULT := (current_subway /= Void) and (current_subway = target_subway)
+			if attached current_subway as curr_sub then
+				RESULT := curr_sub.is_equal (target_subway)
+			else
+				RESULT := FALSE
+			end
+
 		end
 end

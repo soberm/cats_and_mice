@@ -51,11 +51,10 @@ feature {NONE} -- Initialization
 			create s2.make (30, 14, 50, 14, True)
 			subways.extend (s1)
 			subways.extend (s2)
-			
-			create playfield.make(cat_players, mouse_players, player_type, subways, s2)
-			
+
+			create playfield.make (cat_players, mouse_players, player_type, subways, s2)
+
 			from
-			
 			until
 				playfield.game_finished or not playfield.is_user_alive
 			loop
@@ -80,8 +79,10 @@ feature {NONE}
 		end
 
 	clear_stdin
-		external "C inline use <stdio.h>"
-			alias "int c; while ((c = getchar()) != '\n' && c != EOF) { }"
+		external
+			"C inline use <stdio.h>"
+		alias
+			"int c; while ((c = getchar()) != '\n' && c != EOF) { }"
 		end
 
 	prepare_input
@@ -111,8 +112,10 @@ feature {NONE}
 		end
 
 	make_term_raw
-		external "C inline use <termios.h>"
-			alias "struct termios term;  tcgetattr(0, &term); term.c_lflag &= ~(ICANON | ECHO);  tcsetattr(0, 0, &term);"
+		external
+			"C inline use <termios.h>"
+		alias
+			"struct termios term;  tcgetattr(0, &term); term.c_lflag &= ~(ICANON | ECHO);  tcsetattr(0, 0, &term);"
 		end
 
 	make_term_canonical

@@ -55,22 +55,7 @@ feature {NONE} -- Initialization
 			subways.extend (s1)
 			subways.extend (s2)
 
-			-- test temp
---			create user_mouse.make (10, 10, s2)
---			user_mouse.set_current_subway (s2)
-
---			io.put_boolean (user_mouse.finished)
---			io.put_boolean (s2.is_equal (s2))
-
-			-- end test temp
-
-
 			create playfield.make(cat_players, mouse_players, player_type, subways, s2)
-
-			-- TODO
-			-- test, test, test...
-			-- input issue when restarting the game DONE
-			-- propagate playfield info when mouse enters subway
 
 			from
 
@@ -100,7 +85,6 @@ feature {NONE}
 	clear_stdin
 		external "C inline use <stdio.h>"
 			alias "int c; while ((c = getchar()) != '\n' && c != EOF) { }"
-		--	alias "fseek(stdin,0,SEEK_END);"
 		end
 
 	prepare_input
@@ -127,7 +111,7 @@ feature {NONE}
 
 	make_term_raw
 		external "C inline use <termios.h>"
-			alias "struct termios term;  tcgetattr(0, &term); term.c_lflag &= ~(ICANON | ECHO);  tcsetattr(0, 0, &term);" --term.c_cc[VTIME] = 0; term.c_cc[VMIN] = 1;
+			alias "struct termios term;  tcgetattr(0, &term); term.c_lflag &= ~(ICANON | ECHO);  tcsetattr(0, 0, &term);"
 		end
 
 	make_term_canonical

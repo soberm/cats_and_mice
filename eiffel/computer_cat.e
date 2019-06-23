@@ -45,11 +45,11 @@ feature -- overridden inherited features
 			mousePos: POINT
 		do
 			lowestDist := 999999
-			nextPos := position
+			nextPos := Void
 			across
 				all_mice as mouse
 			loop
-				if mouse.item.current_subway = Void then --cats can onlu see mice outside
+				if mouse.item.current_subway = Void and mouse.item.alive then --cats can onlu see mice alive + outside
 
 					mousePos := mouse.item.position
 					dist := position.calculuate_distance_to (mousePos)

@@ -46,7 +46,6 @@ feature -- overridden inherited features
 		do
 			lowestDist := 999999
 			nextPos := position.deep_twin
-			
 			across
 				all_mice as mouse
 			loop

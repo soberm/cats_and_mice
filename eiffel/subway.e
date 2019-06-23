@@ -8,27 +8,35 @@ class
 	SUBWAY
 
 inherit
-    ANY
-        redefine
-            is_equal
-        end
+
+	ANY
+		redefine
+			is_equal
+		end
 
 create
 	make
 
 feature -- constants
+
 	MIN_X_POS: INTEGER = 1
+
 	MAX_X_POS: INTEGER = 80
+
 	MIN_Y_POS: INTEGER = 1
+
 	MAX_Y_POS: INTEGER = 25
 
 feature -- fields
+
 	entrance1: POINT
+
 	entrance2: POINT
+
 	is_target: BOOLEAN
 
-
 feature --initialization
+
 	make (x1_init: INTEGER; y1_init: INTEGER; x2_init: INTEGER; y2_init: INTEGER; t: BOOLEAN)
 		require
 			valid_x1_init: x1_init > MIN_X_POS + 1 and x1_init < MAX_X_POS - 1
@@ -43,13 +51,13 @@ feature --initialization
 		do
 			create p1.make (x1_init, y1_init)
 			create p2.make (x2_init, y2_init)
-
 			entrance1 := p1
 			entrance2 := p2
 			is_target := t
 		end
 
 feature
+
 	is_vertical: BOOLEAN
 		do
 			RESULT := (entrance1.x = entrance2.x)
@@ -72,13 +80,11 @@ feature
 		do
 			dist1 := entrance1.calculuate_distance_to (point)
 			dist2 := entrance2.calculuate_distance_to (point)
-
 			if (dist1 < dist2) then
 				RESULT := dist1
 			else
 				RESULT := dist2
 			end
-
 		end
 
 	position_in_subway (point: POINT): BOOLEAN
@@ -99,12 +105,10 @@ feature
 			end
 		end
 
-
-	is_equal(o: SUBWAY): BOOLEAN
+	is_equal (o: SUBWAY): BOOLEAN
 		do
 			RESULT := entrance1.is_equal (o.entrance1) and entrance2.is_equal (o.entrance2) and is_target = o.is_target
 		end
-
 
 invariant
 	valid_x1: entrance1.x > MIN_X_POS + 1 and entrance1.x < MAX_X_POS - 1

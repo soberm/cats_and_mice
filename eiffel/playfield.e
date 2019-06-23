@@ -11,20 +11,30 @@ create
 	make
 
 feature {NONE} -- constants -> TODO: check how to use constants correctly
+
 	MIN_X_POS: INTEGER = 1
+
 	MAX_X_POS: INTEGER = 80
+
 	MIN_Y_POS: INTEGER = 1
+
 	MAX_Y_POS: INTEGER = 25
 
 feature {NONE} -- fields
+
 	user: USER
+
 	players: LINKED_LIST [PLAYER]
+
 	subways: LINKED_LIST [SUBWAY]
+
 	target_subway: SUBWAY
+
 	random_sequence: RANDOM
 
 feature -- initialization
-	make (cat_players : INTEGER; mouse_players : INTEGER; user_char : CHARACTER; s: LINKED_LIST [SUBWAY]; target: SUBWAY)
+
+	make (cat_players: INTEGER; mouse_players: INTEGER; user_char: CHARACTER; s: LINKED_LIST [SUBWAY]; target: SUBWAY)
 		require
 			positive_cat_players: cat_players >= 0
 			positive_mouse_players: mouse_players >= 0
@@ -33,13 +43,11 @@ feature -- initialization
 			user_cat: USER_CAT
 			user_mouse: USER_MOUSE
 		do
-			create random_sequence.set_seed(1337)
+			create random_sequence.set_seed (1387)
 			create players.make
 			create subways.make
-
 			subways := s
 			target_subway := target
-
 			if user_char = 'c' then
 				create user_cat.make (10, 10)
 				user := user_cat
@@ -47,9 +55,7 @@ feature -- initialization
 				create user_mouse.make (10, 10, target_subway)
 				user := user_mouse
 			end
-
-			players.extend(user)
-
+			players.extend (user)
 			create_bots (mouse_players, cat_players)
 		end
 
@@ -64,11 +70,9 @@ feature -- initialization
 			mice: LINKED_LIST [MOUSE]
 		do
 			create mice.make
-
 			if attached {MOUSE} user as mu then
 				mice.extend (mu)
 			end
-
 			from
 				cnt := 0
 			until
@@ -79,7 +83,6 @@ feature -- initialization
 				players.extend (pc_mouse)
 				cnt := cnt + 1
 			end
-
 			from
 				cnt := 0
 			until
@@ -92,11 +95,12 @@ feature -- initialization
 		end
 
 feature -- helper functions
+
 	add_subway (s: SUBWAY)
 		require
 			subway_not_void: s /= Void
 		do
-			subways.extend(s)
+			subways.extend (s)
 		ensure
 			subway_added: subways.count = old subways.count + 1
 		end
@@ -114,24 +118,29 @@ feature -- helper functions
 		end
 
 feature -- game logic
+
 	execute_game_step
 		do
-			across players as player loop
+			across
+				players as player
+			loop
 				if attached {CAT} player.item as cat then
 					player.item.move
 				elseif attached {MOUSE} player.item as mouse then
 					if (not mouse.finished) and mouse.is_alive then
 						player.item.move
 
-						-- handle subways
+							-- handle subways
 						if attached mouse.current_subway as curr_sub then
-							if not curr_sub.position_in_subway(player.item.position) then
+							if not curr_sub.position_in_subway (player.item.position) then
 								mouse.set_current_subway (Void)
 							end
 						else
-							across subways as subway loop
-								-- every mouse on entry/exit field without
-								if subway.item.on_entry_or_exit(player.item) then
+							across
+								subways as subway
+							loop
+									-- every mouse on entry/exit field without
+								if subway.item.on_entry_or_exit (player.item) then
 									mouse.set_current_subway (subway.item)
 								end
 							end
@@ -140,12 +149,16 @@ feature -- game logic
 				end
 			end
 
-			-- check if mouse gets killed
-			across players as outer_player loop
+				-- check if mouse gets killed
+			across
+				players as outer_player
+			loop
 				if attached {CAT} outer_player.item as cat then
-					across players as inner_player loop
+					across
+						players as inner_player
+					loop
 						if attached {MOUSE} inner_player.item as mouse then
-							if not attached mouse.current_subway and mouse.is_alive and outer_player.item.position.is_equal(inner_player.item.position) then
+							if not attached mouse.current_subway and mouse.is_alive and outer_player.item.position.is_equal (inner_player.item.position) then
 								cat.increment_eaten_mice
 								mouse.kill_mouse
 							end
@@ -162,8 +175,9 @@ feature -- game logic
 		do
 			done_cnt := 0
 			total_cnt := 0
-
-			across players as player loop
+			across
+				players as player
+			loop
 				if attached {MOUSE} player.item as mouse then
 					if mouse.finished or not mouse.is_alive then
 						done_cnt := done_cnt + 1
@@ -171,9 +185,7 @@ feature -- game logic
 					total_cnt := total_cnt + 1
 				end
 			end
-
 			RESULT := done_cnt = total_cnt
-
 		end
 
 	is_user_alive: BOOLEAN
@@ -186,26 +198,26 @@ feature -- game logic
 		end
 
 feature -- display logic
+
 	display_playfield
 		local
-			field : ARRAY2[CHARACTER]
+			field: ARRAY2 [CHARACTER]
 		do
-			create field.make_filled(' ', MAX_Y_POS, MAX_X_POS)
-
+			create field.make_filled (' ', MAX_Y_POS, MAX_X_POS)
 			if attached {MOUSE} user as mu then
 				set_players_for_mouse_player (field)
 			else
 				set_players_for_cat_player (field)
 			end
-
-			set_subways(field)
-			print_field(field)
-
+			set_subways (field)
+			print_field (field)
 		end
 
-	set_players_for_mouse_player (field : ARRAY2[CHARACTER])
+	set_players_for_mouse_player (field: ARRAY2 [CHARACTER])
 		do
-			across players as player loop
+			across
+				players as player
+			loop
 				if attached {PLAYER_TYPE} player.item as pl then
 					if attached {MOUSE} player.item as mp then
 						if mp.is_alive then
@@ -214,14 +226,15 @@ feature -- display logic
 					else
 						field.put (pl.identity_symbol, player.item.position.y, player.item.position.x)
 					end
-
 				end
 			end
 		end
 
-	set_players_for_cat_player (field : ARRAY2[CHARACTER])
+	set_players_for_cat_player (field: ARRAY2 [CHARACTER])
 		do
-			across players as player loop
+			across
+				players as player
+			loop
 				if attached {MOUSE} player.item as mouse then
 					if not attached mouse.current_subway and mouse.is_alive then
 						field.put (mouse.identity_symbol, player.item.position.y, player.item.position.x)
@@ -232,38 +245,38 @@ feature -- display logic
 			end
 		end
 
-	set_subways(field : ARRAY2[CHARACTER])
+	set_subways (field: ARRAY2 [CHARACTER])
 		local
 			s_cnt: INTEGER
 			s_min: INTEGER
 			s_max: INTEGER
 		do
-			across subways as subway loop
+			across
+				subways as subway
+			loop
 				if (subway.item.is_vertical) then
 					s_min := subway.item.entrance1.y
 					s_max := subway.item.entrance2.y
-					field.put ('-', s_min-1, subway.item.entrance1.x)
-					field.put ('-', s_max+1, subway.item.entrance1.x)
+					field.put ('-', s_min - 1, subway.item.entrance1.x)
+					field.put ('-', s_max + 1, subway.item.entrance1.x)
 				else
 					s_min := subway.item.entrance1.x
 					s_max := subway.item.entrance2.x
-					field.put ('|', subway.item.entrance1.y, s_min-1)
-					field.put ('|', subway.item.entrance1.y, s_max+1)
+					field.put ('|', subway.item.entrance1.y, s_min - 1)
+					field.put ('|', subway.item.entrance1.y, s_max + 1)
 				end
-
-
 				if attached {MOUSE} user as mu then
 					from
-					s_cnt := s_min
+						s_cnt := s_min
 					until
 						s_cnt > s_max
 					loop
 						if (subway.item.is_vertical) then
-							field.put ('|', s_cnt, subway.item.entrance1.x+1)
-							field.put ('|', s_cnt, subway.item.entrance1.x-1)
+							field.put ('|', s_cnt, subway.item.entrance1.x + 1)
+							field.put ('|', s_cnt, subway.item.entrance1.x - 1)
 						else
-							field.put ('-', subway.item.entrance1.y+1, s_cnt)
-							field.put ('-', subway.item.entrance1.y-1, s_cnt)
+							field.put ('-', subway.item.entrance1.y + 1, s_cnt)
+							field.put ('-', subway.item.entrance1.y - 1, s_cnt)
 						end
 						s_cnt := s_cnt + 1
 					end
@@ -271,28 +284,27 @@ feature -- display logic
 					if (subway.item.is_vertical) then
 						s_min := subway.item.entrance1.y
 						s_max := subway.item.entrance2.y
-						field.put ('-', s_min+1, subway.item.entrance1.x)
-						field.put ('-', s_max-1, subway.item.entrance1.x)
-						field.put ('|', s_min, subway.item.entrance1.x-1)
-						field.put ('|', s_min, subway.item.entrance1.x+1)
-						field.put ('|', s_max, subway.item.entrance1.x-1)
-						field.put ('|', s_max, subway.item.entrance1.x+1)
+						field.put ('-', s_min + 1, subway.item.entrance1.x)
+						field.put ('-', s_max - 1, subway.item.entrance1.x)
+						field.put ('|', s_min, subway.item.entrance1.x - 1)
+						field.put ('|', s_min, subway.item.entrance1.x + 1)
+						field.put ('|', s_max, subway.item.entrance1.x - 1)
+						field.put ('|', s_max, subway.item.entrance1.x + 1)
 					else
 						s_min := subway.item.entrance1.x
 						s_max := subway.item.entrance2.x
-						field.put ('|', subway.item.entrance1.y, s_min+1)
-						field.put ('|', subway.item.entrance1.y, s_max-1)
-						field.put ('-', subway.item.entrance1.y-1, s_min)
-						field.put ('-', subway.item.entrance1.y+1, s_min)
-						field.put ('-', subway.item.entrance1.y-1, s_max)
-						field.put ('-', subway.item.entrance1.y+1, s_max)
+						field.put ('|', subway.item.entrance1.y, s_min + 1)
+						field.put ('|', subway.item.entrance1.y, s_max - 1)
+						field.put ('-', subway.item.entrance1.y - 1, s_min)
+						field.put ('-', subway.item.entrance1.y + 1, s_min)
+						field.put ('-', subway.item.entrance1.y - 1, s_max)
+						field.put ('-', subway.item.entrance1.y + 1, s_max)
 					end
 				end
-
 			end
 		end
 
-	print_field (field : ARRAY2[CHARACTER])
+	print_field (field: ARRAY2 [CHARACTER])
 		local
 			i: INTEGER
 			j: INTEGER
@@ -300,22 +312,22 @@ feature -- display logic
 			from
 				i := 1
 			until
-				i > (MAX_Y_POS+2)
+				i > (MAX_Y_POS + 2)
 			loop
 				io.new_line
 				from
 					j := 1
 				until
-					j > (MAX_X_POS+2)
+					j > (MAX_X_POS + 2)
 				loop
-					if ((i = 1) or (i = (MAX_Y_POS+2)) or (j = 1) or (j = (MAX_X_POS+2))) then
+					if ((i = 1) or (i = (MAX_Y_POS + 2)) or (j = 1) or (j = (MAX_X_POS + 2))) then
 						io.put_character ('#')
 					else
-						io.put_character (field.item ((i-1), (j-1)))
+						io.put_character (field.item ((i - 1), (j - 1)))
 					end
-					j := j+1
+					j := j + 1
 				end
-				i := i+1
+				i := i + 1
 			end
 		end
 
@@ -337,8 +349,9 @@ feature -- display logic
 			io.put_string ("  $$      $$  $$   $$  $$    $$   $$  $$  $$$$$  $$$   $$")
 			io.new_line
 			io.new_line
-
-			across players as player loop
+			across
+				players as player
+			loop
 				if attached {MOUSE} player.item as mouse then
 					if mouse.is_alive then
 						alive_cnt := alive_cnt + 1
@@ -347,7 +360,6 @@ feature -- display logic
 					end
 				end
 			end
-
 			io.put_string ("Statistics:")
 			io.new_line
 			io.put_string ("Mice still alive: ")
@@ -356,7 +368,6 @@ feature -- display logic
 			io.put_string ("Killed mice: ")
 			io.put_integer (dead_cnt)
 			io.new_line
-
 			io.put_string ("The user played ")
 			if attached {MOUSE} user as mu then
 				io.put_string ("mouse and ")
@@ -366,24 +377,23 @@ feature -- display logic
 					io.put_string ("sadly died... Maybe next time!")
 				end
 			end
-
 			if attached {CAT} user as cu then
 				io.put_string ("cat and killed ")
 				io.put_integer (cu.eaten_mice)
 				io.put_string (" mice!")
 			end
-
 			io.new_line
-
 			io.put_string ("Most killed mice by a single cat: ")
-			across players as player loop
+			across
+				players as player
+			loop
 				if attached {CAT} player.item as cat then
 					if max_kills < cat.eaten_mice then
 						max_kills := cat.eaten_mice
 					end
 				end
 			end
-
 			io.put_integer (max_kills)
 		end
+
 end

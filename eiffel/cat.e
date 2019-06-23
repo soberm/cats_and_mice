@@ -8,23 +8,27 @@ deferred class
 	CAT
 
 inherit
+
 	PLAYER_TYPE
 
 feature --fields
-	eaten_mice : INTEGER
+
+	eaten_mice: INTEGER
 
 feature -- overriden inherited methods
+
 	init
 		do
 			speed := 2
 		end
 
-	identity_symbol : CHARACTER
+	identity_symbol: CHARACTER
 		do
 			RESULT := 'C'
 		end
 
 feature -- cat specific methods
+
 	increment_eaten_mice
 		do
 			eaten_mice := eaten_mice + 1

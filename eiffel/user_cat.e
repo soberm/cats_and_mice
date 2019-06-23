@@ -8,13 +8,16 @@ class
 	USER_CAT
 
 inherit
+
 	USER
+
 	CAT
 
 create
 	make
 
 feature -- initialization
+
 	make (x: INTEGER; y: INTEGER)
 		local
 			initPosition: POINT
@@ -25,13 +28,15 @@ feature -- initialization
 		end
 
 feature -- overriden inherited features
-	get_speed : INTEGER
+
+	get_speed: INTEGER
 		do
 			RESULT := speed
 		end
 
-	validate_move (tmp : POINT) : BOOLEAN
+	validate_move (tmp: POINT): BOOLEAN
 		do
 			RESULT := true
 		end
+
 end

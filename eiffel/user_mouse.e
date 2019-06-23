@@ -8,13 +8,16 @@ class
 	USER_MOUSE
 
 inherit
+
 	MOUSE
+
 	USER
 
 create
 	make
 
 feature --initialization
+
 	make (x: INTEGER; y: INTEGER; target: SUBWAY)
 		local
 			initPosition: POINT
@@ -26,18 +29,20 @@ feature --initialization
 		end
 
 feature -- overriden inherited features
-	get_speed : INTEGER
+
+	get_speed: INTEGER
 		do
 			RESULT := speed
 		end
 
-	validate_move (tmp : POINT) : BOOLEAN
+	validate_move (tmp: POINT): BOOLEAN
 		do
-			-- check for subway restriction
+				-- check for subway restriction
 			if attached current_subway as cr then
-				RESULT := cr.move_in_subway(tmp)
+				RESULT := cr.move_in_subway (tmp)
 			else
 				RESULT := TRUE
 			end
 		end
+
 end

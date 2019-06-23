@@ -8,21 +8,24 @@ deferred class
 	PLAYER_TYPE
 
 inherit
+
 	PLAYER
 
 feature --fields
-	speed : INTEGER
+
+	speed: INTEGER
 
 feature
+
 	init
 		deferred
 		end
 
-	identity_symbol : CHARACTER
+	identity_symbol: CHARACTER
 		deferred
 		end
 
-	set_speed (sp : INTEGER)
+	set_speed (sp: INTEGER)
 		require
 			valid_speed: sp >= 0
 		do

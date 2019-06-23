@@ -18,7 +18,6 @@ feature --fields
 	target_subway: SUBWAY
 
 	current_subway: detachable SUBWAY
-			-- maybe put that field into the subway -> mouse updates it after entry
 
 	known_cat_positions: LINKED_LIST [POINT]
 
@@ -71,5 +70,4 @@ feature -- mouse specific methods
 				RESULT := FALSE
 			end
 		end
-
 end

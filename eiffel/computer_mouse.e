@@ -52,6 +52,13 @@ feature -- overridden inherited features
 			end
 		end
 
+	get_speed: INTEGER
+		do
+			RESULT := speed
+		end
+
+feature {NONE} --move features
+
 	move_in_subway (subway: SUBWAY): POINT
 		require
 			in_subway: subway /= Void
@@ -127,10 +134,7 @@ feature -- overridden inherited features
 			RESULT := nextPos
 		end
 
-	get_speed: INTEGER
-		do
-			RESULT := speed
-		end
+feature {NONE} -- helper
 
 	current_distance: INTEGER
 		do

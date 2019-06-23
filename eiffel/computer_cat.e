@@ -44,9 +44,9 @@ feature -- overridden inherited features
 			dist: INTEGER
 			mousePos: POINT
 		do
-			if (tick \\ get_speed = 0) then
+			if (tick \\ get_speed = 0) then --only move if speed allows
 				lowestDist := 999999
-				nextPos := position.deep_twin
+				nextPos := position.deep_twin --use current pos as fallback
 				across
 					all_mice as mouse
 				loop

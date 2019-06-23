@@ -44,7 +44,7 @@ feature -- initialization
 				create user_cat.make (10, 10)
 				user := user_cat
 			else
-				create user_mouse.make (new_random_x, new_random_y, target_subway)
+				create user_mouse.make (10, 10, target_subway)
 				user := user_mouse
 			end
 

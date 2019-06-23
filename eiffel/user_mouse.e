@@ -35,7 +35,7 @@ feature -- overriden inherited features
 		do
 			-- check for subway restriction
 			if attached current_subway as cr then
-				RESULT := cr.position_in_subway(tmp)
+				RESULT := cr.move_in_subway(tmp)
 			else
 				RESULT := TRUE
 			end

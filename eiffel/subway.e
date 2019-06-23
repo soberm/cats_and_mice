@@ -62,7 +62,7 @@ feature
 
 	on_entry_or_exit (p: PLAYER): BOOLEAN
 		do
-			RESULT := (entrance1 = p.position) or (entrance2 = p.position)
+			RESULT := (entrance1.is_equal (p.position)) or (entrance2.is_equal (p.position))
 		end
 
 	calculuate_distance_to (point: POINT): INTEGER
@@ -84,9 +84,18 @@ feature
 	position_in_subway (point: POINT): BOOLEAN
 		do
 			if is_vertical then
-				RESULT := (entrance1.y <= point.y) and (point.y <= entrance2.y)
+				RESULT := (entrance1.y <= point.y) and (point.y <= entrance2.y) and (point.x = entrance1.x)
 			else
-				RESULT := (entrance1.x <= point.x) and (point.x <= entrance2.x)
+				RESULT := (entrance1.x <= point.x) and (point.x <= entrance2.x) and (point.y = entrance1.y)
+			end
+		end
+
+	move_in_subway (point: POINT): BOOLEAN
+		do
+			if is_vertical then
+				RESULT := (point.x = entrance1.x)
+			else
+				RESULT := (point.y = entrance1.y)
 			end
 		end
 

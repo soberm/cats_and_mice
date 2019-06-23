@@ -45,7 +45,7 @@ feature -- overridden inherited features
 			mousePos: POINT
 		do
 			lowestDist := 999999
-			nextPos := position
+			nextPos := position.deep_twin
 			across
 				all_mice as mouse
 			loop

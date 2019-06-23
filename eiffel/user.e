@@ -15,9 +15,10 @@ feature -- implement deferred methods
 		local
 			read_char : CHARACTER
 			tmp : POINT
+			test: BOOLEAN
 		do
 			read_char := get_char
-			tmp := position
+			tmp := position.deep_twin
 
 			if (read_char = 'w') and position.y > MIN_Y_POS then
 				tmp.y := position.y - 1

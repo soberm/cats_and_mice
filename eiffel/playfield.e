@@ -130,61 +130,34 @@ feature -- game logic
 				if attached {CAT} player.item as cat then
 					player.item.move (tick)
 				elseif attached {MOUSE} player.item as mouse then
-					if (not mouse.finished) and mouse.is_alive then
-						player.item.move (tick)
-
-							-- handle subways
-						if attached mouse.current_subway as curr_sub then
-							if not curr_sub.position_in_subway (player.item.position) then
-								mouse.set_current_subway (Void)
-							end
-						else
-							across
-								subways as subway
-							loop
-									-- every mouse on entry/exit field without
-								if subway.item.on_entry_or_exit (player.item) then
-									mouse.set_current_subway (subway.item)
-									mouse.inform_about_cats (cats)
-								end
-							end
-						end
-					end
+					move_mice (mouse, tick, cats)
 				end
 			end
-
-				-- check if mouse gets killed
-			across
-				players as outer_player
-			loop
-				if attached {CAT} outer_player.item as cat then
-					across
-						players as inner_player
-					loop
-						if attached {MOUSE} inner_player.item as mouse then
-							if not attached mouse.current_subway and mouse.is_alive and outer_player.item.position.is_equal (inner_player.item.position) then
-								cat.increment_eaten_mice
-								mouse.kill_mouse
-							end
-						end
-					end
-				end
-			end
+			kill_mice
 		end
 
-	create_cat_list: LINKED_LIST [POINT]
-		local
-			cats: LINKED_LIST [POINT]
+	move_mice (mouse: MOUSE; tick: INTEGER; cats: LINKED_LIST [POINT])
 		do
-			create cats.make
-			across
-				players as player
-			loop
-				if attached {CAT} player.item as cat then
-					cats.extend (cat.position)
+			if (not mouse.finished) and mouse.is_alive then
+				mouse.move (tick)
+
+					-- handle subways
+				if attached mouse.current_subway as curr_sub then --mouse is in subway
+					if not curr_sub.position_in_subway (mouse.position) then --mouse exists subway
+						mouse.set_current_subway (Void)
+					end
+				else
+					across
+						subways as subway
+					loop
+							-- every mouse on entry/exit field without
+						if subway.item.on_entry_or_exit (mouse) then
+							mouse.set_current_subway (subway.item)
+							mouse.inform_about_cats (cats)
+						end
+					end
 				end
 			end
-			RESULT := cats
 		end
 
 	game_finished: BOOLEAN
@@ -207,6 +180,29 @@ feature -- game logic
 			RESULT := done_cnt = total_cnt
 		end
 
+	kill_mice
+			-- check if mouse gets killed
+		do
+			across
+				players as outer_player
+			loop
+				if attached {CAT} outer_player.item as cat then
+					across
+						players as inner_player
+					loop
+						if attached {MOUSE} inner_player.item as mouse then
+							if not attached mouse.current_subway and mouse.is_alive and outer_player.item.position.is_equal (inner_player.item.position) then
+								cat.increment_eaten_mice
+								mouse.kill_mouse
+							end
+						end
+					end
+				end
+			end
+		end
+
+feature --game helper
+
 	is_user_alive: BOOLEAN
 		do
 			if attached {MOUSE} user as mu then
@@ -214,6 +210,21 @@ feature -- game logic
 			else
 				RESULT := TRUE
 			end
+		end
+
+	create_cat_list: LINKED_LIST [POINT]
+		local
+			cats: LINKED_LIST [POINT]
+		do
+			create cats.make
+			across
+				players as player
+			loop
+				if attached {CAT} player.item as cat then
+					cats.extend (cat.position)
+				end
+			end
+			RESULT := cats
 		end
 
 feature -- display logic

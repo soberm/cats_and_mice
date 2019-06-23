@@ -4,6 +4,7 @@ import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import com.google.gson.annotations.Expose;
 
+//initial message used to add a new player
 public class Message {
     @Expose
     public Cat cat;

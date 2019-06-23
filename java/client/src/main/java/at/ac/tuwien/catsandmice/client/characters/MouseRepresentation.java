@@ -27,6 +27,7 @@ public class MouseRepresentation implements Representation {
     @Override
     public void loadImage() {
         if(image == null) {
+            //all mouse representations use same image for performance reasosns
             ImageIcon ii = new ImageIcon(Board.class.getResource("/sprites/mouse.png"));
             Image original = ii.getImage();
             int height=original.getHeight(null);

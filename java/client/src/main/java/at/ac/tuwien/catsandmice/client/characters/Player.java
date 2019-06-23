@@ -124,6 +124,7 @@ public abstract class Player {
         return  width;
     }
 
+    //only updates values that should be set by the server
     public synchronized void updateCharacter(Character character, Boundaries boundaries) {
         this.character.setHeight(character.getHeight());
         this.character.setWidth(character.getWidth());
@@ -149,6 +150,7 @@ public abstract class Player {
         setInitialised(true);
     }
 
+    //base draw method only draws top layer
     public void draw(Graphics2D g2d, ImageObserver observer, World world) {
         for(Subway subway : world.getSubways()) {
             if(character instanceof Cat) {
@@ -208,6 +210,7 @@ public abstract class Player {
         }
     }
 
+    //if the player moves diagonally and one key is released, rotation should be set to the direction of the second key
     private synchronized void releaseRotation() {
         if(dy > 0) {
             character.setRotation(270);

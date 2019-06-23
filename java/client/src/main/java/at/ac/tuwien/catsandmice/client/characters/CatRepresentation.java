@@ -27,6 +27,7 @@ public class CatRepresentation implements Representation {
     @Override
     public void loadImage() {
         if(image == null) {
+            //cat image is only loaded once and used for every cat representation for performance reasons
             ImageIcon ii = new ImageIcon(Board.class.getResource("/sprites/cat.png"));
             Image original = ii.getImage();
             int height = original.getHeight(null);

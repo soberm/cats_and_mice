@@ -39,6 +39,7 @@ public class Board extends JPanel implements ActionListener {
     public void initWorld(Socket socket) {
         this.socket = socket;
         stateUpdateReader = new StateUpdateReader();
+        //first discover how the world looks like
         stateUpdateReader.readLine();
 
     }
@@ -69,9 +70,11 @@ public class Board extends JPanel implements ActionListener {
 
     private void drawBoard(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        //if player is alive and game hasn't stopped draw world to only show what player should be seeing
         if(player.isAlive() && !world.isEnded()) {
             player.draw(g2d, this, world);
         } else {
+            //otherwise draw everything
             for(Subway subway : world.getSubways()) {
                 SubwayRepresentation subwayRepresentation = new SubwayRepresentation(subway);
                 subwayRepresentation.draw(g2d, this, subway.getContainedMice().isEmpty());
@@ -82,12 +85,14 @@ public class Board extends JPanel implements ActionListener {
                     }
                 }
             }
+
             for(Mouse mouse : world.getMice()) {
                 if(mouse.isAlive()) {
                     MouseRepresentation mouseRepresentation = new MouseRepresentation(mouse);
                     mouseRepresentation.draw(g2d, this);
                 }
             }
+
             for(Cat cat : world.getCats()) {
                 CatRepresentation catRepresentation = new CatRepresentation(cat);
                 catRepresentation.draw(g2d, this);
@@ -163,6 +168,7 @@ public class Board extends JPanel implements ActionListener {
                 }
                 world = newWorld;
 
+                //if a player already exists, update their status
                 if(player != null) {
                     for(Cat cat : world.getCats()) {
                         if(cat.getUuid().equals(player.getCharacter().getUuid())) {
@@ -185,6 +191,8 @@ public class Board extends JPanel implements ActionListener {
                 }
 
                 repaint();
+
+                //if the game ended
                 if(newWorld.isEnded()) {
                     timer.stop();
 
@@ -204,11 +212,10 @@ public class Board extends JPanel implements ActionListener {
                     System.exit(0);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                //end game for client if exception occurs
+                throw new RuntimeException(e);
+
             }
-
-
-
         }
     }
 }

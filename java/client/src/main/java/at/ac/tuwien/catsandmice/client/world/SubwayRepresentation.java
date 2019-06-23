@@ -91,6 +91,7 @@ public class SubwayRepresentation {
             }
         }
         g2d.fill(entry1);
+        //draw names mice that pinged and exit only if it is not the last subway
         if(!subway.isEnd() && !entry1NamesList.isEmpty()) {
             int x = subway.getX1() + 5 + (isVertical ? Constants.SUBWAY_ENTRY_WIDTH / 2 : 0);
             int y = subway.getY1() + 5 + (isVertical ? 0 : Constants.SUBWAY_ENTRY_WIDTH / 2);
@@ -145,7 +146,9 @@ public class SubwayRepresentation {
         mouse.getMouseRepresentation().getMouse().setPingedExit(PingedExit.NONE);
     }
 
+
     public PingedExit getPingedExit(Mouse mouse) {
+        //check direction mouse is facing to determine which exit gets pinged
         if(isVertical) {
             //vertical subway
             if(mouse.getRotation() % 180 != 0) {

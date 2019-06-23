@@ -61,9 +61,13 @@ feature -- initialization
 			cnt: INTEGER
 			pc_cat: COMPUTER_CAT
 			pc_mouse: COMPUTER_MOUSE
-			mice: LINKED_LIST [COMPUTER_MOUSE]
+			mice: LINKED_LIST [MOUSE]
 		do
 			create mice.make
+
+			if attached {MOUSE} user as mu then
+				mice.extend (mu)
+			end
 
 			from
 				cnt := 0

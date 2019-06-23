@@ -24,7 +24,7 @@ feature --fields
 
 feature -- initialization
 
-	make (x: INTEGER; y: INTEGER; subways: LINKED_LIST [SUBWAY]; mouses: LINKED_LIST [COMPUTER_MOUSE])
+	make (x: INTEGER; y: INTEGER; subways: LINKED_LIST [SUBWAY]; mouses: LINKED_LIST [MOUSE])
 		local
 			initPosition: POINT
 		do
@@ -69,7 +69,7 @@ feature -- overridden inherited features
 			RESULT := speed
 		end
 
-	set_visible_mice (visible: LINKED_LIST [COMPUTER_MOUSE])
+	set_visible_mice (visible: LINKED_LIST [MOUSE])
 		do
 			all_mice := visible
 		end

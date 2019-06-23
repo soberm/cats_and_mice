@@ -29,26 +29,26 @@ feature {NONE} -- Initialization
 
 			-- Run application.
 		do
---			reset_input
---			clear_screen
---			io.put_string ("Press Enter to start cats and mice!%N")
+			reset_input
+			clear_screen
+			io.put_string ("Press Enter to start cats and mice!%N")
 
---			clear_stdin
+			clear_stdin
 
---			-- ask user for game parameters
---			io.put_string ("Choose your player type (C = cat,M = mouse): ")
---			io.read_character
---			player_type := io.last_character.as_lower
+			-- ask user for game parameters
+			io.put_string ("Choose your player type (C = cat,M = mouse): ")
+			io.read_character
+			player_type := io.last_character.as_lower
 
---			io.put_string ("Choose number of computer cats: ")
---			io.read_integer
---			cat_players := io.last_integer
+			io.put_string ("Choose number of computer cats: ")
+			io.read_integer
+			cat_players := io.last_integer
 
---			io.put_string ("Choose number of computer mice: ")
---			io.read_integer
---			mouse_players := io.last_integer
+			io.put_string ("Choose number of computer mice: ")
+			io.read_integer
+			mouse_players := io.last_integer
 
---			prepare_input
+			prepare_input
 			create subways.make
 			create s1.make (10, 10, 10, 16, False)
 			create s2.make (30, 14, 50, 14, True)
@@ -56,38 +56,38 @@ feature {NONE} -- Initialization
 			subways.extend (s2)
 
 			-- test temp
-			create user_mouse.make (10, 10, s2)
-			user_mouse.set_current_subway (s2)
+--			create user_mouse.make (10, 10, s2)
+--			user_mouse.set_current_subway (s2)
 
-			io.put_boolean (user_mouse.finished)
-			io.put_boolean (s2.is_equal (s2))
+--			io.put_boolean (user_mouse.finished)
+--			io.put_boolean (s2.is_equal (s2))
 
 			-- end test temp
 
 
---			create playfield.make(cat_players, mouse_players, player_type, subways, s1)
+			create playfield.make(cat_players, mouse_players, player_type, subways, s2)
 
---			-- TODO
---			-- test, test, test...
---			-- input issue when restarting the game DONE
---			-- propagate playfield info when mouse enters subway
+			-- TODO
+			-- test, test, test...
+			-- input issue when restarting the game DONE
+			-- propagate playfield info when mouse enters subway
 
---			from
+			from
 
---			until
---				playfield.game_finished or not playfield.is_user_alive
---			loop
---				playfield.execute_game_step
---				clear_screen
---				playfield.display_playfield
+			until
+				playfield.game_finished or not playfield.is_user_alive
+			loop
+				playfield.execute_game_step
+				clear_screen
+				playfield.display_playfield
 
---				sleep (1000 * 1000 * 100)
---			end
+				sleep (1000 * 1000 * 100)
+			end
 
---			clear_screen
---			reset_input
+			clear_screen
+			reset_input
 
---			playfield.print_game_finished
+			playfield.print_game_finished
 		end
 
 feature {NONE}

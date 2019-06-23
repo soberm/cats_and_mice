@@ -60,7 +60,7 @@ feature
 
 	calculuate_distance_to (point: POINT): INTEGER
 		do
-			RESULT := math.sqrt ((point.x - x) ^ 2 + (point.y - y) ^ 2).truncated_to_integer
+			RESULT := calculuate_distance_to_intern(point.x, point.y)
 		end
 
 	calculuate_distance_to_intern (pX: INTEGER; pY: INTEGER): INTEGER
@@ -78,34 +78,46 @@ feature
 			distDown: INTEGER
 			distLeft: INTEGER
 			distRight: INTEGER
-			tmp: POINT
+			pointTop: POINT
+			pointDown: POINT
+			pointLeft: POINT
+			pointRight: POINT
 		do
 			top := y - 1
 			down := y + 1
 			left := x + 1
 			right := x - 1
+
 			distRight := point.calculuate_distance_to_intern (right, y)
 			distLeft := point.calculuate_distance_to_intern (left, y)
 			distDown := point.calculuate_distance_to_intern (x, down)
 			distTop := point.calculuate_distance_to_intern (x, top)
-			if is_minimum (distRight, distLeft, distTop, distDown) then
-				create tmp.make (right, y)
-				RESULT := tmp
-			elseif is_minimum (distLeft, distTop, distDown, distRight) then
-				create tmp.make (left, y)
-				RESULT := tmp
-			elseif is_minimum (distTop, distDown, distRight, distLeft) then
-				create tmp.make (x, top)
-				RESULT := tmp
-			else --if is_minimum(distDown, distRight, distLeft, distTop) then
-				create tmp.make (x, down)
-				RESULT := tmp
+
+			create pointTop.make (x, top)
+			create pointDown.make (x, down)
+			create pointLeft.make (left, y)
+			create pointRight.make (right, y)
+
+			if is_minimum (distRight, distLeft, distTop, distDown) and pointRight.is_valid then
+				RESULT := pointRight
+
+			elseif is_minimum (distLeft, distTop, distDown, distRight) and pointLeft.is_valid then
+				RESULT := pointLeft
+
+			elseif is_minimum (distTop, distDown, distRight, distLeft) and pointTop.is_valid then
+				RESULT := pointTop
+
+			elseif is_minimum(distDown, distRight, distLeft, distTop) and pointDown.is_valid then
+				RESULT := pointDown
+
+			else
+				RESULT := point
 			end
 		end
 
 	is_minimum (min: INTEGER; a: INTEGER; b: INTEGER; c: INTEGER): BOOLEAN
 		do
-			RESULT := min < a and min < b and min < c
+			RESULT := min <= a and min <= b and min <= c
 		end
 
 	is_equal (o: POINT): BOOLEAN

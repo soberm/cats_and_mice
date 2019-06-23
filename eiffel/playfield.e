@@ -43,7 +43,7 @@ feature -- initialization
 			user_cat: USER_CAT
 			user_mouse: USER_MOUSE
 		do
-			create random_sequence.set_seed (1387)
+			create random_sequence.set_seed (1337)
 			create players.make
 			create subways.make
 			subways := s
@@ -120,7 +120,10 @@ feature -- helper functions
 feature -- game logic
 
 	execute_game_step
+		local
+			 cats: LINKED_LIST [POINT]
 		do
+			cats := create_cat_list
 			across
 				players as player
 			loop
@@ -142,6 +145,7 @@ feature -- game logic
 									-- every mouse on entry/exit field without
 								if subway.item.on_entry_or_exit (player.item) then
 									mouse.set_current_subway (subway.item)
+									mouse.inform_about_cats (cats)
 								end
 							end
 						end
@@ -166,6 +170,21 @@ feature -- game logic
 					end
 				end
 			end
+		end
+
+	create_cat_list :LINKED_LIST [POINT]
+		local
+			 cats: LINKED_LIST [POINT]
+		do
+			create cats.make
+			across
+				players as player
+			loop
+				if attached {CAT} player.item as cat then
+					cats.extend (cat.position)
+				end
+			end
+			RESULT := cats
 		end
 
 	game_finished: BOOLEAN
@@ -204,12 +223,12 @@ feature -- display logic
 			field: ARRAY2 [CHARACTER]
 		do
 			create field.make_filled (' ', MAX_Y_POS, MAX_X_POS)
+			set_subways (field)
 			if attached {MOUSE} user as mu then
 				set_players_for_mouse_player (field)
 			else
 				set_players_for_cat_player (field)
 			end
-			set_subways (field)
 			print_field (field)
 		end
 

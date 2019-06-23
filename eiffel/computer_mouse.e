@@ -59,6 +59,7 @@ feature -- overridden inherited features
 		do
 			danger1 := calculate_danger_level (subway.entrance1)
 			danger2 := calculate_danger_level (subway.entrance2)
+			
 			if (danger1 > danger2) then
 				RESULT := position.calculate_next_position (subway.entrance1)
 			else

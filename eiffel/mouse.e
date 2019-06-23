@@ -20,13 +20,13 @@ feature --fields
 	current_subway: detachable SUBWAY
 			-- maybe put that field into the subway -> mouse updates it after entry
 
-	known_cat_positions: HASH_TABLE [POINT, INTEGER]
+	known_cat_positions: LINKED_LIST [POINT]
 
 feature -- overriden inherited methods
 
 	init
 		do
-			create known_cat_positions.make (2)
+			create known_cat_positions.make
 			speed := 1
 			alive := TRUE
 		end
@@ -58,7 +58,7 @@ feature -- mouse specific methods
 			target_subway := ts
 		end
 
-	inform_about_cats (info: HASH_TABLE [POINT, INTEGER])
+	inform_about_cats (info: LINKED_LIST [POINT])
 		do
 			known_cat_positions := info
 		end

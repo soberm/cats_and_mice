@@ -40,5 +40,4 @@ feature -- overriden inherited features
 				RESULT := TRUE
 			end
 		end
-
 end

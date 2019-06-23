@@ -32,9 +32,65 @@ feature --initialization
 feature -- overridden inherited features
 	move
 		local
+			nextPos: POINT
+		do
+			if attached current_subway as subway then
+				nextPos := move_in_subway(subway)
+			else
+				nextPos := move_outside
+			end
+
+			if(nextPos /= Void) then
+				position.x := nextPos.x
+				position.y := nextPos.y
+			end
+		end
+
+	move_in_subway ( subway: SUBWAY) :POINT
+		require
+			in_subway: subway /= Void
+		local
+			danger1: INTEGER
+			danger2: INTEGER
+		do
+			danger1 := calculate_danger_level(subway.entrance1)
+			danger2 := calculate_danger_level(subway.entrance2)
+
+			if(danger1 > danger2) then
+				RESULT := position.calculate_next_position (subway.entrance1)
+			else
+				RESULT := position.calculate_next_position (subway.entrance2)
+			end
+
+		end
+
+	calculate_danger_level ( entrance: POINT) : INTEGER
+		local
+			dist: INTEGER
+			targetDist: INTEGER
+			tmp: POINT
+			tmpDist: INTEGER
+			danger: INTEGER
+		do
+			dist := position.calculuate_distance_to (entrance)
+
+			tmp := position.calculate_next_position (entrance)
+			targetDist := target_subway.calculuate_distance_to (tmp)
+
+			across known_cat_positions as cat_position loop
+				tmpDist := cat_position.item.calculuate_distance_to (entrance)
+				danger := danger + tmpDist
+			end
+
+			RESULT := danger
+
+		end
+
+
+	move_outside : POINT
+		local
 			allEntrances: LINKED_LIST [POINT]
 			lowestDist: INTEGER
-			nearestSub: SUBWAY
 			tmp: POINT
 			currentDist: INTEGER
 			nextDist: INTEGER
@@ -49,9 +105,9 @@ feature -- overridden inherited features
 			end
 
 			currentDist := current_distance
-
 			lowestDist := 999999
 			lowestNextDist := 999999
+			nextPos := position.deep_twin
 
 			across allEntrances as entrance loop
 				dist := position.calculuate_distance_to (entrance.item)
@@ -68,11 +124,9 @@ feature -- overridden inherited features
 					end
 				end
 			end
-			if(nextPos /= Void) then
-				position.x := nextPos.x
-				position.y := nextPos.y
-			end
+			RESULT := nextPos
 		end
+
 
 	get_speed : INTEGER
 		do

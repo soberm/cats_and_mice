@@ -13,7 +13,7 @@ inherit
 
 feature -- implement deferred methods
 
-	move
+	move (tick: INTEGER)
 		local
 			read_char: CHARACTER
 			tmp: POINT

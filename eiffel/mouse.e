@@ -27,7 +27,7 @@ feature -- overriden inherited methods
 	init
 		do
 			create known_cat_positions.make
-			speed := 1
+			speed := 2
 			alive := TRUE
 		end
 

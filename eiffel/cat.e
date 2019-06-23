@@ -19,7 +19,7 @@ feature -- overriden inherited methods
 
 	init
 		do
-			speed := 2
+			speed := 1
 		end
 
 	identity_symbol: CHARACTER

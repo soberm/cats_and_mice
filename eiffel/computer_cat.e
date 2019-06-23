@@ -37,30 +37,32 @@ feature -- initialization
 
 feature -- overridden inherited features
 
-	move
+	move (tick: INTEGER)
 		local
 			lowestDist: INTEGER
 			nextPos: POINT
 			dist: INTEGER
 			mousePos: POINT
 		do
-			lowestDist := 999999
-			nextPos := position.deep_twin
-			across
-				all_mice as mouse
-			loop
-				if mouse.item.current_subway = Void and mouse.item.alive then --cats can onlu see mice alive + outside
+			if (tick \\ get_speed = 0) then
+				lowestDist := 999999
+				nextPos := position.deep_twin
+				across
+					all_mice as mouse
+				loop
+					if mouse.item.current_subway = Void and mouse.item.alive then --cats can onlu see mice alive + outside
 
-					mousePos := mouse.item.position
-					dist := position.calculuate_distance_to (mousePos)
-					if (dist < lowestDist) then -- is it a close mouse?
-						lowestDist := dist
-						nextPos := position.calculate_next_position (mousePos)
+						mousePos := mouse.item.position
+						dist := position.calculuate_distance_to (mousePos)
+						if (dist < lowestDist) then -- is it a close mouse?
+							lowestDist := dist
+							nextPos := position.calculate_next_position (mousePos)
+						end
 					end
 				end
-			end
-			if (nextPos /= Void and nextPos.is_valid) then
-				position := nextPos
+				if (nextPos /= Void and nextPos.is_valid) then
+					position := nextPos
+				end
 			end
 		end
 

@@ -24,9 +24,7 @@ feature {NONE} -- Initialization
 			player_type: CHARACTER
 			mouse_players: INTEGER
 			cat_players: INTEGER
-
-				--test
-			user_mouse: USER_MOUSE
+			tick: INTEGER
 
 			-- Run application.
 		do
@@ -53,15 +51,17 @@ feature {NONE} -- Initialization
 			subways.extend (s2)
 
 			create playfield.make (cat_players, mouse_players, player_type, subways, s2)
+			tick := 0
 
 			from
 			until
 				playfield.game_finished or not playfield.is_user_alive
 			loop
-				playfield.execute_game_step
+				playfield.execute_game_step(tick)
 				clear_screen
 				playfield.display_playfield
 				sleep (1000 * 1000 * 100)
+				tick := tick + 1
 			end
 			clear_screen
 			reset_input

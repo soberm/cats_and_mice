@@ -23,7 +23,7 @@ feature -- fields
 
 feature --methods implemented by inherited classes
 
-	move
+	move (tick: INTEGER)
 		deferred
 		end
 

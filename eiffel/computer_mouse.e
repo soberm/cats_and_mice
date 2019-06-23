@@ -35,18 +35,20 @@ feature --initialization
 
 feature -- overridden inherited features
 
-	move
+	move (tick: INTEGER)
 		local
 			nextPos: POINT
 		do
-			if attached current_subway as subway then
-				nextPos := move_in_subway (subway)
-			else
-				nextPos := move_outside
-			end
-			if (nextPos /= Void) then
-				position.x := nextPos.x
-				position.y := nextPos.y
+			if (tick \\ get_speed = 0) then
+				if attached current_subway as subway then
+					nextPos := move_in_subway (subway)
+				else
+					nextPos := move_outside
+				end
+				if (nextPos /= Void) then
+					position.x := nextPos.x
+					position.y := nextPos.y
+				end
 			end
 		end
 
@@ -59,7 +61,6 @@ feature -- overridden inherited features
 		do
 			danger1 := calculate_danger_level (subway.entrance1)
 			danger2 := calculate_danger_level (subway.entrance2)
-			
 			if (danger1 > danger2) then
 				RESULT := position.calculate_next_position (subway.entrance1)
 			else

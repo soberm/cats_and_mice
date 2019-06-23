@@ -119,19 +119,19 @@ feature -- helper functions
 
 feature -- game logic
 
-	execute_game_step
+	execute_game_step (tick: INTEGER)
 		local
-			 cats: LINKED_LIST [POINT]
+			cats: LINKED_LIST [POINT]
 		do
 			cats := create_cat_list
 			across
 				players as player
 			loop
 				if attached {CAT} player.item as cat then
-					player.item.move
+					player.item.move (tick)
 				elseif attached {MOUSE} player.item as mouse then
 					if (not mouse.finished) and mouse.is_alive then
-						player.item.move
+						player.item.move (tick)
 
 							-- handle subways
 						if attached mouse.current_subway as curr_sub then
@@ -172,9 +172,9 @@ feature -- game logic
 			end
 		end
 
-	create_cat_list :LINKED_LIST [POINT]
+	create_cat_list: LINKED_LIST [POINT]
 		local
-			 cats: LINKED_LIST [POINT]
+			cats: LINKED_LIST [POINT]
 		do
 			create cats.make
 			across

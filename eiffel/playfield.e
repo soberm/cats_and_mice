@@ -137,6 +137,9 @@ feature -- game logic
 		end
 
 	move_mice (mouse: MOUSE; tick: INTEGER; cats: LINKED_LIST [POINT])
+		require
+			tick >= 0
+			mouse.position.is_valid
 		do
 			if (not mouse.finished) and mouse.is_alive then
 				mouse.move (tick)

@@ -38,6 +38,8 @@ feature -- implement deferred methods
 feature -- user specific features
 
 	validate_move (tmp: POINT): BOOLEAN
+		require
+			tmp.is_valid
 		deferred
 		end
 

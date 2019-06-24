@@ -43,6 +43,8 @@ feature -- mouse specific methods
 		end
 
 	kill_mouse
+		require
+			alive = TRUE
 		do
 			alive := FALSE
 		end

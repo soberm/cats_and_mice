@@ -7,6 +7,10 @@ note
 deferred class
 	PLAYER
 
+feature -- fields
+
+	position: POINT
+
 feature -- constants
 
 	MIN_X_POS: INTEGER = 1
@@ -17,13 +21,11 @@ feature -- constants
 
 	MAX_Y_POS: INTEGER = 25
 
-feature -- fields
-
-	position: POINT
-
 feature --methods implemented by inherited classes
 
 	move (tick: INTEGER)
+		require
+			tick >= 0
 		deferred
 		end
 
@@ -35,14 +37,12 @@ feature -- setter methods
 
 	set_new_pos (newPos: Point)
 		require
-			newPos.x >= MIN_X_POS and newPos.x <= MAX_X_POS
-			newPos.y >= MIN_Y_POS and newPos.y <= MAX_Y_POS
+			newPos.is_valid
 		do
 			position := newPos
 		end
 
 invariant
-	valid_x_pos: position.x >= MIN_X_POS and position.x <= MAX_X_POS
-	valid_y_pos: position.y >= MIN_Y_POS and position.y <= MAX_Y_POS
+	position.is_valid
 
 end

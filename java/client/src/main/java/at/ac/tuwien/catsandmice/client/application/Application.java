@@ -68,7 +68,6 @@ public class Application extends JFrame {
             setBackground(Color.black);
             setResizable(false);
             pack();
-            //setSize(new Dimension(ClientConstants.SCREEN_WIDTH, ClientConstants.SCREEN_HEIGHT));
 
             setTitle("Cats and Mice");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

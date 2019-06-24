@@ -68,10 +68,12 @@ public class Server implements Runnable {
 
     }
 
+    //creates a new subway at a random location that does not overlap if possible
     private Subway createRandomSubway() {
         boolean overlaps = false;
         Subway subway = null;
         int count = 10;
+        //only to 10 runs to prevent infinte loops
         while((overlaps || subway == null) && count > 0) {
             subway = new Subway();
             ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -151,10 +153,11 @@ public class Server implements Runnable {
         return subway;
     }
 
+    //initiales new computer players
     private void initComputerPlayers() {
         for (int i=0; i<catbots; ++i) {
             Cat cat = new Cat();
-            //TODO set width & height according to sprites
+
             cat.setWidth(100);
             cat.setHeight(50);
             cat.setX((int) (Math.random() * world.getMaxWidth()));
@@ -168,7 +171,7 @@ public class Server implements Runnable {
 
         for (int i=0; i<mousebots; ++i) {
             Mouse mouse = new Mouse("pc"+i);
-            //TODO set width & height according to sprites
+
             mouse.setWidth(50);
             mouse.setHeight(25);
             Subway currentSub = null;
@@ -220,6 +223,7 @@ public class Server implements Runnable {
         new Thread(new LoginService()).start();
     }
 
+    //remove a player if an exception occurs to reset the counter and let other players join
     public void removePlayer(ServerCat serverCat) {
         int index = allCharacters.indexOf(serverCat);
         if(index >= 0) {
@@ -230,6 +234,7 @@ public class Server implements Runnable {
         }
     }
 
+    //remove a player if an exception occurs to reset the counter and let other players join
     public void removePlayer(ServerMouse serverMouse) {
         int index = allCharacters.indexOf(serverMouse);
         if(index >= 0) {
@@ -272,6 +277,7 @@ public class Server implements Runnable {
                         if(currentPlayerCount.get() == players) {
                             world.setStarted(true);
                             for(ServerCharacter serverCharacter : allCharacters) {
+                                //start a new listener for update messages from this character
                                 new Thread(serverCharacter).start();
                             }
                             new Thread(new UpdateService()).start();
@@ -290,6 +296,7 @@ public class Server implements Runnable {
         }
     }
 
+    //notifies all players about the current world state
     private class UpdateService implements Runnable {
 
         @Override
@@ -322,6 +329,7 @@ public class Server implements Runnable {
 
         private boolean checkEnded() {
             boolean ended = true;
+            // check if all mouse player characters are already in the end or no longer alive
             for(ServerCharacter serverCharacter : allCharacters) {
                 if(serverCharacter.getCharacter() instanceof  Mouse) {
                     Mouse mouse = (Mouse) serverCharacter.getCharacter();
@@ -337,6 +345,7 @@ public class Server implements Runnable {
                     }
                 }
             }
+            // check if any computer controlled mice are still alive and not in the end subway
             if(ended) {
                 for(IComputerPlayer pc : computerPlayers) {
                     if(pc instanceof ComputerMouse) {

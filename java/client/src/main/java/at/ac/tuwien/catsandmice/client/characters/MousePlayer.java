@@ -53,6 +53,7 @@ public class MousePlayer extends Player {
 
     @Override
     public void draw(Graphics2D g2d, ImageObserver observer, World world) {
+        //draw subway or world view
         if(!isInitialised() || mouseRepresentation.getMouse().getBoundaries().equals(world) ) {
             if(isInitialised() && mouseRepresentation.getMouse().isAlive() && tryToEnter) {
                 for(Subway subway : world.getSubways()) {
@@ -70,12 +71,7 @@ public class MousePlayer extends Player {
             }
         } else {
             //we know we are in a subway, so only exiting is possible
-            List<Subway> subways = world.getSubways().stream().filter(new Predicate<Subway>() {
-                @Override
-                public boolean test(Subway subwayRepresantation) {
-                    return subwayRepresantation.getUuid().equals(mouseRepresentation.getMouse().getBoundaries().getUuid());
-                }
-            }).collect(Collectors.toList());
+            List<Subway> subways = world.getSubways().stream().filter(subwayRepresantation -> subwayRepresantation.getUuid().equals(mouseRepresentation.getMouse().getBoundaries().getUuid())).collect(Collectors.toList());
 
             Subway subway= subways.get(0);
             SubwayRepresentation subwayRepresentation = new SubwayRepresentation(subway);
@@ -89,6 +85,7 @@ public class MousePlayer extends Player {
             }
 
         }
+        //no matter if mouse entered/exited or not, reset it after every world refresh
         tryToEnter = false;
     }
 
@@ -123,9 +120,11 @@ public class MousePlayer extends Player {
     @Override
     public void keyPressed(KeyEvent e) {
         super.keyPressed(e);
+        //handle enter event
         if(e.getKeyCode() == KeyEvent.VK_E) {
             setTryToEnter(true);
         }
+        //handle ping event
         if(e.getKeyCode() == KeyEvent.VK_F) {
             if (mouseRepresentation.getMouse().getBoundaries() instanceof Subway) {
                 SubwayRepresentation subwayRepresentation = new SubwayRepresentation((Subway) mouseRepresentation.getMouse().getBoundaries());
@@ -134,6 +133,7 @@ public class MousePlayer extends Player {
         }
     }
 
+    //moves the mouse to a specific location, used on subway entry
     public void moveTo(int x, int y) {
         mouseRepresentation.getMouse().setX(x- mouseRepresentation.getWidth()/2);
         mouseRepresentation.getMouse().setY(y- mouseRepresentation.getHeight()/2);
@@ -141,9 +141,5 @@ public class MousePlayer extends Player {
 
     public MouseRepresentation getMouseRepresentation() {
         return mouseRepresentation;
-    }
-
-    public void setMouseRepresentation(MouseRepresentation mouseRepresentation) {
-        this.mouseRepresentation = mouseRepresentation;
     }
 }

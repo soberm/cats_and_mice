@@ -36,12 +36,14 @@ public class ServerMouse extends ServerCharacter {
     public void run() {
         String line = null;
         try {
+            //read update messages until nothing comes
             while (null != (line = inputStream.readLine())) {
                 MouseUpdateMessage mouseUpdateMessage =  ServerConstants.getGson().fromJson(line, MouseUpdateMessage.class);
                 Mouse mouse = mouseUpdateMessage.getMouse();
                 super.update(mouse);
                 this.mouse.setPingedExit(mouse.getPingedExit());
                 this.mouse.setName(mouse.getName());
+                //check wheter the mouse entered or exited a subway
                 if(!mouseUpdateMessage.getContainedInUUID().equals(this.mouse.getBoundaries().getUuid())) {
                     if(this.mouse.getBoundaries() instanceof World) {
                         World world = (World) this.mouse.getBoundaries();
@@ -63,6 +65,7 @@ public class ServerMouse extends ServerCharacter {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            //if an exception occurs remove the mouse from game
             server.removePlayer(this);
         } finally {
             try {

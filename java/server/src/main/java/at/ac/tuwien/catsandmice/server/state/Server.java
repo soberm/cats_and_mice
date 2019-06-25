@@ -296,29 +296,35 @@ public class Server implements Runnable {
         }
     }
 
-    //notifies all players about the current world state
+    /**
+     * used to notify the connected players about the state of the world
+     */
     private class UpdateService implements Runnable {
 
         @Override
         public void run() {
             while(!world.isEnded()) {
                 world.setEnded(checkEnded());
+                //if not ended move all ai players
                 if(!world.isEnded()) {
                     for (IComputerPlayer pc : computerPlayers) {
                         pc.move(world);
                     }
                 }
 
+                //check if a cat eats a mouse
                 for(Cat cat : world.getCats()) {
                     ServerCat serverCat = new ServerCat(cat, null);
                     for(Mouse mouse : world.getMice()) {
                         serverCat.kill(mouse);
                     }
                 }
+                // notify the connected clients
                 for(ServerCharacter serverCharacter : allCharacters) {
                     serverCharacter.notifyClient(world);
                 }
                 try {
+                    //wait 20ms for high tick rates
                     sleep(20);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

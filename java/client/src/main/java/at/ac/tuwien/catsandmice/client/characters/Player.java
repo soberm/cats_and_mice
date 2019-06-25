@@ -44,7 +44,9 @@ public abstract class Player {
 
     }
 
-
+    /**
+     * move the character into the direction set by pressing the buttons
+     */
     public void move() {
         if(isInitialised()) {
             if (dx > 0) {
@@ -70,6 +72,9 @@ public abstract class Player {
         }
     }
 
+    /**
+     * updates the character on the server
+     */
     protected void updateOnServer() {
         String json = ClientConstants.getGson().toJson(character);
         writer.println(json);
@@ -126,8 +131,12 @@ public abstract class Player {
 
     //only updates values that should be set by the server
     public synchronized void updateCharacter(Character character, Boundaries boundaries) {
-        this.character.setHeight(character.getHeight());
-        this.character.setWidth(character.getWidth());
+        if(this.character.getHeight() == 0) {
+            this.character.setHeight(character.getHeight());
+        }
+        if(this.character.getWidth() == 0) {
+            this.character.setWidth(character.getWidth());
+        }
 
         if(this.character.getX() == null) {
             this.character.setX(character.getX());
@@ -157,7 +166,7 @@ public abstract class Player {
                 subway.setEnd(false);
             }
             SubwayRepresentation subRepresentation = new SubwayRepresentation(subway);
-            subRepresentation.draw(g2d, observer, true);
+            subRepresentation.draw(g2d, true, character instanceof Cat);
         }
         for(Mouse mouse : world.getMice()) {
             if(mouse.isAlive()) {

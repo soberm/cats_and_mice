@@ -52,14 +52,4 @@ public class ComputerCat implements IComputerPlayer {
             cat.setRotation(Integer.compare(yMin, cat.getY()) > 0 ? 270 : 90);
         }
     }
-
-    @Override
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    @Override
-    public int getSpeed() {
-        return speed;
-    }
 }

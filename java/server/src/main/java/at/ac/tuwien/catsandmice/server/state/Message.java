@@ -5,6 +5,7 @@ import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import com.google.gson.annotations.Expose;
 
 //initial message used to add a new player
+//either cat or mouse has to be not null
 public class Message {
     @Expose
     public Cat cat;

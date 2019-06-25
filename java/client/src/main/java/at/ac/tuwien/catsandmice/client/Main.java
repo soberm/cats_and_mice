@@ -1,7 +1,6 @@
 package at.ac.tuwien.catsandmice.client;
 
 import at.ac.tuwien.catsandmice.client.application.Application;
-import at.ac.tuwien.catsandmice.dto.util.Constants;
 import org.apache.commons.cli.*;
 
 

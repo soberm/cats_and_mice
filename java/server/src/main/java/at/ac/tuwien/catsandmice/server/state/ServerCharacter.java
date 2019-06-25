@@ -48,6 +48,10 @@ public abstract class ServerCharacter extends Model implements Runnable{
         this.character.setRotation(rotation);
     }
 
+    /**
+     * update the character controlled by a client
+     * @param character not null character object having x, y, width, height not null
+     */
     public void update(Character character) {
         setRotation(character.getRotation());
         setX(character.getX());
@@ -56,10 +60,10 @@ public abstract class ServerCharacter extends Model implements Runnable{
         this.character.setHeight(character.getHeight());
     }
 
-    public Socket getClient() {
-        return client;
-    }
-
+    /**
+     * sets the client socket and opens a printer and a writer
+     * @param client not null socket object of the client controlling the character
+     */
     public void setClient(Socket client) {
         this.client = client;
         try {

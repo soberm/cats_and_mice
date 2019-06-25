@@ -2,9 +2,6 @@ package at.ac.tuwien.catsandmice.client.characters;
 
 import at.ac.tuwien.catsandmice.client.board.Board;
 import at.ac.tuwien.catsandmice.dto.characters.Cat;
-import at.ac.tuwien.catsandmice.dto.characters.Character;
-import at.ac.tuwien.catsandmice.dto.world.Boundaries;
-import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,13 +51,6 @@ public class CatRepresentation implements Representation {
 
     private AffineTransform getRotate() {
         return AffineTransform.getRotateInstance(Math.toRadians(this.cat.getRotation()), this.cat.getX() + getWidth() / 2, this.cat.getY() + getHeight() / 2);
-    }
-
-    public Rectangle getBounds() {
-        Rectangle rectangle = new Rectangle(this.cat.getX(), this.cat.getY(), getWidth(), getHeight());
-        AffineTransform transform = getRotate();
-        Shape shape = transform.createTransformedShape(rectangle);
-        return shape.getBounds();
     }
 
 

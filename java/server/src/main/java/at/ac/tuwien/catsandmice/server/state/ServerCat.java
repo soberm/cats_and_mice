@@ -36,13 +36,18 @@ public class ServerCat extends ServerCharacter {
         return AffineTransform.getRotateInstance(Math.toRadians(character.getRotation()), character.getX() + character.getWidth() / 2, character.getY() + character.getHeight() / 2);
     }
 
-    public Rectangle getBounds(Character character) {
+
+    private Rectangle getBounds(Character character) {
         Rectangle rectangle = new Rectangle(character.getX(), character.getY(), character.getWidth(), character.getHeight());
         AffineTransform transform = getRotate(character);
         Shape shape = transform.createTransformedShape(rectangle);
         return shape.getBounds();
     }
 
+    /**
+     * checks wheter a cat and a mouse collide
+     * @param mouse not null mouse object to check if collision exists and cat eats the given mouse
+     */
     public void kill(Mouse mouse) {
         if (mouse.getBoundaries().equals(cat.getBoundaries()) ) {
             if(mouse.isAlive() && getBounds(cat).intersects(getBounds(mouse))) {
@@ -50,11 +55,6 @@ public class ServerCat extends ServerCharacter {
                 cat.increaseKilledMice();
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 
     @Override

@@ -21,6 +21,13 @@ public class Application extends JFrame {
     private String url;
     private String name;
 
+    /**
+     * starts the application
+     * @param ch the type of character to start, either "cat" or "mouse", not null
+     * @param url the url to connect to the server, not null
+     * @param port the port to connect to the server, not null
+     * @param name the name of the user, not null
+     */
     public Application(String ch, String url, int port, String name) {
         this.port = port;
         this.url = url;
@@ -29,7 +36,7 @@ public class Application extends JFrame {
 
     }
 
-    //Strin ch either "mouse" or "cat"
+    //String ch either "mouse" or "cat"
     private void initUI(String ch) {
 
         board = new Board();

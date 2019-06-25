@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.ImageObserver;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class MousePlayer extends Player {
@@ -96,7 +95,7 @@ public class MousePlayer extends Player {
     private void drawWorld(Graphics2D g2d, ImageObserver observer, World world, Subway subway) {
         for(Subway s : world.getSubways()) {
             SubwayRepresentation subwayRepresentation = new SubwayRepresentation(s);
-            subwayRepresentation.draw(g2d, observer, !subway.equals(s));
+            subwayRepresentation.draw(g2d, !subway.equals(s), false);
         }
         for(Mouse mouse : subway.getContainedMice()) {
             if(mouse.isAlive()) {

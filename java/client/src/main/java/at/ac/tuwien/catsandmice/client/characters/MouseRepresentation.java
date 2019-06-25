@@ -2,9 +2,6 @@ package at.ac.tuwien.catsandmice.client.characters;
 
 import at.ac.tuwien.catsandmice.client.board.Board;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
-import at.ac.tuwien.catsandmice.dto.util.Constants;
-import at.ac.tuwien.catsandmice.dto.world.Boundaries;
-import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,6 +54,10 @@ public class MouseRepresentation implements Representation {
         return AffineTransform.getRotateInstance(Math.toRadians(this.mouse.getRotation()), this.mouse.getX() + getWidth() / 2, this.mouse.getY() + getHeight() / 2);
     }
 
+    /**
+     * returns the bounds of the representation object for collision detection
+     * @return an awt rectangle specifying where the represenation is currently located and what sizes it has
+     */
     public Rectangle getBounds() {
         Rectangle rectangle = new Rectangle(this.mouse.getX(), this.mouse.getY(), getWidth(), getHeight());
         AffineTransform transform = getRotate();

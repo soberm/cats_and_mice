@@ -1,10 +1,7 @@
 package at.ac.tuwien.catsandmice.dto.characters;
 
 import at.ac.tuwien.catsandmice.dto.world.Boundaries;
-import at.ac.tuwien.catsandmice.dto.world.IBoundaries;
 import com.google.gson.annotations.Expose;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Cat extends Character {
 

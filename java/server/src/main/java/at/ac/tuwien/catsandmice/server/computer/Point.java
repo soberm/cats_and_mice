@@ -2,6 +2,9 @@ package at.ac.tuwien.catsandmice.server.computer;
 
 import at.ac.tuwien.catsandmice.dto.world.Subway;
 
+/**
+ * a point to move to used by the AI
+ */
 public class Point {
     private int x;
     private int y;

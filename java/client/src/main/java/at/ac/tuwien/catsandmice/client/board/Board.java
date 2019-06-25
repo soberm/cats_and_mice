@@ -44,6 +44,9 @@ public class Board extends JPanel implements ActionListener {
 
     }
 
+    /**
+     * inits the board for further usage
+     */
     public void initBoard() {
         addKeyListener(new TAdapter());
         setBackground(Color.gray);
@@ -52,7 +55,7 @@ public class Board extends JPanel implements ActionListener {
         setFocusable(true);
 
         timer = new Timer(DELAY, this);
-
+        //start the update reader
         new Thread(stateUpdateReader).start();
 
     }
@@ -77,7 +80,7 @@ public class Board extends JPanel implements ActionListener {
             //otherwise draw everything
             for(Subway subway : world.getSubways()) {
                 SubwayRepresentation subwayRepresentation = new SubwayRepresentation(subway);
-                subwayRepresentation.draw(g2d, this, subway.getContainedMice().isEmpty());
+                subwayRepresentation.draw(g2d, subway.getContainedMice().isEmpty(), false);
                 for(Mouse mouse : subway.getContainedMice()) {
                     if(mouse.isAlive()) {
                         MouseRepresentation mouseRepresentation = new MouseRepresentation(mouse);
@@ -139,6 +142,9 @@ public class Board extends JPanel implements ActionListener {
         this.player = player;
     }
 
+    /**
+     * receives the updates from the server
+     */
     private class StateUpdateReader implements Runnable {
 
         private BufferedReader bufferedReader;

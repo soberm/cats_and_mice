@@ -1,9 +1,6 @@
 package at.ac.tuwien.catsandmice.client.world;
 
-import at.ac.tuwien.catsandmice.client.characters.CatRepresentation;
 import at.ac.tuwien.catsandmice.client.characters.MousePlayer;
-import at.ac.tuwien.catsandmice.client.characters.MouseRepresentation;
-import at.ac.tuwien.catsandmice.dto.characters.Cat;
 import at.ac.tuwien.catsandmice.dto.characters.Mouse;
 import at.ac.tuwien.catsandmice.dto.util.Constants;
 import at.ac.tuwien.catsandmice.dto.util.PingedExit;
@@ -11,7 +8,6 @@ import at.ac.tuwien.catsandmice.dto.world.Subway;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,21 +20,11 @@ public class SubwayRepresentation {
 
     private Rectangle subwayTube;
 
-    private List<MouseRepresentation> miceRepresentations;
-    private List<CatRepresentation> knownCatRepresentationLocations;
-
     private boolean isVertical;
 
     public SubwayRepresentation(Subway subway) {
-        this.miceRepresentations = new ArrayList<>();
-        this.knownCatRepresentationLocations = new ArrayList<>();
         this.subway = subway;
-        for(Mouse mouse : subway.getContainedMice()) {
-            miceRepresentations.add(new MouseRepresentation(mouse));
-        }
-        for(Cat cat : subway.getKnownCatLocations()) {
-            knownCatRepresentationLocations.add(new CatRepresentation(cat));
-        }
+
         entry1 = new Ellipse2D.Double(
                 subway.getX1()-Constants.SUBWAY_ENTRY_WIDTH/2,
                 subway.getY1()-Constants.SUBWAY_ENTRY_WIDTH/2,
@@ -70,11 +56,19 @@ public class SubwayRepresentation {
         }
     }
 
-    public void draw(Graphics2D g2d, ImageObserver observer, boolean opaque){
+    /**
+     * draws a subway
+     * @param g2d not null Graphics2D object to draw the subway on
+     * @param opaque wheter the color should be opaque or not
+     * @param cat wheter the player is a cat or not to either draw the subway tubes or not
+     */
+    public void draw(Graphics2D g2d, boolean opaque, boolean cat){
         Paint old = g2d.getPaint();
         Color baseColor = subway.isEnd() ? Color.green : Color.blue;
         g2d.setPaint(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), (opaque ? 30 : 100)));
-        g2d.fill(subwayTube);
+        if(!cat) {
+            g2d.fill(subwayTube);
+        }
         g2d.setPaint(Color.black);
         List<String> entry1NamesList = new ArrayList<>();
         List<String> entry2NamesList = new ArrayList<>();
@@ -112,6 +106,11 @@ public class SubwayRepresentation {
         g2d.setPaint(old);
     }
 
+    /**
+     * lets a mouse enter or exit a subway at one of the entries
+     * @param mouse not null MousePlayer object that wants to enter or exit a subway
+     * @return true if the mouse can enter or exit, false otherwise
+     */
     public boolean enterOrExit(MousePlayer mouse) {
         Rectangle rectangle = mouse.getMouseRepresentation().getBounds();
 
@@ -147,6 +146,11 @@ public class SubwayRepresentation {
     }
 
 
+    /**
+     * checks wheter an exit can be pinged
+     * @param mouse a not null Mouse object that wants to ping an exit
+     * @return the exit the mouse can currently ping
+     */
     public PingedExit getPingedExit(Mouse mouse) {
         //check direction mouse is facing to determine which exit gets pinged
         if(isVertical) {

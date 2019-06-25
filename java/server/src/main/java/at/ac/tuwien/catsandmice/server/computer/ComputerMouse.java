@@ -81,7 +81,10 @@ public class ComputerMouse implements IComputerPlayer{
 
                 // let mouse walk to the middle of the next subway
                 steps.add(calculateSubwayCenter(nextPoint));
-                visitedSubways.add(nextPoint.getSubway());
+                //not revisit the subway in 60% of the cases
+                if(Math.random() < 0.7) {
+                    visitedSubways.add(nextPoint.getSubway());
+                }
             }
 
 
@@ -132,16 +135,6 @@ public class ComputerMouse implements IComputerPlayer{
 
     public Subway getCurrentSub() {
         return currentSub;
-    }
-
-    @Override
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    @Override
-    public int getSpeed() {
-        return speed;
     }
 
     private Point pointSelectionHelper(int x, int y, Subway subway, Point curr) {

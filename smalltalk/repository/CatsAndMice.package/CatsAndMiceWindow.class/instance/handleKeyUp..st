@@ -1,5 +1,6 @@
 as yet unclassified
 handleKeyUp: anEvent 
+	"stop a player by releasing specific key strokes"
 	| keyValue |
 	keyValue := anEvent keyValue.
 	keyValue = 30

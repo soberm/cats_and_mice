@@ -1,5 +1,6 @@
 access
 knownCatLocations: aList 
+	"add the latest known locations of the cats on the overworld for this tunnel"
 	| tmpList |
 	tmpList := OrderedCollection new.
 	1

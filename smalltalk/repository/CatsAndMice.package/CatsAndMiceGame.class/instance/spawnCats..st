@@ -1,5 +1,6 @@
 as yet unclassified
 spawnCats: count 
+	"spawn the specified amount of cats on the playing field"
 	| cat x y height width |
 	count
 		timesRepeat: [cat := Cat new.

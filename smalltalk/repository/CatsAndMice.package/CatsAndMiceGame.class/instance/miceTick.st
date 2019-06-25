@@ -1,5 +1,7 @@
 ticks
 miceTick
+	"check the intersection mice with cats on the overworld"
+	"check if a mouse should is leaving or entering the overworld"
 	| intersects removeableMice |
 	removeableMice := OrderedCollection new.
 	1

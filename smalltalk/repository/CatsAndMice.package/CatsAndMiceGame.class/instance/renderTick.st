@@ -1,6 +1,6 @@
 ticks
 renderTick
-	"Main logic of the game"
+	"render the characters on the playing field"
 	player isCat
 		ifTrue: [1
 				to: mice size

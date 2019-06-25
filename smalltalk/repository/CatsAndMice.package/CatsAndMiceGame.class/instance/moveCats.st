@@ -1,5 +1,6 @@
 as yet unclassified
 moveCats
+	"move all cats except the player cat"
 	1
 		to: cats size
 		do: [:catIndex | 

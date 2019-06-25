@@ -1,5 +1,6 @@
 as yet unclassified
 checkForEmptySubways
+	"check if there are subways (except the goal) without any mice"
 	1
 		to: subways size
 		do: [:subwayIndex | 

@@ -1,5 +1,6 @@
 ticks
 subwayTick
+	"check if a mouse should enter or leave a subway under the surface"
 	1
 		to: subways size
 		do: [:subwayIndex | 

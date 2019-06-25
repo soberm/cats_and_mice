@@ -1,8 +1,10 @@
 as yet unclassified
 aiMoveMouse: mouse 
+	"AI for mice"
 	| x1 y1 enter |
 	x1 := mouse position x.
 	y1 := mouse position y.
+	"move to the next subway which was not already visited"
 	mouse nextGoalX isNil
 		ifTrue: [| distance visitedSubways inSubway selectedSubway |
 			distance := 2 raisedTo: 31.
@@ -65,7 +67,7 @@ aiMoveMouse: mouse
 				ifTrue: [mouse left]
 				ifFalse: [mouse leftStop.
 					mouse rightStop]].
-	"check wheter we are at the goal"
+	"check whether we are at the goal"
 	enter := mouse direction x = 0.
 	enter := enter
 				and: [mouse direction y = 0].

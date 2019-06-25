@@ -1,5 +1,6 @@
 as yet unclassified
 handleKeyDown: anEvent 
+	"move a player by pressing specific key strokes"
 	| keyValue |
 	keyValue := anEvent keyValue.
 	self isStepping not
@@ -16,7 +17,7 @@ handleKeyDown: anEvent
 	keyValue = 28
 		ifTrue: ["left arrow"
 			self game player left].
-	keyValue = 69
+	keyValue = 101
 		ifTrue: ["e"
 			self game player enterOrExit: true].
 	keyValue = 81

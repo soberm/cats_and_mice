@@ -1,5 +1,6 @@
 as yet unclassified
 placeMorph: aMorph at: position 
+	"place a morph on the playing field on the given position within the playfield"
 	| left top bottom right |
 	left := position x / self width.
 	top := position y / self height.

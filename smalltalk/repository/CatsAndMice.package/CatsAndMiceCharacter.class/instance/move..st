@@ -1,5 +1,6 @@
 move
 move: bounds 
+	"move only in the specified area"
 	| tmpPosition |
 	tmpPosition := position x @ position y.
 	((direction x >= 0 or: tmpPosition x >= bounds minX)

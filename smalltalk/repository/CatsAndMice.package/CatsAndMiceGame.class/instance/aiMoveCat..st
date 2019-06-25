@@ -1,11 +1,13 @@
 as yet unclassified
 aiMoveCat: cat 
+	"AI for cats"
 	| x1 y1 targetX targetY distance |
 	x1 := cat position x.
 	y1 := cat position y.
 	targetX := 0.
 	targetY := 0.
 	distance := 2 raisedTo: 31.
+	"move to the mouse which is closes to the cat"
 	cat == player
 		ifFalse: [1
 				to: mice size

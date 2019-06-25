@@ -1,5 +1,6 @@
 as yet unclassified
 step
+	"execute the logic of the game in each step"
 	| message miceScore catScore |
 	game tick.
 	"Check for a winner and stop"

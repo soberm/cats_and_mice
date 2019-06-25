@@ -1,6 +1,6 @@
 initialize-release
 initialize
-	"comment stating purpose of message"
+	"initialize the subway by creating two circles for the entries and a rectangle for the actual tunnel"
 	mice := OrderedCollection new.
 	knownCatLocations := OrderedCollection new.
 	isGoal := false.

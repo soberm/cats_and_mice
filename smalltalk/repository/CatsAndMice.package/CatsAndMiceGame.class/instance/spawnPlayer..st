@@ -1,5 +1,6 @@
 as yet unclassified
 spawnPlayer: isCat 
+	"spawn the player cat or a mouse on the playing field"
 	| character x y height width |
 	isCat
 		ifTrue: [character := Cat new.

@@ -2,16 +2,16 @@
 	"class" : {
 		 },
 	"instance" : {
-		"alive" : "LN 5/15/2019 09:33",
+		"alive" : "MS 6/25/2019 18:34",
 		"alive:" : "LN 5/15/2019 09:33",
-		"enterOrExit" : "LN 5/16/2019 08:02",
-		"enterOrExit:" : "LN 5/16/2019 08:02",
+		"enterOrExit" : "MS 6/25/2019 18:34",
+		"enterOrExit:" : "MS 6/25/2019 18:34",
 		"initialize" : "MS 5/26/2019 12:04",
 		"isCat" : "LN 5/19/2019 18:05",
-		"nextGoalX" : "LN 5/25/2019 17:21",
-		"nextGoalX:" : "LN 5/25/2019 17:20",
-		"nextGoalY" : "LN 5/25/2019 17:21",
-		"nextGoalY:" : "LN 5/25/2019 17:20",
-		"parent" : "LN 5/19/2019 18:24",
-		"parent:" : "LN 5/19/2019 18:25",
-		"visitedSubways" : "LN 5/25/2019 17:32" } }
+		"nextGoalX" : "MS 6/25/2019 18:31",
+		"nextGoalX:" : "MS 6/25/2019 18:31",
+		"nextGoalY" : "MS 6/25/2019 18:32",
+		"nextGoalY:" : "MS 6/25/2019 18:32",
+		"parent" : "MS 6/25/2019 18:35",
+		"parent:" : "MS 6/25/2019 18:35",
+		"visitedSubways" : "MS 6/25/2019 18:32" } }

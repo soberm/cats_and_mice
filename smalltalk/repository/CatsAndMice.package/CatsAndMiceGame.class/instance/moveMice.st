@@ -1,5 +1,6 @@
 as yet unclassified
 moveMice
+	"move all mice an on the overworld an in the subways"
 	1
 		to: mice size
 		do: [:mouseIndex | 

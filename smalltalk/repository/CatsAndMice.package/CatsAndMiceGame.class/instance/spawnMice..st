@@ -1,5 +1,6 @@
 as yet unclassified
 spawnMice: count 
+	"spawn the specified amount of mice on the playing field"
 	| mouse x y height width |
 	count
 		timesRepeat: [mouse := Mouse new.
@@ -8,7 +9,6 @@ spawnMice: count
 			x := rand nextInt: width.
 			y := rand nextInt: height.
 			mouse position: x @ y.
-			"TODO add mouse into a subway"
 			mouse parent: window.
 			mice add: mouse.
 			self placeMorph: mouse morph at: x @ y]
